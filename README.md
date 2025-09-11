@@ -1,56 +1,56 @@
 # 🏆 OnlyFootballFans
 
-## 📌 Overview  
-**OnlyFootballFans** is a web application developed with **Django**, designed to be the digital diary of football fans' experiences.  
-With this app, users can **record, organize, and relive** the matches they attended, creating a **personal history of stadium and match memories**.
+## 📌 Visão Geral  
+O **OnlyFootballFans** é um aplicativo web desenvolvido em **Django**, projetado para ser o diário digital das experiências futebolísticas dos torcedores.  
+Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assistiram, criando um **histórico único de memórias em estádios e partidas**.
 
 ---
 
-## 📑 Features  
-- ⚽ **Match Scheduling**: plan your attendance at upcoming games.  
-- 📖 **Match History**: keep a record of all the matches you have attended.  
-- ⭐ **Personalized Reviews**: rate the fans, stadium, and overall experience.  
-- 🖼️ **Media Gallery**: add photos and personal comments to each match entry.  
-- 🎥 **Replay Links**: access highlights and relive the best moments.  
+## 📑 Funcionalidades  
+- ⚽ **Agendamento de Jogos**: planeje sua ida a futuras partidas.  
+- 📖 **Histórico de Jogos**: registre todos os jogos que já assistiu.  
+- ⭐ **Avaliações Personalizadas**: avalie torcidas, estádios e experiências.  
+- 🖼️ **Galeria de Mídia**: adicione fotos e comentários pessoais.  
+- 🎥 **Links de Replay**: acesse os melhores momentos dos jogos.  
 
 ---
 
-## 👥 Development Team  
+## 👥 Time de Desenvolvimento  
 
 - **Artur Moury** – [amfgs@cesar.school](mailto:amfgs@cesar.school)  
-  🟢 *Agile Coach – Development Team*  
+  🟢 *Agile Coach – Time de Desenvolvimento*  
 
 - **Diego Magnata** – [dfm@cesar.school](mailto:dfm@cesar.school)  
-  🟢 *Scrum Master – Development Team*
+  🟢 *Scrum Master – Time de Desenvolvimento*  
 
-  - **Luiz Guilherme** – [lgsgs@cesar.school](mailto:lgsgs@cesar.school)  
-  🟢 *QA Engineer – Development Team*  
+- **Luiz Guilherme** – [lgsgs@cesar.school](mailto:lgsgs@cesar.school)  
+  🟢 *Engenheiro de QA – Time de Desenvolvimento*  
 
 - **Matheus Fialho** – [mgfm@cesar.school](mailto:mgfm@cesar.school)  
-  🟢 *Tech Lead – Development Team*  
+  🟢 *Líder Técnico – Time de Desenvolvimento*  
 
 - **Pablo** – [pcgar@cesar.school](mailto:pcgar@cesar.school)  
-  🟢 *QA Engineer – Development Team*
+  🟢 *Engenheiro de QA – Time de Desenvolvimento*  
 
-  - **Raul Maia** – [rmb2@cesar.school](mailto:rmb2@cesar.school)  
-  🟢 *QA Engineer – Development Team*  
+- **Raul Maia** – [rmb2@cesar.school](mailto:rmb2@cesar.school)  
+  🟢 *Engenheiro de QA – Time de Desenvolvimento*  
 
 - **Vitor Gadelha** – [vrlbga@cesar.school](mailto:vrlbga@cesar.school)  
-  🟢 *QA Engineer – Development Team*  
+  🟢 *Engenheiro de QA – Time de Desenvolvimento*  
 
 ---
 
-## 🔗 Important Links  
-- 📌 **Jira (Project Management)** → [Access](https://fds-cesar-school.atlassian.net/jira/software/projects/PGF/boards/1?atlOrigin=eyJpIjoiNWUxNGI5MDY2OGM1NDhiYWJiMjg5ZjliMWU0M2E3ZTMiLCJwIjoiaiJ9)  
-- 🎨 **Figma (Design Prototype)** → [Access](https://www.figma.com/design/CXlarW1bJs3u1XKdIYB1Q0/ProjetoFDS?node-id=0-1&p=f&t=6GuU3fSHRvxqUSVA-0)  
-- 📄 **Google Docs (Documentation)** → [Access](https://docs.google.com/document/d/1KJ7e-UgdJZPT6Hks4MEKToqq0ciq734pU-kY532tJzU/edit?usp=sharing)  
+## 🔗 Links Importantes  
+- 📌 **Jira (Gestão do Projeto)** → [Acessar](https://fds-cesar-school.atlassian.net/jira/software/projects/PGF/boards/1?atlOrigin=eyJpIjoiNWUxNGI5MDY2OGM1NDhiYWJiMjg5ZjliMWU0M2E3ZTMiLCJwIjoiaiJ9)  
+- 🎨 **Figma (Protótipo de Design)** → [Acessar](https://www.figma.com/design/CXlarW1bJs3u1XKdIYB1Q0/ProjetoFDS?node-id=0-1&p=f&t=6GuU3fSHRvxqUSVA-0)  
+- 📄 **Google Docs (Documentação)** → [Acessar](https://docs.google.com/document/d/1KJ7e-UgdJZPT6Hks4MEKToqq0ciq734pU-kY532tJzU/edit?usp=sharing)  
 
 ---
 
-## 📦 Deliverables  
-- ✅ **Week 1**  
-- ⏳ **Week 2**  
-- ⏳ **Week 3**  
-- ⏳ **Week 4**  
+## 📦 Entregáveis  
+- ✅ **Semana 1**  
+- ⏳ **Semana 2**  
+- ⏳ **Semana 3**  
+- ⏳ **Semana 4**  
 
 ---
