@@ -49,14 +49,14 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 
 ## 📦 Entregáveis  
 <details>
-  <summary>- ✅ **Semana 1** </summary>
+  <summary>- ✅ Semana 1 </summary>
   
   [Screencast](https://youtu.be/Fxc6gBIscdQ)
   
   [Histórias](https://docs.google.com/document/d/1KJ7e-UgdJZPT6Hks4MEKToqq0ciq734pU-kY532tJzU/edit?usp=sharing )
   
   BackLog Jira
-  ![BackLog Jira](projeto-Only-Football-Fans/images/backlog1.png)
+  ![backLog jira](images/backlog1.png)
   
   Quadro Jira
   ![Quadro Jira]()
