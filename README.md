@@ -56,7 +56,7 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   [Histórias](https://docs.google.com/document/d/1KJ7e-UgdJZPT6Hks4MEKToqq0ciq734pU-kY532tJzU/edit?usp=sharing )
   
   BackLog Jira
-  ![BackLog Jira](images/backlog1.png)
+  ![BackLog Jira](projeto-Only-Football-Fans/images/backlog1.png)
   
   Quadro Jira
   ![Quadro Jira]()
