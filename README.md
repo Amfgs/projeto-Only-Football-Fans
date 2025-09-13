@@ -59,7 +59,7 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   [backLog jira](images/backlog1.png)
   
   Quadro Jira
-  ![Quadro Jira](images/)
+  [Ver imagem quadrojira1.png](images/quadrojira1.png)
 </details>
 
 - ⏳ **Semana 2**  
