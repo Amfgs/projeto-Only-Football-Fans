@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "midia",
     "emocao",
     'django.contrib.admin',
     'django.contrib.auth',
