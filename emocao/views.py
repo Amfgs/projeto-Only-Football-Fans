@@ -23,7 +23,7 @@ def nova_avaliacao(request): # Define a requisição da página por uma nova atu
 
         form = AvaliacaoEstadioForm(request.POST) # Cria o formulário com as informções enviadas pelo usuário
 
-        if form.is_valid: # Faz uma validação se todas as entradas do usuário estão em conformidade com os campos de entrada
+        if form.is_valid: # Faz uma validação se todas as entradas do usuário estão em conformidade com os campos de entrada do formulário
 
             avaliacao = form.save(commit=False) # Cria uma variável de avaliação que credencia o formulário, porém, sem salvá-lo 
             avaliacao.usuario = request.user # Associa o formulário de avaliação credenciado ao respectivo usuário
@@ -31,7 +31,7 @@ def nova_avaliacao(request): # Define a requisição da página por uma nova atu
             return render(request, 'emocao/avaliacao_sucesso.html') # Renderiza um HTML de sucesso na nova avaliação
         
     else: # Associa uma requisição ao formulário, sem entrada de dados usando o método 'GET'
-        form = AvaliacaoEstadio.form() # Carrega o formulário de avaliação de estádio
+        form = AvaliacaoEstadioForm() # Carrega o formulário de avaliação de estádio
         return render(request, 'emocao/nova_avaliacao.html', {'form': form}) # Renderiza a página de nova avaliação
 
 def index(request):
