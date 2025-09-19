@@ -7,5 +7,6 @@ urlpatterns = [
     path('', lambda request: redirect('/emocao/')),  # redireciona para a página inicial do app emocao
     path('emocao/', include('emocao.urls')),  # inclui as URLs do app emocao
     path('partidas/', include('partidas.urls')),  # adiciona o app partidas
+    path('accounts/', include('usuarios.urls')),  # adiciona o app usuarios
 ]
 
