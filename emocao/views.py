@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django import forms
 
+def index(request):
+    return render(request, 'emocao/index.html')  # cria o template index.html dentro de emocao/templates/emocao/
 class AvaliacaoEstadioForm(forms.ModelForm): # Cria um modelo de formulário baseado na estrutura do modelo de 'AvaliacaoEstadio'
     class Meta: # Cria uma classe baseada nos Metadados da classe de 'AvaliacaoEstadio'
 

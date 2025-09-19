@@ -17,14 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
-from django.conf import settings
-from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('emocao/', include('emocao.urls')),
-    path('', lambda request: redirect('emocao_index')),
+    path('', lambda request: redirect('emocao_index')),  # redireciona para a página inicial do app emocao
+    path('emocao/', include('emocao.urls')),  # inclui as URLs do app emocao
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
