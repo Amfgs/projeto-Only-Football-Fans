@@ -20,7 +20,7 @@ from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', lambda request: redirect('emocao_index')),  # redireciona para a página inicial do app emocao
+    path('', lambda request: redirect('/emocao/')),  # redireciona para a página inicial do app emocao
     path('emocao/', include('emocao.urls')),  # inclui as URLs do app emocao
 ]
 

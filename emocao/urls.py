@@ -4,12 +4,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name='emocao_index'),
     path('avaliacao/nova/', views.nova_avaliacao, name='nova_avaliacao'),
-
+    
     # Atribui ao caminho a rota de 'avaliacao/nova/' sugerindo uma página de nova avaliação, que seja procurada nas 'views' dentro da função 'nova_avaliacao', irá também usar o nome 'nova_avaliacao' para facilitar as buscas 
-]
-
-#  'urlpatterns' é uma lista padrão que o Django procura para encontrar as rotas do app.
-urlpatterns = [
     #    Define a rota para a página de avaliação.
     #    'avaliar/<int:time_id>/': Captura um número inteiro da URL e o passa como argumento 'time_id' para a view.
     #    views.avaliar_time: Especifica que esta rota deve chamar a função 'avaliar_time' em views.py.
