@@ -24,7 +24,7 @@ class AvaliacaoEstadio(models.Model): # Classe criada; essa vai guardar no banco
     data_avaliacao = models.DateTimeField(auto_now_add=True) # Adiciona a data de avaliação da feita pelo usuário a esse estádio
 
     def __str__(self): # Por padrão, mostra o nome do usuário que fez a avaliação e qual foi a sua avaliação
-        return f"{self.usuario.username} - {self.avaliacao_experiencia})"
+        return f"Usuário: {self.usuario.username} - Avaliação: {self.avaliacao_experiencia}"
 
 # Create your models here.
 

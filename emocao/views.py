@@ -1,7 +1,38 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import AvaliacaoTorcida, Time
+from .models import AvaliacaoTorcida, AvaliacaoEstadio, Time
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django import forms
+
+class AvaliacaoEstadioForm(forms.ModelForm): # Cria um modelo de formulário baseado na estrutura do modelo de 'AvaliacaoEstadio'
+    class Meta: # Cria uma classe baseada nos Metadados da classe de 'AvaliacaoEstadio'
+
+        model = AvaliacaoEstadio # Define a qual classe o modelo será gerado
+        fields = ['estadio', 'avaliacao_experiencia', 'comentario'] # Define os campos que irão compor o formulário
+
+        widgets = {
+            'avaliacao_experiencia': forms.RadioSelect(choices=AvaliacaoEstadio._meta.get_field('avaliacao_experiencia').choices), # Botões de rádio no formulário.
+            'comentario': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Escreva seu comentário...'}), # àrea de texto com três linhas e um imperativo de comando
+        }
+
+@login_required # Garante que o usuário esteja logado, caso não, o mesmo será redirecionado para a página de login
+
+def nova_avaliacao(request): # Define a requisição da página por uma nova atualização
+
+    if request.method == 'POST': # Garante que o método de acesso do usuário foi no método de requisição, ou seja, o mesmo preencheu e enviou o formulário de nova avaliação, caso fosse 'GET', o mesmo teria apenas entrado no formulário sem enviar sua experiência
+
+        form = AvaliacaoEstadioForm(request.POST) # Cria o formulário com as informções enviadas pelo usuário
+
+        if form.is_valid: # Faz uma validação se todas as entradas do usuário estão em conformidade com os campos de entrada
+
+            avaliacao = form.save(commit=False) # Cria uma variável de avaliação que credencia o formulário, porém, sem salvá-lo 
+            avaliacao.usuario = request.user # Associa o formulário de avaliação credenciado ao respectivo usuário
+            avaliacao.save() # Agora sim, com a correta associação, salva no banco de dados
+            return render(request, 'emocao/avaliacao_sucesso.html') # Renderiza um HTML de sucesso na nova avaliação
+        
+    else: # Associa uma requisição ao formulário, sem entrada de dados usando o método 'GET'
+        form = AvaliacaoEstadio.form() # Carrega o formulário de avaliação de estádio
+        return render(request, 'emocao/nova_avaliacao.html', {'form': form}) # Renderiza a página de nova avaliação
 
 def index(request):
     return HttpResponse("Página de emoções da partida!")
