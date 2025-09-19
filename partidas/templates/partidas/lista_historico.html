@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Histórico de Partidas</title>
+</head>
+<body>
+    <h1>Histórico de Partidas</h1>
+    <ul>
+    {% for h in historicos %}
+        <li>{{ h.data }} - {{ h.usuario }} avaliou o time {{ h.time_id }} com nota {{ h.nota }}</li>
+    {% empty %}
+        <li>Nenhuma avaliação registrada.</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

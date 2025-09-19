@@ -4,7 +4,6 @@ from . import views
 urlpatterns = [
     path('', views.index, name='emocao_index'),
     path('avaliacao/nova/', views.nova_avaliacao, name='nova_avaliacao'),
-    
     # Atribui ao caminho a rota de 'avaliacao/nova/' sugerindo uma página de nova avaliação, que seja procurada nas 'views' dentro da função 'nova_avaliacao', irá também usar o nome 'nova_avaliacao' para facilitar as buscas 
     #    Define a rota para a página de avaliação.
     #    'avaliar/<int:time_id>/': Captura um número inteiro da URL e o passa como argumento 'time_id' para a view.
