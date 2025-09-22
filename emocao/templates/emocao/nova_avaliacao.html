@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Only Football Fans</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div>
+            <label for="id_estadio">Nome do estádio:</label>
+            {{ form.estadio }}
+        </div>
+
+        <div>
+            <label for="id_avaliacao_experiencia">Experiência:</label>
+            {{ form.avaliacao_experiencia }}
+        </div>
+
+        <div>
+            <label for="id_comentario">Comentário:</label>
+            {{ form.comentario }}
+        </div>
+
+        <div>
+            <button type="submit">Finalizar</button>
+        </div>
+    </form>
+{% endblock %}
