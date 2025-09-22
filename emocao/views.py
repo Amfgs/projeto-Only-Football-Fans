@@ -3,6 +3,9 @@ from .models import AvaliacaoTorcida, AvaliacaoEstadio, Time
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django import forms
+from django.core.paginator import Paginator # Importa sistema de paginação do Django
+from django.http import JsonResponse  # Importa JSON para facilitar acesso a requisição
+from django.template.loader import render_to_string # renderiza template como string para uso de AJAX
 
 def index(request):
     return render(request, 'emocao/index.html')  # cria o template index.html dentro de emocao/templates/emocao/
@@ -35,6 +38,32 @@ def nova_avaliacao(request): # Define a requisição da página por uma nova atu
     else: # Associa uma requisição ao formulário, sem entrada de dados usando o método 'GET'
         form = AvaliacaoEstadioForm() # Carrega o formulário de avaliação de estádio
         return render(request, 'emocao/nova_avaliacao.html', {'form': form}) # Renderiza a página de nova avaliação
+    
+@login_required
+def avaliacoes_scroll(request):
+    # Pega o número da página atual da URL (GET), padrão é 1
+    page_number = request.GET.get('page', 1)
+
+    # Filtra as avaliações do usuário logado e ordena da mais recente para a mais antiga
+    avaliacoes = AvaliacaoEstadio.objects.filter(usuario=request.user).order_by('-data_avaliacao')
+
+    # Cria um paginador com 5 avaliações por página
+    paginator = Paginator(avaliacoes, 5)
+
+    # Pega o objeto da página atual com base no número recebido
+    page_obj = paginator.get_page(page_number)
+
+    # Se a requisição for AJAX (feita via JavaScript), retorna apenas o HTML parcial
+    if request.is_ajax():
+        # Renderiza o template parcial com as avaliações da página atual
+        html = render_to_string('emocao/avaliacoes_parciais.html', {'avaliacoes': page_obj})
+
+        # Retorna o HTML como JSON para ser inserido na página via JavaScript
+        return JsonResponse({'html': html})
+
+    # Se não for AJAX, renderiza a página completa com a primeira leva de avaliações
+    return render(request, 'emocao/avaliacoes_scroll.html', {'avaliacoes': page_obj})
+
 
 def index(request):
     return HttpResponse("Página de emoções da partida!")
