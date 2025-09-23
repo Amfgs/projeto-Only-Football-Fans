@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="avaliacao-container">
+    <h2>Minhas Avaliações</h2>
+
+    {% if page_obj %}
+        {% for avaliacao in page_obj %}
+            <div class="avaliacao-card">
+                <p><strong>Estádio:</strong> {{ avaliacao.estadio }}</p>
+                <p><strong>Nota:</strong> {{ avaliacao.avaliacao_experiencia }} estrelas</p>
+                <p><strong>Comentário:</strong> {{ avaliacao.comentario }}</p>
+                <p><em>Data:</em> {{ avaliacao.data_avaliacao }}</p>
+            </div>
+        {% endfor %}
+
+        <div class="navegacao">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">⬅️ Anterior</a>
+            {% endif %}
+
+            <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Próxima ➡️</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>Você ainda não fez nenhuma avaliação.</p>
+    {% endif %}
+</div>
+{% endblock %}
