@@ -1,20 +1,38 @@
+# partidas/forms.py
 from django import forms
-from .models import Partida, Jogador
+from .models import Partida, AvaliacaoPartida, Gol
+from django.forms import inlineformset_factory
 
 class PartidaForm(forms.ModelForm):
-    data = forms.DateTimeField(
-        widget=forms.DateTimeInput(attrs={'type':'datetime-local'}),
-        label='Data e hora da partida'
-    )
+    """
+    Formulário mínimo para criar/editar uma Partida.
+    NOTE: se o registro da partida ficar totalmente com outro integrante,
+    esse form pode ser removido (ou passado para o app de registro).
+    """
+    data = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}), label='Data e hora')
 
     class Meta:
         model = Partida
-        fields = ['adversario', 'data', 'placar_time', 'placar_adversario']
+        # NÃO inclua campos de placar: responsabilidade do registrador
+        fields = ['time_casa', 'time_visitante', 'adversario', 'data']
 
 class AvaliacaoPartidaForm(forms.ModelForm):
+    """
+    Form para a sua funcionalidade principal: avaliar a partida.
+    """
     class Meta:
-        model = Partida
-        fields = ['nota', 'melhor_jogador', 'pior_jogador']
+        model = AvaliacaoPartida
+        fields = ['nota', 'melhor_jogador', 'pior_jogador', 'comentario']
         widgets = {
-            'nota': forms.NumberInput(attrs={'min':0, 'max':5}),
+            'nota': forms.NumberInput(attrs={'min': 0, 'max': 5}),
+            'comentario': forms.Textarea(attrs={'rows': 3}),
         }
+
+# Inline formset para Gols (autor + minuto) vinculados a uma Partida
+GolFormSet = inlineformset_factory(
+    Partida,
+    Gol,
+    fields=('autor', 'minuto'),
+    extra=1,
+    can_delete=True
+)

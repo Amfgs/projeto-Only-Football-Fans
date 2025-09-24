@@ -1,7 +1,13 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator, MaxValueValidator
 
-# Histórico simples de partidas ou avaliações de partidas
+User = get_user_model()
+
+# -----------------------
+# Modelo do outro integrante
+# -----------------------
 class HistoricoPartida(models.Model):
     usuario = models.CharField(max_length=200)
     time_id = models.IntegerField()
@@ -11,58 +17,72 @@ class HistoricoPartida(models.Model):
     def __str__(self):
         return f"{self.usuario} - Time {self.time_id} - Nota {self.nota}"
 
+# -----------------------
+# Modelo: Time (placeholder)
+# -----------------------
+class Time(models.Model):
+    nome = models.CharField(max_length=150)
 
-# Modelo que representa um jogador de futebol
+    def __str__(self):
+        return str(self.nome) if self.nome else "Time sem nome"
+
+# -----------------------
+# Modelo: Jogador
+# -----------------------
 class Jogador(models.Model):
-    nome = models.CharField(max_length=100)  # Nome do jogador
-    
+    nome = models.CharField(max_length=100)
+
     def __str__(self):
-        return self.nome  # Exibe o nome do jogador
+        return str(self.nome) if self.nome else "Jogador sem nome"
 
-
-# Modelo que representa uma partida de futebol com avaliação
+# -----------------------
+# Modelo: Partida
+# -----------------------
 class Partida(models.Model):
-    adversario = models.CharField(max_length=100)  # Nome do time adversário
-    data = models.DateTimeField(default=timezone.now)  # Data e hora da partida
-    placar_time = models.IntegerField(default=0)  # Gols do nosso time
-    placar_adversario = models.IntegerField(default=0)  # Gols do adversário
-    nota = models.IntegerField(default=0)  # Nota da partida (0-5)
-    
-    # Melhor jogador da partida
-    melhor_jogador = models.ForeignKey(
-        Jogador,
-        on_delete=models.SET_NULL,
-        related_name='melhor_em_partidas',
-        null=True,
-        blank=True
-    )
-    
-    # Pior jogador da partida
-    pior_jogador = models.ForeignKey(
-        Jogador,
-        on_delete=models.SET_NULL,
-        related_name='pior_em_partidas',
-        null=True,
-        blank=True
-    )
-    
+    time_casa = models.ForeignKey(Time, on_delete=models.SET_NULL, null=True, blank=True, related_name='partidas_casa')
+    time_visitante = models.ForeignKey(Time, on_delete=models.SET_NULL, null=True, blank=True, related_name='partidas_visitante')
+    adversario = models.CharField(max_length=100, blank=True, help_text="Nome do adversário (opcional)")
+    data = models.DateTimeField(default=timezone.now)
+    registro_externo_id = models.IntegerField(null=True, blank=True, help_text="ID do registro oficial da partida")
+    created_at = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
-        return f"Partida contra {self.adversario} em {self.data.date()}"
+        casa = self.time_casa.nome if self.time_casa is not None else None
+        visitante = self.time_visitante.nome if self.time_visitante is not None else None
+        data_value = self.data.date() if self.data is not None else ""
+        if casa and visitante:
+            return f"{casa} x {visitante} - {data_value}"
+        elif self.adversario:
+            return f"{self.adversario} - {data_value}"
+        else:
+            return f"Partida em {data_value}"
 
-
-# Modelo que representa gols de uma partida
+# -----------------------
+# Modelo: Gol
+# -----------------------
 class Gol(models.Model):
-    partida = models.ForeignKey(
-        Partida,
-        on_delete=models.CASCADE,
-        related_name='gols'
-    )
-    autor = models.ForeignKey(
-        Jogador,
-        on_delete=models.SET_NULL,
-        null=True
-    )
-    minuto = models.PositiveIntegerField()  # Minuto do gol
-
+    partida = models.ForeignKey(Partida, on_delete=models.CASCADE, related_name='gols')
+    autor = models.ForeignKey(Jogador, on_delete=models.SET_NULL, null=True, blank=True)
+    minuto = models.PositiveIntegerField(help_text="Minuto do gol", null=True, blank=True)
     def __str__(self):
-        return f"Gol de {self.autor} aos {self.minuto}' na partida {self.partida}"
+        autor_nome = self.autor.nome if self.autor is not None else "Autor desconhecido"
+        minuto_text = f"{self.minuto}'" if self.minuto is not None else "minuto desconhecido"
+        return f"Gol de {autor_nome} aos {minuto_text} - {self.partida}"
+
+# -----------------------
+# Modelo: AvaliacaoPartida (SUA PARTE)
+# -----------------------
+class AvaliacaoPartida(models.Model):
+    partida = models.ForeignKey(Partida, on_delete=models.CASCADE, related_name='avaliacoes')
+    usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    nota = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        help_text="Nota da partida (0 a 5)"
+    )
+    melhor_jogador = models.ForeignKey(Jogador, on_delete=models.SET_NULL, null=True, blank=True, related_name='melhor_em_avaliacoes')
+    pior_jogador = models.ForeignKey(Jogador, on_delete=models.SET_NULL, null=True, blank=True, related_name='pior_em_avaliacoes')
+    comentario = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        usuario_text = self.usuario.username if self.usuario and hasattr(self.usuario, 'username') else "Anônimo"
+        return f"Avaliação ({self.nota}) por {usuario_text} - {self.partida}"

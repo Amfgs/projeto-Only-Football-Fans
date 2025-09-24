@@ -1,36 +1,35 @@
 from django.test import TestCase
-from .models import Historico  # ou Partida, depende do nome do seu model
-
-from .models import Partida, Jogador, Gol
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+from .models import Partida, Jogador, Gol, AvaliacaoPartida
 
-class HistoricoModelTest(TestCase):
-    def test_str_retorna_legivel(self):
-        # cria uma partida/histórico só em memória
-        h = Historico(
-            data="2025-01-01",
-            adversario="Time Teste",
-            placar_time=2,
-            placar_adv=1,
-            nota=8,
-        )
-        # garante que o __str__ retorna um texto
-        self.assertIn("Time Teste", str(h))
+User = get_user_model()
 
 class PartidaModelTest(TestCase):
     def test_str_retorna_texto_correto(self):
-        jogador = Jogador.objects.create(nome="João")
-        partida = Partida.objects.create(
-            adversario="Time Teste",
-            data=timezone.now(),
-            placar_time=3,
-            placar_adversario=1,
-            nota=4,
-            melhor_jogador=jogador,
-            pior_jogador=jogador
-        )
-        gol = Gol.objects.create(partida=partida, autor=jogador, minuto=23)
-
+        partida = Partida.objects.create(adversario="Time Teste", data=timezone.now())
         self.assertIn("Time Teste", str(partida))
-        self.assertEqual(str(jogador), "João")
+
+class AvaliacaoPartidaModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='tester', password='12345')
+        self.jog = Jogador.objects.create(nome="João")
+        self.partida = Partida.objects.create(adversario="Time Teste", data=timezone.now())
+
+    def test_avaliacao_e_gol_criacao(self):
+        # cria avaliação
+        aval = AvaliacaoPartida.objects.create(
+            partida=self.partida,
+            usuario=self.user,
+            nota=4,
+            melhor_jogador=self.jog,
+            pior_jogador=self.jog,
+            comentario="Bom jogo"
+        )
+        # cria gol
+        gol = Gol.objects.create(partida=self.partida, autor=self.jog, minuto=23)
+
+        self.assertIn("Time Teste", str(self.partida))
+        self.assertEqual(str(self.jog), "João")
         self.assertIn("João", str(gol))
+        self.assertEqual(aval.nota, 4)
