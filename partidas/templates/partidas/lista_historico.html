@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Histórico de Partidas</title>
-</head>
-<body>
-    <h1>Histórico de Partidas</h1>
-    <ul>
-    {% for h in historicos %}
-        <li>{{ h.data }} - {{ h.usuario }} avaliou o time {{ h.time_id }} com nota {{ h.nota }}</li>
+{% extends "base.html" %}
+{% block content %}
+<h2>Partidas</h2>
+<div>
+    {% for partida in partidas %}
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <p>{{ partida.adversario }} - {{ partida.placar_time }} x {{ partida.placar_adversario }} - {{ partida.data|date:"d/m/Y H:i" }}</p>
+        <a href="{% url 'partidas:avaliar_partida' partida.id %}">Avaliar Partida</a>
+    </div>
     {% empty %}
-        <li>Nenhuma avaliação registrada.</li>
+        <p>Nenhuma partida registrada.</p>
     {% endfor %}
-    </ul>
-</body>
-</html>
+</div>
+{% endblock %}
