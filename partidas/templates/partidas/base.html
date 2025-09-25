@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>OFF</title>
+</head>
+<body>
+    <div class="header">
+        <h1>Only Football Fans</h1>
+    </div>
+
+    <div class="sidebar">
+        <p><strong>Menu</strong></p>
+        <ul>
+            <li><a href="{% url 'emocao:nova_avaliacao' %}">Avaliar estádio</a></li>
+            <li><a href="#">Avaliar partida</a></li>
+            <li><a href="#">Galeria</a></li>
+            <li><a href="#">Agenda</a></li>
+            <li><a href="#">Assistir jogos</a></li>
+            <li><a href="#">Configurações</a></li>
+            <li><a href="#">Histórico</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
