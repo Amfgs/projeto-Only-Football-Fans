@@ -29,6 +29,7 @@ class Migration(migrations.Migration):
                 ('estadio', models.CharField(max_length=100)),
                 ('tipo_emocao', models.CharField(choices=[('alegria', 'Alegria'), ('raiva', 'Raiva'), ('tensao', 'Tensão'), ('euforia', 'Euforia'), ('tristeza', 'Tristeza'), ('surpresa', 'Surpresa')], max_length=20)),
                 ('intensidade', models.IntegerField()),
+                ('comentario', models.TextField(null=True)),
                 ('avaliacao_experiencia', models.IntegerField(choices=[(1, '★☆☆☆☆ - Ruim'), (2, '★★☆☆☆ - Fraca'), (3, '★★★☆☆ - Média'), (4, '★★★★☆ - Boa'), (5, '★★★★★ - Incrível')], default=3, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
                 ('comentario', models.TextField(blank=True, null=True)),
                 ('data_avaliacao', models.DateTimeField(auto_now_add=True)),
@@ -39,7 +40,7 @@ class Migration(migrations.Migration):
             name='AvaliacaoTorcida',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('comentario', models.TextField(blank=True, null=True)),
+                ('comentario_torcida', models.TextField(blank=True, null=True)),
                 ('emocao', models.PositiveSmallIntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])),
                 ('presenca', models.PositiveSmallIntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])),
                 ('data_criacao', models.DateTimeField(auto_now_add=True)),
