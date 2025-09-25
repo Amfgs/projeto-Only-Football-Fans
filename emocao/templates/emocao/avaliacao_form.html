@@ -1,0 +1,38 @@
+<form method="POST">
+    {% csrf_token %}
+
+    <textarea name="comentario" placeholder="Adicione os comentários..."></textarea><br>
+
+    <label>Emoção:</label><br>
+    {% for i in "12345" %}
+        <input type="radio" name="emocao" value="{{ i }}"> {{ i }} estrela(s)<br>
+    {% endfor %}
+
+    <label>Presença:</label><br>
+    {% for i in "12345" %}
+        <input type="radio" name="presenca" value="{{ i }}"> {{ i }} estrela(s)<br>
+    {% endfor %}
+
+    <button type="submit">Enviar</button>
+    
+</form>
+
+<h2>Avaliando: {{ time.nome }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <textarea name="comentario" placeholder="Adicione os comentários..."></textarea><br>
+
+    <label>Emoção:</label><br>
+    {% for i in "12345" %}
+        <input type="radio" name="emocao" value="{{ i }}"> {{ i }} estrela(s)<br>
+    {% endfor %}
+
+    <label>Presença:</label><br>
+    {% for i in "12345" %}
+        <input type="radio" name="presenca" value="{{ i }}"> {{ i }} estrela(s)<br>
+    {% endfor %}
+
+    <button type="submit">Enviar Avaliação</button>
+</form>
