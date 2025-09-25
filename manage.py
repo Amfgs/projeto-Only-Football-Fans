@@ -20,3 +20,29 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+'''def cadastro_view(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        email = request.POST["email"]
+        password1 = request.POST["password1"]
+        password2 = request.POST["password2"]
+        tipo_usuario = request.POST["tipo_usuario"] 
+
+        if password1 == password2:
+            if User.objects.filter(username=username).exists():
+                return render(request, "cadastro.html", {"erro": "Usuário já existe"})
+            else:
+                user = User.objects.create_user(username=username, email=email, password=password1)
+                user.save()
+                # Cria o perfil com o tipo de usuário
+                Perfil.objects.create(user=user, tipo_usuario=tipo_usuario)
+                # Adiciona mensagem de sucesso
+                from django.contrib import messages
+                messages.success(request, f"Conta criada com sucesso para {username}! Você já pode fazer login.")
+                return redirect("login")
+        else:
+            return render(request, "cadastro.html", {"erro": "As senhas não coincidem"})
+
+    return render(request, "cadastro.html")
+    '''
