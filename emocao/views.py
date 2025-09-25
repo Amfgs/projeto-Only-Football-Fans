@@ -54,7 +54,6 @@ def avaliacoes_carrossel(request):
     # Renderiza a página com o objeto de paginação
     return render(request, 'emocao/avaliacoes_carrossel.html', {'page_obj': page_obj}) # Recurso do Django para renderização
 
-
 def index(request):
     return HttpResponse("Página de emoções da partida!")
 
