@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="galeria-container">
+        <h2 class="titulo">Minha Galeria</h2>
+        
+        <div class="galeria-box">
+            <button class="jogo-btn">Jogo 1 <br> <span>fotos/vídeos</span></button>
+            <button class="jogo-btn">Jogo 2 <br> <span>fotos/vídeos</span></button>
+            <button class="jogo-btn">Jogo 3 <br> <span>fotos/vídeos</span></button>
+            <button class="add-btn">Adicionar mídia</button>
+        </div>
+    </div>
+
+    <style>
+        .galeria-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .titulo {
+            background-color: #d3d3d3;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .galeria-box {
+            background-color: #d3d3d3;
+            display: inline-block;
+            margin-top: 30px;
+            padding: 20px 40px;
+            border-radius: 8px;
+        }
+
+        .jogo-btn, .add-btn {
+            display: block;
+            width: 180px;
+            margin: 10px auto;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            background-color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .jogo-btn span {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .jogo-btn:hover, .add-btn:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+{% endblock %}
