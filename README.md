@@ -62,7 +62,20 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   [quadro jira](images/quadrojira1.png)
 </details>
 
-- ⏳ **Semana 2**  
+<details>
+  <summary>- ✅ Semana 2 </summary>
+  Link do deploy
+  [link deploy]()
+  
+  Screencast do deploy
+  [screencast Do Deploy]()
+  
+  Issue/Bug Tracker
+  [issue/bug tracker]()
+  
+  Quadro Jira
+  [quadro jira](https://photos.fife.usercontent.google.com/pw/AP1GczMizQ4R5SLEJuF_x59DS4xXF5UsUjMXsPgr7kcSDJ3tN9_nxtmZ-9z9=w2496-h1550-s-no-gm?authuser=0)
+</details>
 - ⏳ **Semana 3**  
 - ⏳ **Semana 4**  
 
