@@ -15,7 +15,7 @@ def lista_partidas(request):
 
 @login_required  # força login para avaliarem (opcional)
 
-def criar_partida(request):
+def registrar_partida(request):
     if request.method == "POST":
         time_casa = request.POST.get("time_casa")
         time_visitante = request.POST.get("time_visitante")
