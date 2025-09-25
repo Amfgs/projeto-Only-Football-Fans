@@ -64,6 +64,7 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 
 <details>
   <summary>- ✅ Semana 2 </summary>
+  
   Link do deploy
   [link deploy]()
   
