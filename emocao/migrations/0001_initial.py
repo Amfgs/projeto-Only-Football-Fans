@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AvaliacaoEstadio',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id_estadio', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('estadio', models.CharField(max_length=100)),
                 ('tipo_emocao', models.CharField(choices=[('alegria', 'Alegria'), ('raiva', 'Raiva'), ('tensao', 'Tensão'), ('euforia', 'Euforia'), ('tristeza', 'Tristeza'), ('surpresa', 'Surpresa')], max_length=20)),
                 ('intensidade', models.IntegerField()),
@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AvaliacaoTorcida',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id_torcida', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('comentario_torcida', models.TextField(blank=True, null=True)),
                 ('emocao', models.PositiveSmallIntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])),
                 ('presenca', models.PositiveSmallIntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])),
