@@ -1,0 +1,40 @@
+<h2>Criar Partida</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Time da Casa:</label>
+    <input type="text" name="time_casa" required><br>
+
+    <label>Time Visitante:</label>
+    <input type="text" name="time_visitante" required><br>
+
+    <label>Adversário:</label>
+    <input type="text" name="adversario" required><br>
+
+    <label>Data e Hora:</label>
+    <input type="datetime-local" name="data" required><br><br>
+
+    <button type="submit">Salvar Partida</button>
+</form>
+
+
+<h2>Avaliar Partida: {{ partida }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Nota (0 a 5):</label>
+    <input type="number" name="nota" min="0" max="5" required><br><br>
+
+    <label>Melhor Jogador:</label>
+    <input type="text" name="melhor_jogador" required><br><br>
+
+    <label>Pior Jogador:</label>
+    <input type="text" name="pior_jogador" required><br><br>
+
+    <label>Comentário:</label><br>
+    <textarea name="comentario" rows="3"></textarea><br><br>
+
+    <button type="submit">Enviar Avaliação</button>
+</form>
