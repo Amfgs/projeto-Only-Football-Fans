@@ -1,20 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Registrar Partida</h1>
+<div class="container mt-4">
+  <h2 class="mb-4">Registrar Partida</h2>
 
-<form method="post">
+  <form method="post" class="p-4 shadow rounded bg-light">
     {% csrf_token %}
-    
-    <label>Time Casa:</label>
-    <input type="text" name="time_casa" placeholder="Digite o nome do time casa">
 
-    <label>Time Visitante:</label>
-    <input type="text" name="time_visitante" placeholder="Digite o nome do time visitante">
+    <div class="mb-3">
+      <label for="time_casa" class="form-label">Time da Casa:</label>
+      <select name="time_casa" id="time_casa" class="form-select" required>
+        {% for time in times %}
+          <option value="{{ time.id }}">{{ time.nome }}</option>
+        {% endfor %}
+      </select>
+    </div>
 
-    <label>Data:</label>
-    <input type="date" name="data">
+    <div class="mb-3">
+      <label for="time_visitante" class="form-label">Time Visitante:</label>
+      <select name="time_visitante" id="time_visitante" class="form-select" required>
+        {% for time in times %}
+          <option value="{{ time.id }}">{{ time.nome }}</option>
+        {% endfor %}
+      </select>
+    </div>
 
-    <button type="submit">Registrar</button>
-</form>
+    <div class="mb-3">
+      <label for="data" class="form-label">Data e Hora:</label>
+      <input type="datetime-local" name="data" id="data" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrar</button>
+  </form>
+</div>
 {% endblock %}
