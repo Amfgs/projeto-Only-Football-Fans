@@ -49,7 +49,7 @@ class Partida(models.Model):
     def __str__(self):
         casa = self.time_casa if self.time_casa else None
         visitante = self.time_visitante if self.time_visitante else None
-        data_value = self.data.date() if self.data else ""
+        data_value = self.data.date() if self.data and hasattr(self.data, 'date') else ""
         if casa and visitante:
             return f"{casa} x {visitante} - {data_value}"
         elif self.adversario:
@@ -65,7 +65,7 @@ class Gol(models.Model):
     autor = models.ForeignKey(Jogador, on_delete=models.SET_NULL, null=True, blank=True)
     minuto = models.PositiveIntegerField(help_text="Minuto do gol", null=True, blank=True)
     def __str__(self):
-        autor_nome = self.autor.nome if self.autor is not None else "Autor desconhecido"
+        autor_nome = self.autor.nome if self.autor and hasattr(self.autor, 'nome') else "Autor desconhecido"
         minuto_text = f"{self.minuto}'" if self.minuto is not None else "minuto desconhecido"
         return f"Gol de {autor_nome} aos {minuto_text} - {self.partida}"
 
