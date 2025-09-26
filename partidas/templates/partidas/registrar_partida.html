@@ -5,19 +5,12 @@
 
 <form method="post">
     {% csrf_token %}
+    
     <label>Time Casa:</label>
-    <select name="time_casa">
-        {% for time in times %}
-            <option value="{{ time.id }}">{{ time.nome }}</option>
-        {% endfor %}
-    </select>
+    <input type="text" name="time_casa" placeholder="Digite o nome do time casa">
 
     <label>Time Visitante:</label>
-    <select name="time_visitante">
-        {% for time in times %}
-            <option value="{{ time.id }}">{{ time.nome }}</option>
-        {% endfor %}
-    </select>
+    <input type="text" name="time_visitante" placeholder="Digite o nome do time visitante">
 
     <label>Data:</label>
     <input type="date" name="data">
