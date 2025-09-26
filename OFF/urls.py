@@ -1,22 +1,24 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.shortcuts import redirect
 from django.contrib.auth import views as auth_views
 from usuarios import views as usuarios_views
 
-def home(request):
-    return redirect('login')
-
 urlpatterns = [
-    path('', home, name='home'),
-    path('', usuarios_views.home, name='home'),
-    path('login/', auth_views.LoginView.as_view(
-        template_name='usuarios/login.html'  # <-- apontando para o template do app usuarios
-    ), name='login'),
     path('admin/', admin.site.urls),
-    path('', lambda request: redirect('/emocao/')),  # redireciona para a página inicial do app emocao
-    path('emocao/', include('emocao.urls')),  # inclui as URLs do app emocao
-    path('partidas/', include('partidas.urls')),  # adiciona o app partidas
-    path('accounts/', include('usuarios.urls')),  # adiciona o app usuarios
-]
 
+    # Login
+    path('login/', auth_views.LoginView.as_view(
+        template_name='usuarios/login.html'
+    ), name='login'),
+
+    # Logout
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+
+    # Página inicial (home) após login
+    path('', usuarios_views.home, name='home'),
+
+    # Apps
+    path('emocao/', include('emocao.urls')),
+    path('partidas/', include('partidas.urls')),
+    path('accounts/', include('usuarios.urls')),  # se tiver URLs extras do app usuarios
+]

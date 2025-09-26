@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 User = get_user_model() 
   # garante que só usuários logados acessam
+@login_required
 def home(request):
     return render(request, 'base.html')
 

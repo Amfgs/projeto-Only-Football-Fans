@@ -2,10 +2,13 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+
+    <!-- mantém a página de destino -->
+    <input type="hidden" name="next" value="{{ next }}">
+
     <button type="submit">Entrar</button>
 </form>
 
-<!-- Botão/link para registro -->
 <p>Ainda não tem uma conta? 
     <a href="{% url 'register' %}">Cadastre-se aqui</a>
 </p>
