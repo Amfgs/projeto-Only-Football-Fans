@@ -1,8 +1,27 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
 {% block content %}
-<h2>Registrar Partida</h2>
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Salvar Partida</button>
+<h1>Registrar Partida</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Time Casa:</label>
+    <select name="time_casa">
+        {% for time in times %}
+            <option value="{{ time.id }}">{{ time.nome }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Time Visitante:</label>
+    <select name="time_visitante">
+        {% for time in times %}
+            <option value="{{ time.id }}">{{ time.nome }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Data:</label>
+    <input type="date" name="data">
+
+    <button type="submit">Registrar</button>
 </form>
 {% endblock %}

@@ -4,7 +4,7 @@ from . import views
 app_name = 'partidas'
 
 urlpatterns = [
-    path('', views.lista_partidas, name='lista_partidas'),
+    path('lista/', views.lista_partidas, name='lista_partidas'),
     path('registrar/', views.registrar_partida, name='registrar_partida'),
     path('avaliar/<int:partida_id>/', views.avaliar_partida, name='avaliar_partida'),
 ]

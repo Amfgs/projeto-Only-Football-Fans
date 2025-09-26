@@ -1,6 +1,6 @@
 # partidas/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Partida, Gol, AvaliacaoPartida
+from .models import Partida, Gol, AvaliacaoPartida, Time
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 
@@ -16,23 +16,23 @@ def lista_partidas(request):
 @login_required  # força login para avaliarem (opcional)
 
 def registrar_partida(request):
-    if request.method == "POST":
-        time_casa = request.POST.get("time_casa")
-        time_visitante = request.POST.get("time_visitante")
-        adversario = request.POST.get("adversario")
-        data = request.POST.get("data")  # virá no formato datetime-local (HTML5)
+    if request.method == 'POST':
+        # Pegando dados do POST
+        time_casa_id = request.POST.get('time_casa')
+        time_visitante_id = request.POST.get('time_visitante')
+        data = request.POST.get('data')
 
-        # cria a partida no banco
-        Partida.objects.create(
-            time_casa=time_casa,
-            time_visitante=time_visitante,
-            adversario=adversario,
+        # Criando a partida
+        partida = Partida.objects.create(
+            time_casa_id=time_casa_id,
+            time_visitante_id=time_visitante_id,
             data=data
         )
+        return redirect('partidas:lista_partidas')  # redireciona para a lista de partidas
 
-        return redirect("lista_partidas")  # ajuste para sua rota
-
-    return render(request, "partida_form.html")
+    # GET → renderiza o formulário
+    times = Time.objects.all()  # pega todos os times cadastrados
+    return render(request, 'partidas/registrar_partida.html', {'times': times})
 
 def avaliar_partida(request, partida_id):
     partida = get_object_or_404(Partida, id=partida_id)
