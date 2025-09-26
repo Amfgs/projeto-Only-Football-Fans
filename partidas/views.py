@@ -44,7 +44,7 @@ def avaliar_partida(request, partida_id):
         comentario = request.POST.get('comentario', '')
 
         AvaliacaoTorcida.objects.create(
-            time=partida.time_casa,  # ou o time que deseja avaliar
+            time=str(partida.time_casa),  # ou o time que deseja avaliar
             emocao=emocao,
             presenca=presenca,
             comentario=comentario
