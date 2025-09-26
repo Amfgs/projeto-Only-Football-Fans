@@ -39,17 +39,17 @@ class Jogador(models.Model):
 # Modelo: Partida
 # -----------------------
 class Partida(models.Model):
-    time_casa = models.ForeignKey(Time, on_delete=models.SET_NULL, null=True, blank=True, related_name='partidas_casa')
-    time_visitante = models.ForeignKey(Time, on_delete=models.SET_NULL, null=True, blank=True, related_name='partidas_visitante')
+    time_casa = models.CharField(max_length=100, blank=True, null=True, help_text="Nome do time da casa")
+    time_visitante = models.CharField(max_length=100, blank=True, null=True, help_text="Nome do time visitante")
     adversario = models.CharField(max_length=100, blank=True, help_text="Nome do adversário (opcional)")
     data = models.DateTimeField(default=timezone.now)
     registro_externo_id = models.IntegerField(null=True, blank=True, help_text="ID do registro oficial da partida")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        casa = self.time_casa.nome if self.time_casa is not None else None
-        visitante = self.time_visitante.nome if self.time_visitante is not None else None
-        data_value = self.data.date() if self.data is not None else ""
+        casa = self.time_casa if self.time_casa else None
+        visitante = self.time_visitante if self.time_visitante else None
+        data_value = self.data.date() if self.data else ""
         if casa and visitante:
             return f"{casa} x {visitante} - {data_value}"
         elif self.adversario:

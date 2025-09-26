@@ -12,23 +12,20 @@ def lista_partidas(request):
     partidas = Partida.objects.all().order_by('-data')
     return render(request, 'partidas/lista_partidas.html', {'partidas': partidas})
 
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Time, Partida
-
 @login_required
 def registrar_partida(request):
-    times = Time.objects.all()  # pega todos os times cadastrados
+    times = Time.objects.all()  # pega todos os times cadastrados (para sugestões no template)
 
     if request.method == 'POST':
-        time_casa_id = request.POST.get('time_casa')
-        time_visitante_id = request.POST.get('time_visitante')
+        # Recebe o nome digitado pelo usuário
+        time_casa_nome = request.POST.get('time_casa')
+        time_visitante_nome = request.POST.get('time_visitante')
         data = request.POST.get('data')
 
+        # Cria a partida usando os nomes digitados
         Partida.objects.create(
-            time_casa_id=time_casa_id,
-            time_visitante_id=time_visitante_id,
+            time_casa=time_casa_nome,
+            time_visitante=time_visitante_nome,
             data=data
         )
         return redirect('partidas:lista_partidas')  # redireciona para a lista de partidas
