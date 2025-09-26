@@ -20,7 +20,7 @@ class AvaliacaoEstadio(models.Model): # Classe criada; essa vai guardar no banco
         default = 3
     )
 
-    comentario = models.TextField(blank=True, null=True) # Cria um espaço de entrada de comentário opcional de avaliação da partida
+    comentario_estadio = models.TextField(blank=True, null=True) # Cria um espaço de entrada de comentário opcional de avaliação da partida
 
     data_avaliacao = models.DateTimeField(auto_now_add=True) # Adiciona a data de avaliação feita pelo usuário a esse estádio
 
@@ -48,7 +48,7 @@ class AvaliacaoTorcida(models.Model):
     # Campo de texto para o comentário do torcedor.
     # blank=True: Permite que o campo seja enviado vazio em um formulário.
     # null=True: Permite que o valor no banco de dados seja NULL (nenhum valor).
-    comentario = models.TextField(blank=True, null=True)
+    comentario_torcida = models.TextField(blank=True, null=True)
 
     # Campo para a nota de 'emoção' (1 a 5).
     # PositiveSmallIntegerField: Otimizado para números inteiros pequenos e não negativos.
