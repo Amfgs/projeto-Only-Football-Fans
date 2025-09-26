@@ -66,4 +66,4 @@ class AvaliacaoTorcida(models.Model):
     # Útil para visualização no painel de administração do Django, em logs ou no console.
     def __str__(self):
         # Retorna uma string formatada com informações úteis sobre a avaliação.
-        return f"Avaliação de {self.time.nome} - Emoção: {self.emocao}, Presença: {self.presenca}"
+        return f"Avaliação de {self.time} - Emoção: {self.emocao}, Presença: {self.presenca}"
