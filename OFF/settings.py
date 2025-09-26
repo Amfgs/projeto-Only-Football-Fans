@@ -130,3 +130,5 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_URL = "/midia/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "midia")
 AUTH_USER_MODEL = 'usuarios.User'
+
+LOGIN_REDIRECT_URL = 'home'

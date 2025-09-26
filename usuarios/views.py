@@ -2,9 +2,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, get_user_model
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 User = get_user_model() 
 
+@login_required  # garante que só usuários logados acessam
+def home(request):
+    return render(request, 'base.html')
 
 def register(request):
     """

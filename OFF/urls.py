@@ -2,12 +2,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
 from django.contrib.auth import views as auth_views
+from usuarios import views as usuarios_views
 
 def home(request):
     return redirect('login')
 
 urlpatterns = [
     path('', home, name='home'),
+    path('', usuarios_views.home, name='home'),
     path('login/', auth_views.LoginView.as_view(
         template_name='usuarios/login.html'  # <-- apontando para o template do app usuarios
     ), name='login'),
