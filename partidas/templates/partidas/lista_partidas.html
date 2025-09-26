@@ -1,14 +1,20 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
 {% block content %}
-<h2>Partidas</h2>
-<div>
-    {% for partida in partidas %}
-    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
-        <p>{{ partida.adversario }} - {{ partida.placar_time }} x {{ partida.placar_adversario }} - {{ partida.data|date:"d/m/Y H:i" }}</p>
-        <a href="{% url 'partidas:avaliar_partida' partida.id %}">Avaliar Partida</a>
-    </div>
-    {% empty %}
-        <p>Nenhuma partida registrada.</p>
-    {% endfor %}
-</div>
+<h1>Lista de Partidas</h1>
+
+{% if partidas %}
+    <ul>
+        {% for partida in partidas %}
+            <li>
+                <strong>{{ partida.time_casa.nome }} x {{ partida.time_visitante.nome }}</strong>
+                <!-- Link para avaliar esta partida -->
+                <a href="{% url 'partidas:avaliar_partida' partida.id %}">Avaliar partida</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Nenhuma partida cadastrada.</p>
+{% endif %}
+
 {% endblock %}
