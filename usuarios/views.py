@@ -5,8 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 User = get_user_model() 
-
-@login_required  # garante que só usuários logados acessam
+  # garante que só usuários logados acessam
 def home(request):
     return render(request, 'base.html')
 
