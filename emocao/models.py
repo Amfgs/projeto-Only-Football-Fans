@@ -43,7 +43,7 @@ class AvaliacaoTorcida(models.Model):
     # "Time": referência ao modelo Time criado acima.
     # on_delete=models.CASCADE: Garante que, se um time for deletado, todas as suas avaliações também serão.
     # related_name="avaliacoes": Permite acessar as avaliações de um time facilmente (ex: meu_time.avaliacoes.all()).
-    time = models.ForeignKey(Time, on_delete=models.CASCADE, related_name="avaliacoes")
+    time = models.CharField(max_length=100)
 
     # Campo de texto para o comentário do torcedor.
     # blank=True: Permite que o campo seja enviado vazio em um formulário.
