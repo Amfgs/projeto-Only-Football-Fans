@@ -40,3 +40,29 @@ def register(request):
 
     # Se não for POST ou houver erro, renderiza o template
     return render(request, 'usuarios/register.html')
+
+
+def user_login(request):
+    """
+    Login de usuários sem usar forms.
+    """
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '')
+
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, "Usuário ou senha incorretos.")
+
+    return render(request, 'usuarios/login.html')
+
+
+def user_logout(request):
+    """
+    Logout do usuário.
+    """
+    logout(request)
+    return redirect('login')
