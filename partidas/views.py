@@ -35,17 +35,16 @@ def registrar_partida(request):
 
 @login_required
 def avaliar_partida(request, partida_id):
-    partida = get_object_or_404(Partida, id=partida_id)  # pega a partida específica
+    partida = get_object_or_404(Partida, id=partida_id)
 
     if request.method == "POST":
-        # Aqui você processa a avaliação do usuário
-        # Por exemplo:
-        emocao = int(request.POST.get('emocao'))
-        presenca = int(request.POST.get('presenca'))
+        # pega os valores do POST com valores padrão
+        emocao = int(request.POST.get('emocao', 0))
+        presenca = int(request.POST.get('presenca', 0))
         comentario = request.POST.get('comentario', '')
 
         AvaliacaoTorcida.objects.create(
-            time=partida.time_casa,  # ou logicamente escolher o time que se quer avaliar
+            time=partida.time_casa,  # ou o time que deseja avaliar
             emocao=emocao,
             presenca=presenca,
             comentario=comentario
