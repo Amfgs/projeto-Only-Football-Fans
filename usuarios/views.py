@@ -1,26 +1,37 @@
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from .forms import CustomUserCreationForm
+from django.contrib.auth.models import User
+from django.contrib import messages
+
 
 def register(request):
     """
-    Função que lida com o cadastro de novos usuários.
+    Função que lida com o cadastro de novos usuários sem usar forms.
     """
     if request.method == 'POST':
-        # Se a requisição for POST (usuário enviou o formulário)
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            # Se os dados forem válidos, cria o usuário
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
+        # Pega os dados diretamente do POST
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '')
+        password2 = request.POST.get('password2', '')
+
+        # Valida campos obrigatórios
+        if not username or not email or not password or not password2:
+            messages.error(request, "Todos os campos são obrigatórios.")
+        elif password != password2:
+            messages.error(request, "As senhas não coincidem.")
+        elif User.objects.filter(username=username).exists():
+            messages.error(request, "Este nome de usuário já existe.")
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, "Este email já está cadastrado.")
+        else:
+            # Cria o usuário
+            user = User.objects.create_user(username=username, email=email, password=password)
             user.save()
-            # Loga o usuário e redireciona para a página inicial
+            # Loga o usuário automaticamente
             login(request, user)
-            return redirect('home')  # 'home' deve ser a URL da página inicial do seu projeto
-    else:
-        # Se a requisição for GET (primeiro acesso à página)
-        form = CustomUserCreationForm()
-    
-    # Renderiza o template de cadastro, passando o formulário para ele
-    return render(request, 'usuarios/register.html', {'form': form})
+            return redirect('home')  # Redireciona para a página inicial
+
+    # Se não for POST ou houver erro, renderiza o template
+    return render(request, 'usuarios/register.html')

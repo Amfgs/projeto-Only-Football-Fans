@@ -1,6 +1,26 @@
-<h1>Cadastro</h1>
+<h1>Registro</h1>
+
+{% if messages %}
+    {% for message in messages %}
+        <p style="color:red;">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Finalizar</button>
+    <label>Username:</label>
+    <input type="text" name="username" required><br>
+
+    <label>Email:</label>
+    <input type="email" name="email" required><br>
+
+    <label>Senha:</label>
+    <input type="password" name="password" required><br>
+
+    <label>Confirme a senha:</label>
+    <input type="password" name="password2" required><br>
+
+    <button type="submit">Criar conta</button>
 </form>
+
+<p>Já tem uma conta? <a href="{% url 'login' %}">Faça login aqui</a></p>
