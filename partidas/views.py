@@ -13,17 +13,20 @@ def lista_partidas(request):
     return render(request, 'partidas/lista_partidas.html', {'partidas': partidas})
 
 
-@login_required  # força login para avaliarem (opcional)
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Time, Partida
 
+@login_required
 def registrar_partida(request):
+    times = Time.objects.all()  # pega todos os times cadastrados
+
     if request.method == 'POST':
-        # Pegando dados do POST
         time_casa_id = request.POST.get('time_casa')
         time_visitante_id = request.POST.get('time_visitante')
         data = request.POST.get('data')
 
-        # Criando a partida
-        partida = Partida.objects.create(
+        Partida.objects.create(
             time_casa_id=time_casa_id,
             time_visitante_id=time_visitante_id,
             data=data
@@ -31,7 +34,6 @@ def registrar_partida(request):
         return redirect('partidas:lista_partidas')  # redireciona para a lista de partidas
 
     # GET → renderiza o formulário
-    times = Time.objects.all()  # pega todos os times cadastrados
     return render(request, 'partidas/registrar_partida.html', {'times': times})
 
 @login_required
