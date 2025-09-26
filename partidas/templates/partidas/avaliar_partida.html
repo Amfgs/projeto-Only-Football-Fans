@@ -1,9 +1,29 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
 {% block content %}
-<h2>Avaliar Partida: {{ partida.adversario }}</h2>
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Salvar Avaliação</button>
-    <button type="button" onclick="window.history.back()">X Fechar</button>
+<h1>Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <!-- Avaliação de 1 a 5 estrelas -->
+    <label>Partida (1 a 5 estrelas):</label>
+    <input type="number" name="avaliacao" min="1" max="5" required>
+
+    <!-- Campo de texto para gols da partida -->
+    <label>Gols da partida:</label>
+    <input type="text" name="gols" placeholder="Ex: 2x1" required>
+
+    <!-- Campo de texto para melhor em campo -->
+    <label>Melhor em campo:</label>
+    <input type="text" name="melhor_em_campo" placeholder="Nome do jogador" required>
+
+    <!-- Campo de texto para pior em campo -->
+    <label>Pior em campo:</label>
+    <input type="text" name="pior_em_campo" placeholder="Nome do jogador" required>
+
+    <!-- Botões -->
+    <button type="submit">Enviar Avaliação</button>
+    <a href="{% url 'home' %}"><button type="button">Voltar</button></a>
 </form>
 {% endblock %}

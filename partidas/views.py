@@ -1,8 +1,8 @@
 # partidas/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Partida, Gol, AvaliacaoPartida, Time
+from .models import Partida, Gol, Time
 from django.contrib.auth.decorators import login_required
-from django.db import transaction
+from emocao.models import AvaliacaoTorcida 
 
 def lista_partidas(request):
     """
@@ -34,26 +34,26 @@ def registrar_partida(request):
     times = Time.objects.all()  # pega todos os times cadastrados
     return render(request, 'partidas/registrar_partida.html', {'times': times})
 
+@login_required
 def avaliar_partida(request, partida_id):
-    partida = get_object_or_404(Partida, id=partida_id)
+    partida = get_object_or_404(Partida, id=partida_id)  # pega a partida específica
 
     if request.method == "POST":
-        nota = request.POST.get("nota")
-        melhor_jogador = request.POST.get("melhor_jogador")
-        pior_jogador = request.POST.get("pior_jogador")
-        comentario = request.POST.get("comentario")
+        # Aqui você processa a avaliação do usuário
+        # Por exemplo:
+        emocao = int(request.POST.get('emocao'))
+        presenca = int(request.POST.get('presenca'))
+        comentario = request.POST.get('comentario', '')
 
-        AvaliacaoPartida.objects.create(
-            partida=partida,   # associa a avaliação a essa partida
-            nota=nota,
-            melhor_jogador=melhor_jogador,
-            pior_jogador=pior_jogador,
+        AvaliacaoTorcida.objects.create(
+            time=partida.time_casa,  # ou logicamente escolher o time que se quer avaliar
+            emocao=emocao,
+            presenca=presenca,
             comentario=comentario
         )
+        return redirect('partidas:lista_partidas')
 
-        return redirect("detalhe_partida", partida_id=partida.id)  # ajuste conforme sua rota
-
-    return render(request, "avaliacao_partida_form.html", {"partida": partida})
+    return render(request, 'partidas/avaliar_partida.html', {'partida': partida})
 
 def registrar_gols(request, partida_id):
     partida = get_object_or_404(Partida, id=partida_id)

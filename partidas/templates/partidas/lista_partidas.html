@@ -5,16 +5,14 @@
 
 {% if partidas %}
     <ul>
-        {% for partida in partidas %}
-            <li>
-                <strong>{{ partida.time_casa.nome }} x {{ partida.time_visitante.nome }}</strong>
-                <!-- Link para avaliar esta partida -->
-                <a href="{% url 'partidas:avaliar_partida' partida.id %}">Avaliar partida</a>
-            </li>
-        {% endfor %}
+    {% for partida in partidas %}
+        <li>
+            {{ partida.time_casa }} x {{ partida.time_visitante }} - {{ partida.data }}
+            <a href="{% url 'partidas:avaliar_partida' partida.id %}">Avaliar</a>
+        </li>
+    {% endfor %}
     </ul>
 {% else %}
-    <p>Nenhuma partida cadastrada.</p>
+    <p>Não há partidas registradas.</p>
 {% endif %}
-
 {% endblock %}
