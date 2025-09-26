@@ -1,7 +1,7 @@
 <form method="POST">
     {% csrf_token %}
 
-    <textarea name="comentario" placeholder="Adicione os comentários..."></textarea><br>
+    <textarea name="comentario_estadio" placeholder="Adicione os comentários..."></textarea><br>
 
     <label>Emoção:</label><br>
     {% for i in "12345" %}
@@ -22,7 +22,7 @@
 <form method="POST">
     {% csrf_token %}
 
-    <textarea name="comentario" placeholder="Adicione os comentários..."></textarea><br>
+    <textarea name="comentario_torcida" placeholder="Adicione os comentários..."></textarea><br>
 
     <label>Emoção:</label><br>
     {% for i in "12345" %}

@@ -12,11 +12,11 @@ class AvaliacaoEstadioForm(forms.ModelForm): # Cria um modelo de formulário bas
     class Meta: # Cria uma classe baseada nos Metadados da classe de 'AvaliacaoEstadio'
 
         model = AvaliacaoEstadio # Define a qual classe o modelo será gerado
-        fields = ['estadio', 'avaliacao_experiencia', 'comentario'] # Define os campos que irão compor o formulário
+        fields = ['estadio', 'avaliacao_experiencia', 'comentario_estadio'] # Define os campos que irão compor o formulário
 
         widgets = {
             'avaliacao_experiencia': forms.RadioSelect(choices=AvaliacaoEstadio._meta.get_field('avaliacao_experiencia').choices), # Botões de rádio no formulário.
-            'comentario': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Escreva seu comentário...'}), # àrea de texto com três linhas e um imperativo de comando
+            'comentario_estadio': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Escreva seu comentário...'}), # àrea de texto com três linhas e um imperativo de comando
         }
 
 @login_required # Garante que o usuário esteja logado, caso não, o mesmo será redirecionado para a página de login
