@@ -81,7 +81,7 @@ class AvaliacaoPartida(models.Model):
     )
     melhor_jogador = models.ForeignKey(Jogador, on_delete=models.SET_NULL, null=True, blank=True, related_name='melhor_em_avaliacoes')
     pior_jogador = models.ForeignKey(Jogador, on_delete=models.SET_NULL, null=True, blank=True, related_name='pior_em_avaliacoes')
-    comentario = models.TextField(blank=True, null=True)
+    comentario_avaliacao = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         usuario_text = self.usuario.username if self.usuario and hasattr(self.usuario, 'username') else "Anônimo"
