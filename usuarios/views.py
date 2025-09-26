@@ -1,6 +1,6 @@
 
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, get_user_model
+from django.contrib.auth import login, get_user_model, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
