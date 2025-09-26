@@ -1,29 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h1>
+<div class="container mt-4">
+    <h2 class="mb-4">Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
 
-<form method="post">
-    {% csrf_token %}
+    <form method="post" class="p-4 shadow rounded bg-light">
+        {% csrf_token %}
 
-    <!-- Avaliação de 1 a 5 estrelas -->
-    <label>Partida (1 a 5 estrelas):</label>
-    <input type="number" name="avaliacao" min="1" max="5" required>
+        <!-- Emoção da torcida -->
+        <div class="mb-3">
+            <label for="emocao" class="form-label">Emoção da torcida (1 a 5):</label>
+            <input type="number" class="form-control" id="emocao" name="emocao" min="1" max="5" required>
+        </div>
 
-    <!-- Campo de texto para gols da partida -->
-    <label>Gols da partida:</label>
-    <input type="text" name="gols" placeholder="Ex: 2x1" required>
+        <!-- Presença da torcida -->
+        <div class="mb-3">
+            <label for="presenca" class="form-label">Presença da torcida (1 a 5):</label>
+            <input type="number" class="form-control" id="presenca" name="presenca" min="1" max="5" required>
+        </div>
 
-    <!-- Campo de texto para melhor em campo -->
-    <label>Melhor em campo:</label>
-    <input type="text" name="melhor_em_campo" placeholder="Nome do jogador" required>
+        <!-- Comentário -->
+        <div class="mb-3">
+            <label for="comentario" class="form-label">Comentário:</label>
+            <textarea class="form-control" id="comentario" name="comentario" rows="4" placeholder="Escreva seu comentário"></textarea>
+        </div>
 
-    <!-- Campo de texto para pior em campo -->
-    <label>Pior em campo:</label>
-    <input type="text" name="pior_em_campo" placeholder="Nome do jogador" required>
-
-    <!-- Botões -->
-    <button type="submit">Enviar Avaliação</button>
-    <a href="{% url 'home' %}"><button type="button">Voltar</button></a>
-</form>
+        <!-- Botões -->
+        <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
+        <a href="{% url 'partidas:lista_partidas' %}" class="btn btn-secondary ms-2">Voltar</a>
+    </form>
+</div>
 {% endblock %}
+
