@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Minha Galeria</h2>
+
+    <div class="d-flex flex-column align-items-start gap-3">
+
+        {% for partida in partidas %}
+            <div class="card p-3 w-100">
+                <h5>{{ partida }}</h5>  {# Já usa o __str__ da Partida #}
+
+                <!-- Botões para os jogos -->
+                <div class="d-flex flex-column gap-2 mt-2">
+                    <button class="btn btn-outline-primary">
+                        Jogo 1 <br><span>fotos/vídeos</span>
+                    </button>
+                    <button class="btn btn-outline-primary">
+                        Jogo 2 <br><span>fotos/vídeos</span>
+                    </button>
+                    <button class="btn btn-outline-primary">
+                        Jogo 3 <br><span>fotos/vídeos</span>
+                    </button>
+
+                    <!-- Botão de adicionar mídia -->
+                    <a href="{% url 'midia:adicionar_midia' partida.id %}" class="btn btn-success mt-2">
+                        Adicionar mídia
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <p>Nenhuma partida registrada.</p>
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock %}

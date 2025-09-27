@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Adicionar mídia - Partida {{ definicao.id }}</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Imagem -->
+        <div class="mb-3">
+            <label for="imagem" class="form-label">Selecionar imagem:</label>
+            <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*">
+        </div>
+
+        <!-- Vídeo -->
+        <div class="mb-3">
+            <label for="video" class="form-label">Selecionar vídeo:</label>
+            <input type="file" class="form-control" id="video" name="video" accept="video/*">
+        </div>
+
+        <!-- Áudio -->
+        <div class="mb-3">
+            <label for="audio" class="form-label">Selecionar áudio:</label>
+            <input type="file" class="form-control" id="audio" name="audio" accept="audio/*">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enviar</button>
+        <a href="{% url 'midia:galeria' %}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -7,22 +7,28 @@
     <form method="post" class="p-4 shadow rounded bg-light">
         {% csrf_token %}
 
-        <!-- Emoção da torcida -->
+        <!-- Nota da partida -->
         <div class="mb-3">
-            <label for="emocao" class="form-label">Emoção da torcida (1 a 5):</label>
-            <input type="number" class="form-control" id="emocao" name="emocao" min="1" max="5" required>
+            <label for="nota" class="form-label">Nota da partida (0 a 5):</label>
+            <input type="number" class="form-control" id="nota" name="nota" min="0" max="5" required>
         </div>
 
-        <!-- Presença da torcida -->
+        <!-- Melhor jogador -->
         <div class="mb-3">
-            <label for="presenca" class="form-label">Presença da torcida (1 a 5):</label>
-            <input type="number" class="form-control" id="presenca" name="presenca" min="1" max="5" required>
+            <label for="melhor_jogador" class="form-label">Melhor jogador:</label>
+            <input type="text" class="form-control" id="melhor_jogador" name="melhor_jogador" placeholder="Digite o nome do melhor jogador">
+        </div>
+
+        <!-- Pior jogador -->
+        <div class="mb-3">
+            <label for="pior_jogador" class="form-label">Pior jogador:</label>
+            <input type="text" class="form-control" id="pior_jogador" name="pior_jogador" placeholder="Digite o nome do pior jogador">
         </div>
 
         <!-- Comentário -->
         <div class="mb-3">
-            <label for="comentario" class="form-label">Comentário:</label>
-            <textarea class="form-control" id="comentario" name="comentario" rows="4" placeholder="Escreva seu comentário"></textarea>
+            <label for="comentario_avaliacao" class="form-label">Comentário:</label>
+            <textarea class="form-control" id="comentario_avaliacao" name="comentario_avaliacao" rows="4" placeholder="Escreva seu comentário"></textarea>
         </div>
 
         <!-- Botões -->
@@ -31,4 +37,3 @@
     </form>
 </div>
 {% endblock %}
-

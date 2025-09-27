@@ -21,4 +21,5 @@ urlpatterns = [
     path('emocao/', include('emocao.urls')),
     path('partidas/', include('partidas.urls')),
     path('accounts/', include('usuarios.urls')),  # se tiver URLs extras do app usuarios
+    path('midia/', include('midia.urls')),
 ]

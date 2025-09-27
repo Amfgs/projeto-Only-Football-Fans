@@ -1,8 +1,8 @@
 # partidas/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Partida, Gol, Time
+from .models import Partida, Gol, Time, Jogador
 from django.contrib.auth.decorators import login_required
-from emocao.models import AvaliacaoTorcida 
+from partidas.models import AvaliacaoPartida
 
 def lista_partidas(request):
     """
@@ -38,17 +38,24 @@ def avaliar_partida(request, partida_id):
     partida = get_object_or_404(Partida, id=partida_id)
 
     if request.method == "POST":
-        # pega os valores do POST com valores padrão
-        emocao = int(request.POST.get('emocao', 0))
-        presenca = int(request.POST.get('presenca', 0))
-        comentario = request.POST.get('comentario', '')
+        nota = int(request.POST.get('nota', 0))
+        melhor_nome = request.POST.get('melhor_jogador', '').strip()
+        pior_nome = request.POST.get('pior_jogador', '').strip()
+        comentario = request.POST.get('comentario_avaliacao', '')
 
-        AvaliacaoTorcida.objects.create(
-            time=str(partida.time_casa),  # ou o time que deseja avaliar
-            emocao=emocao,
-            presenca=presenca,
-            comentario=comentario
+        # Cria ou pega os jogadores pelo nome
+        melhor_jogador = Jogador.objects.get_or_create(nome=melhor_nome)[0] if melhor_nome else None
+        pior_jogador = Jogador.objects.get_or_create(nome=pior_nome)[0] if pior_nome else None
+
+        AvaliacaoPartida.objects.create(
+            partida=partida,
+            usuario=request.user if request.user.is_authenticated else None,
+            nota=nota,
+            melhor_jogador=melhor_jogador,
+            pior_jogador=pior_jogador,
+            comentario_avaliacao=comentario
         )
+
         return redirect('partidas:lista_partidas')
 
     return render(request, 'partidas/avaliar_partida.html', {'partida': partida})
