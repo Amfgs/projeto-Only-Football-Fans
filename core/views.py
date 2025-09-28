@@ -7,20 +7,28 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth import login, get_user_model, logout, authenticate
 
+@login_required
 # Create your views here.
 #Início de emocao
-class AvaliacaoEstadioForm(forms.ModelForm): # Cria um modelo de formulário baseado na estrutura do modelo de 'AvaliacaoEstadio'
-    class Meta: # Cria uma classe baseada nos Metadados da classe de 'AvaliacaoEstadio'
+def nova_avaliacao(request):
+    if request.method == "POST":
+        # Pega os valores enviados pelo formulário
+        estadio_nome = request.POST.get("estadio")
+        avaliacao = request.POST.get("avaliacao")
+        comentario = request.POST.get("comentario")
 
-        model = AvaliacaoEstadio # Define a qual classe o modelo será gerado
-        fields = ['estadio', 'avaliacao_experiencia', 'comentario_estadio'] # Define os campos que irão compor o formulário
+        # Cria a avaliação no banco
+        AvaliacaoEstadio.objects.create(
+            estadio=estadio_nome,           # se campo CharField
+            avaliacao_experiencia=avaliacao,
+            comentario_estadio=comentario
+        )
 
-        widgets = {
-            'avaliacao_experiencia': forms.RadioSelect(choices=AvaliacaoEstadio._meta.get_field('avaliacao_experiencia').choices), # Botões de rádio no formulário.
-            'comentario_estadio': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Escreva seu comentário...'}), # àrea de texto com três linhas e um imperativo de comando
-        }
+        # Redireciona para alguma página, ex: página inicial
+        return redirect("core:home")
 
-@login_required # Garante que o usuário esteja logado, caso não, o mesmo será redirecionado para a página de login
+    # Se for GET, apenas renderiza o template
+    return render(request, "core/nova_avaliacao.html")
 
 def nova_avaliacao(request): # Define a requisição da página por uma nova atualização
 
@@ -39,7 +47,6 @@ def nova_avaliacao(request): # Define a requisição da página por uma nova atu
         form = AvaliacaoEstadioForm() # Carrega o formulário de avaliação de estádio
         return render(request, 'emocao/nova_avaliacao.html', {'form': form}) # Renderiza a página de nova avaliação
     
-@login_required
 def avaliacoes_carrossel(request):
     # Número da página atual (via GET), padrão é 1
     page_number = request.GET.get('page', 1)
@@ -159,7 +166,6 @@ def lista_partidas(request):
     partidas = Partida.objects.all().order_by('-data')
     return render(request, 'partidas/lista_partidas.html', {'partidas': partidas})
 
-@login_required
 def registrar_partida(request):
     times = Time.objects.all()  # pega todos os times cadastrados (para sugestões no template)
 
@@ -180,7 +186,6 @@ def registrar_partida(request):
     # GET → renderiza o formulário
     return render(request, 'partidas/registrar_partida.html', {'times': times})
 
-@login_required
 def avaliar_partida(request, partida_id):
     partida = get_object_or_404(Partida, id=partida_id)
 
@@ -233,7 +238,6 @@ def registrar_gols(request, partida_id):
 
 User = get_user_model() 
   # garante que só usuários logados acessam
-@login_required
 def home(request):
     return render(request, 'base.html')
 

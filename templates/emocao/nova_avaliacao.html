@@ -1,31 +1,22 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<h2>Only Football Fans</h2>
+<h2>Avaliar Estádio</h2>
 
-<form method="POST">
+<form method="post">
     {% csrf_token %}
+    
+    <label>Estádio:</label><br>
+    <input type="text" name="estadio" placeholder="Digite o nome do estádio" required><br><br>
 
-    <div class="form-group">
-        <label for="estadio">Nome do estádio:</label>
-        <input type="text" name="estadio" id="estadio" placeholder="Digite o nome do estádio" required>
-    </div>
+    <label>Experiência:</label><br>
+    {% for i in "12345" %}
+        <input type="radio" name="avaliacao_experiencia" value="{{ i }}"> {{ i }} estrela(s)<br>
+    {% endfor %}
+    <br>
 
-    <div class="form-group">
-        <label>Experiência:</label><br>
-        {% for i in "12345" %}
-            <input type="radio" name="avaliacao_experiencia" value="{{ i }}" id="experiencia{{ i }}" required>
-            <label for="experiencia{{ i }}">{{ i }} estrela(s)</label><br>
-        {% endfor %}
-    </div>
+    <label>Comentário:</label><br>
+    <textarea name="comentario_estadio" rows="3" placeholder="Escreva seu comentário..."></textarea><br><br>
 
-    <div class="form-group">
-        <label for="comentario">Comentário:</label>
-        <textarea name="comentario" id="comentario" placeholder="Adicione seus comentários" required></textarea>
-    </div>
-
-    <div class="form-actions">
-        <button type="submit">Finalizar</button>
-    </div>
+    <button type="submit">Enviar Avaliação</button>
 </form>
 {% endblock %}
