@@ -128,11 +128,7 @@ MEDIA_URL = "/midia/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "midia")
 AUTH_USER_MODEL = 'core.User'
 
-# Redireciona após login
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'core:login'
+LOGIN_REDIRECT_URL = 'core:home'   # Caso queira redirecionar após login
+LOGOUT_REDIRECT_URL = 'core:login'
 
-# Redireciona após logout
-LOGOUT_REDIRECT_URL = 'login'
-
-# URL da página de login obrigatória
-LOGIN_URL = 'login'

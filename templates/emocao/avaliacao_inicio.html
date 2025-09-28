@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
+
 {% block content %}
     <h2>Only Football Fans</h2>
 
     <div>
-        <button>Nova Avaliação</button>
+        <a href="{% url 'core:nova_avaliacao' %}">
+            <button type="button">Nova Avaliação</button>
+        </a>
     </div>
     <div>
-        <button>Avaliações Anteriores</button>
+        <a href="{% url 'core:resultado_avaliacoes' %}">
+            <button type="button">Avaliações Anteriores</button>
+        </a>
     </div>
 {% endblock %}

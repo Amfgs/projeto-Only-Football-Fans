@@ -8,7 +8,7 @@
 
         {% for partida in partidas %}
             <div class="card p-3 w-100">
-                <h5>{{ partida }}</h5>  {# Já usa o __str__ da Partida #}
+                <h5>{{ partida }}</h5>  {# Usa o __str__ da Partida #}
 
                 <!-- Botões para os jogos -->
                 <div class="d-flex flex-column gap-2 mt-2">
@@ -23,7 +23,7 @@
                     </button>
 
                     <!-- Botão de adicionar mídia -->
-                    <a href="{% url 'midia:adicionar_midia' partida.id %}" class="btn btn-success mt-2">
+                    <a href="{% url 'core:adicionar_midia' partida.id %}" class="btn btn-success mt-2">
                         Adicionar mídia
                     </a>
                 </div>

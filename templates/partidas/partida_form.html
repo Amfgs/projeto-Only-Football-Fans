@@ -1,40 +1,46 @@
-<h2>Criar Partida</h2>
+{% extends 'base.html' %}
 
+{% block content %}
+
+<h2>Criar Partida</h2>
 <form method="POST">
     {% csrf_token %}
 
-    <label>Time da Casa:</label>
-    <input type="text" name="time_casa" required><br>
+    <label for="time_casa">Time da Casa:</label>
+    <input type="text" id="time_casa" name="time_casa" required><br><br>
 
-    <label>Time Visitante:</label>
-    <input type="text" name="time_visitante" required><br>
+    <label for="time_visitante">Time Visitante:</label>
+    <input type="text" id="time_visitante" name="time_visitante" required><br><br>
 
-    <label>Adversário:</label>
-    <input type="text" name="adversario" required><br>
+    <label for="adversario">Adversário:</label>
+    <input type="text" id="adversario" name="adversario" required><br><br>
 
-    <label>Data e Hora:</label>
-    <input type="datetime-local" name="data" required><br><br>
+    <label for="data">Data e Hora:</label>
+    <input type="datetime-local" id="data" name="data" required><br><br>
 
     <button type="submit">Salvar Partida</button>
 </form>
 
-
-<h2>Avaliar Partida: {{ partida }}</h2>
+{% if partida %}
+<h2>Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
 
 <form method="POST">
     {% csrf_token %}
 
-    <label>Nota (0 a 5):</label>
-    <input type="number" name="nota" min="0" max="5" required><br><br>
+    <label for="nota">Nota da partida (0 a 5):</label>
+    <input type="number" id="nota" name="nota" min="0" max="5" required><br><br>
 
-    <label>Melhor Jogador:</label>
-    <input type="text" name="melhor_jogador" required><br><br>
+    <label for="melhor_jogador">Melhor Jogador:</label>
+    <input type="text" id="melhor_jogador" name="melhor_jogador" required><br><br>
 
-    <label>Pior Jogador:</label>
-    <input type="text" name="pior_jogador" required><br><br>
+    <label for="pior_jogador">Pior Jogador:</label>
+    <input type="text" id="pior_jogador" name="pior_jogador" required><br><br>
 
-    <label>Comentário:</label><br>
-    <textarea name="comentario" rows="3"></textarea><br><br>
+    <label for="comentario">Comentário:</label><br>
+    <textarea id="comentario" name="comentario" rows="3"></textarea><br><br>
 
     <button type="submit">Enviar Avaliação</button>
 </form>
+{% endif %}
+
+{% endblock %}

@@ -8,7 +8,7 @@
     {% for partida in partidas %}
         <li>
             {{ partida.time_casa }} x {{ partida.time_visitante }} - {{ partida.data }}
-            <a href="{% url 'partidas:avaliar_partida' partida.id %}">Avaliar</a>
+            <a href="{% url 'core:avaliar_partida' partida.id %}">Avaliar</a>
         </li>
     {% endfor %}
     </ul>

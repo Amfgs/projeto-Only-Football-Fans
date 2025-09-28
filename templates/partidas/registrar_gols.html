@@ -1,33 +1,39 @@
-<h2>Registrar gols da partida: {{ partida }}</h2>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Registrar gols da partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
 
 <form method="POST">
     {% csrf_token %}
 
     <div id="gols-container">
-        <div class="gol-item">
+        <div class="gol-item mb-2">
             <label>Autor:</label>
-            <input type="text" name="autor" required>
+            <input type="text" name="autor[]" required>
             <label>Minuto:</label>
-            <input type="number" name="minuto" min="0" required>
+            <input type="number" name="minuto[]" min="0" required>
         </div>
     </div>
 
     <button type="button" onclick="adicionarGol()">+ Adicionar gol</button><br><br>
 
-    <button type="submit">Salvar</button>
+    <button type="submit" class="btn btn-primary">Salvar</button>
 </form>
 
 <script>
 function adicionarGol() {
     const container = document.getElementById("gols-container");
     const novo = document.createElement("div");
-    novo.classList.add("gol-item");
+    novo.classList.add("gol-item", "mb-2");
     novo.innerHTML = `
         <label>Autor:</label>
-        <input type="text" name="autor" required>
+        <input type="text" name="autor[]" required>
         <label>Minuto:</label>
-        <input type="number" name="minuto" min="0" required>
+        <input type="number" name="minuto[]" min="0" required>
     `;
     container.appendChild(novo);
 }
 </script>
+
+{% endblock %}
