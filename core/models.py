@@ -78,15 +78,6 @@ class HistoricoPartida(models.Model):
         return f"{self.usuario} - Time {self.time_id} - Nota {self.nota}"
 
 # -----------------------
-# Modelo: Time (placeholder)
-# -----------------------
-class Time(models.Model):
-    nome = models.CharField(max_length=150)
-
-    def __str__(self):
-        return str(self.nome) if self.nome else "Time sem nome"
-
-# -----------------------
 # Modelo: Jogador
 # -----------------------
 class Jogador(models.Model):
