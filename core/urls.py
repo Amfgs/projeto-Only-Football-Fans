@@ -6,7 +6,7 @@ app_name = 'core'
 
 urlpatterns = [
     # Emoções
-path('emocao/', views.index, name='emocao_index'),
+path('emocao/', views.home, name='emocao_index'),
 path('emocao/avaliacao/nova/', views.nova_avaliacao, name='nova_avaliacao'),
 path('emocao/avaliar/<int:time_id>/', views.avaliar_time, name='avaliar_time'),
 path('emocao/resultado/', views.resultado_avaliacoes, name='resultado_avaliacoes'),
@@ -21,7 +21,7 @@ path('partidas/registrar/', views.registrar_partida, name='registrar_partida'),
 path('partidas/avaliar/<int:partida_id>/', views.avaliar_partida, name='avaliar_partida'),
 
 # Usuários
-path('register/', views.register, name='register'),
+path('register/', views.register_view, name='register'),
 path('login/', auth_views.LoginView.as_view(template_name='usuarios/login.html'), name='login'),
 path('', views.home, name='home'),
 ]

@@ -1,21 +1,38 @@
 {% extends 'base.html' %}
+
 {% block content %}
 <h2>Avaliar Estádio</h2>
 
-<form method="post">
-    {% csrf_token %}
-    
-    <label>Estádio:</label><br>
-    <input type="text" name="estadio" placeholder="Digite o nome do estádio" required><br><br>
-
-    <label>Experiência:</label><br>
-    {% for i in "12345" %}
-        <input type="radio" name="avaliacao_experiencia" value="{{ i }}"> {{ i }} estrela(s)<br>
+{% if messages %}
+  <ul>
+    {% for message in messages %}
+      <li style="color: red;">{{ message }}</li>
     {% endfor %}
-    <br>
+  </ul>
+{% endif %}
 
-    <label>Comentário:</label><br>
-    <textarea name="comentario_estadio" rows="3" placeholder="Escreva seu comentário..."></textarea><br><br>
+<form method="POST">
+    {% csrf_token %}
+
+    <!-- Estádio -->
+    <label for="estadio">Estádio:</label><br>
+    <input type="text" id="estadio" name="estadio" value="{{ request.POST.estadio }}" required><br><br>
+
+    <!-- Avaliação -->
+    <p>Avaliação da experiência:</p>
+    {% for i in "12345" %}
+        <label>
+            <input type="radio" name="avaliacao" value="{{ i }}"
+                {% if request.POST.avaliacao == i %}checked{% endif %}>
+            {{ i }}
+        </label>
+    {% endfor %}
+    <br><br>
+
+    <!-- Comentário -->
+    <label for="comentario">Comentário:</label><br>
+    <textarea id="comentario" name="comentario" rows="3" placeholder="Escreva seu comentário...">{{ request.POST.comentario }}</textarea>
+    <br><br>
 
     <button type="submit">Enviar Avaliação</button>
 </form>

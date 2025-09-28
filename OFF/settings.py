@@ -128,7 +128,12 @@ MEDIA_URL = "/midia/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "midia")
 AUTH_USER_MODEL = 'core.User'
 
-LOGIN_URL = 'core:login'
-LOGIN_REDIRECT_URL = 'core:home'   # Caso queira redirecionar após login
-LOGOUT_REDIRECT_URL = 'core:login'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'core:home'
+LOGOUT_REDIRECT_URL = 'core:home'
 
+ # Duração da sessão em segundos
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 dias
+
+# Se True, a sessão expira ao fechar o navegador
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
