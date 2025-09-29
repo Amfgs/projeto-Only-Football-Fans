@@ -64,6 +64,14 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 
 <details>
   <summary>- ✅ Semana 2 </summary>
+
+  Programação em Dupla / Relato
+  ![Print da Sessão de Programação em Dupla](images/programacao_dupla.png)
+  
+  BackLog Jira Atualizado
+  ![Print do BackLog Jira da Semana 2](images/backlog2.png) 
+  
+  ---
   
   Link do deploy
   [link deploy]()
