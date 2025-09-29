@@ -19,6 +19,14 @@
             <li><a href="#">Assistir jogos</a></li>
             <li><a href="#">Configurações</a></li>
             <li><a href="#">Histórico</a></li>
+            <li>
+    <form action="{% url 'core:logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" style="background:none;border:none;color:blue;cursor:pointer;">
+            Sair
+        </button>
+    </form>
+</li>
         </ul>
     </div>
 

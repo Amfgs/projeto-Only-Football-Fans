@@ -17,6 +17,7 @@ User = get_user_model()
 # USUÁRIOS: login, logout, registro
 # ----------------------------
 
+
 def register_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -24,21 +25,22 @@ def register_view(request):
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
 
-        # Validações
         if password != confirm_password:
-            return render(request, 'register.html', {'error': 'Senhas não coincidem'})
+            return render(request, 'usuarios/register.html', {'error': 'Senhas não coincidem'})
         if User.objects.filter(username=username).exists():
-            return render(request, 'register.html', {'error': 'Usuário já existe'})
+            return render(request, 'usuarios/register.html', {'error': 'Usuário já existe'})
         if User.objects.filter(email=email).exists():
-            return render(request, 'register.html', {'error': 'Email já cadastrado'})
+            return render(request, 'usuarios/register.html', {'error': 'Email já cadastrado'})
 
-        # Cria o usuário
-        User.objects.create_user(username=username, email=email, password=password)
+        # Cria o usuário corretamente
+        user = User.objects.create_user(username=username, email=email, password=password)
 
-        # Redireciona para login
-        return redirect('core:login')
+        # Faz login automático
+        login(request, user)
 
-    return render(request, 'register.html')
+        return redirect('core:home')
+
+    return render(request, 'usuarios/register.html')
 
 
 def user_login(request):
