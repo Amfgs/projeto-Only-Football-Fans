@@ -1,46 +1,101 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="content-container">
+    <h2>Criar Partida</h2>
 
-<h2>Criar Partida</h2>
-<form method="POST">
-    {% csrf_token %}
+    <form method="POST" class="form-card">
+        {% csrf_token %}
 
-    <label for="time_casa">Time da Casa:</label>
-    <input type="text" id="time_casa" name="time_casa" required><br><br>
+        <label for="time_casa">Time da Casa:</label>
+        <input type="text" id="time_casa" name="time_casa" required>
 
-    <label for="time_visitante">Time Visitante:</label>
-    <input type="text" id="time_visitante" name="time_visitante" required><br><br>
+        <label for="time_visitante">Time Visitante:</label>
+        <input type="text" id="time_visitante" name="time_visitante" required>
 
-    <label for="adversario">Adversário:</label>
-    <input type="text" id="adversario" name="adversario" required><br><br>
+        <label for="adversario">Adversário:</label>
+        <input type="text" id="adversario" name="adversario" required>
 
-    <label for="data">Data e Hora:</label>
-    <input type="datetime-local" id="data" name="data" required><br><br>
+        <label for="data">Data e Hora:</label>
+        <input type="datetime-local" id="data" name="data" required>
 
-    <button type="submit">Salvar Partida</button>
-</form>
+        <button type="submit" class="btn-submit">Salvar Partida</button>
+    </form>
 
-{% if partida %}
-<h2>Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
+    {% if partida %}
+    <h2 class="mt-4">Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
 
-<form method="POST">
-    {% csrf_token %}
+    <form method="POST" class="form-card">
+        {% csrf_token %}
 
-    <label for="nota">Nota da partida (0 a 5):</label>
-    <input type="number" id="nota" name="nota" min="0" max="5" required><br><br>
+        <label for="nota">Nota da partida (0 a 5):</label>
+        <input type="number" id="nota" name="nota" min="0" max="5" required>
 
-    <label for="melhor_jogador">Melhor Jogador:</label>
-    <input type="text" id="melhor_jogador" name="melhor_jogador" required><br><br>
+        <label for="melhor_jogador">Melhor Jogador:</label>
+        <input type="text" id="melhor_jogador" name="melhor_jogador" required>
 
-    <label for="pior_jogador">Pior Jogador:</label>
-    <input type="text" id="pior_jogador" name="pior_jogador" required><br><br>
+        <label for="pior_jogador">Pior Jogador:</label>
+        <input type="text" id="pior_jogador" name="pior_jogador" required>
 
-    <label for="comentario">Comentário:</label><br>
-    <textarea id="comentario" name="comentario" rows="3"></textarea><br><br>
+        <label for="comentario">Comentário:</label>
+        <textarea id="comentario" name="comentario" rows="3"></textarea>
 
-    <button type="submit">Enviar Avaliação</button>
-</form>
-{% endif %}
+        <button type="submit" class="btn-submit">Enviar Avaliação</button>
+    </form>
+    {% endif %}
+</div>
 
+<style>
+/* Container principal */
+.content-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Formulários */
+.form-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.form-card label {
+    font-weight: 500;
+}
+
+.form-card input,
+.form-card textarea {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btn-submit {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+</style>
 {% endblock %}

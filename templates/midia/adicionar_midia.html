@@ -1,32 +1,97 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2 class="mb-4">Adicionar mídia - Partida {{ definicao.id }}</h2>
+<div class="content-container">
+    <h2>Adicionar mídia - Partida {{ definicao.id }}</h2>
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" class="media-form">
         {% csrf_token %}
 
         <!-- Imagem -->
-        <div class="mb-3">
-            <label for="imagem" class="form-label">Selecionar imagem:</label>
-            <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*">
+        <div class="form-group">
+            <label for="imagem">Selecionar imagem:</label>
+            <input type="file" id="imagem" name="imagem" accept="image/*">
         </div>
 
         <!-- Vídeo -->
-        <div class="mb-3">
-            <label for="video" class="form-label">Selecionar vídeo:</label>
-            <input type="file" class="form-control" id="video" name="video" accept="video/*">
+        <div class="form-group">
+            <label for="video">Selecionar vídeo:</label>
+            <input type="file" id="video" name="video" accept="video/*">
         </div>
 
         <!-- Áudio -->
-        <div class="mb-3">
-            <label for="audio" class="form-label">Selecionar áudio:</label>
-            <input type="file" class="form-control" id="audio" name="audio" accept="audio/*">
+        <div class="form-group">
+            <label for="audio">Selecionar áudio:</label>
+            <input type="file" id="audio" name="audio" accept="audio/*">
         </div>
 
-        <button type="submit" class="btn btn-primary">Enviar</button>
-        <a href="{% url 'core:galeria' %}" class="btn btn-secondary ms-2">Cancelar</a>
+        <div class="form-buttons">
+            <button type="submit" class="btn-submit">Enviar</button>
+            <a href="{% url 'core:galeria' %}" class="btn-cancel">Cancelar</a>
+        </div>
     </form>
 </div>
+
+<style>
+/* Container principal */
+.content-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Formulário */
+.media-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="file"] {
+    padding: 5px;
+}
+
+/* Botões */
+.form-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-submit {
+    background-color: #2d2d2d;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #444;
+}
+
+.btn-cancel {
+    text-decoration: none;
+    color: #2d2d2d;
+    border: 1px solid #2d2d2d;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.btn-cancel:hover {
+    background-color: #eee;
+}
+</style>
 {% endblock %}

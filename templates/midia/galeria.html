@@ -1,37 +1,94 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2 class="mb-4">Minha Galeria</h2>
+<div class="content-container">
+    <h2>Minha Galeria</h2>
 
-    <div class="d-flex flex-column align-items-start gap-3">
+    {% if partidas %}
+        <div class="partidas-list">
+            {% for partida in partidas %}
+                <div class="card-partida">
+                    <h4>{{ partida }}</h4>  {# Usa o __str__ da Partida #}
 
-        {% for partida in partidas %}
-            <div class="card p-3 w-100">
-                <h5>{{ partida }}</h5>  {# Usa o __str__ da Partida #}
+                    <div class="partida-buttons">
+                        <button class="btn-game">Jogo 1 <br><span>fotos/vídeos</span></button>
+                        <button class="btn-game">Jogo 2 <br><span>fotos/vídeos</span></button>
+                        <button class="btn-game">Jogo 3 <br><span>fotos/vídeos</span></button>
 
-                <!-- Botões para os jogos -->
-                <div class="d-flex flex-column gap-2 mt-2">
-                    <button class="btn btn-outline-primary">
-                        Jogo 1 <br><span>fotos/vídeos</span>
-                    </button>
-                    <button class="btn btn-outline-primary">
-                        Jogo 2 <br><span>fotos/vídeos</span>
-                    </button>
-                    <button class="btn btn-outline-primary">
-                        Jogo 3 <br><span>fotos/vídeos</span>
-                    </button>
-
-                    <!-- Botão de adicionar mídia -->
-                    <a href="{% url 'core:adicionar_midia' partida.id %}" class="btn btn-success mt-2">
-                        Adicionar mídia
-                    </a>
+                        <a href="{% url 'core:adicionar_midia' partida.id %}" class="btn-add-media">
+                            Adicionar mídia
+                        </a>
+                    </div>
                 </div>
-            </div>
-        {% empty %}
-            <p>Nenhuma partida registrada.</p>
-        {% endfor %}
-
-    </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Nenhuma partida registrada.</p>
+    {% endif %}
 </div>
+
+<style>
+/* Container principal */
+.content-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Lista de partidas */
+.partidas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Card de cada partida */
+.card-partida {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Botões dentro de cada partida */
+.partida-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-game {
+    background-color: #2d2d2d;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-game span {
+    font-size: 0.8em;
+    display: block;
+}
+
+.btn-game:hover {
+    background-color: #444;
+}
+
+/* Botão adicionar mídia */
+.btn-add-media {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-add-media:hover {
+    background-color: #218838;
+}
+</style>
 {% endblock %}

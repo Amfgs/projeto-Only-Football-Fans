@@ -1,14 +1,98 @@
-<h1>Login</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - OFF</title>
+    <style>
+        /* Corpo da página */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    <!-- mantém a página de destino -->
-    <input type="hidden" name="next" value="{{ next }}">
+        /* Card do formulário */
+        .login-card {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
 
-    <button type="submit">Entrar</button>
-</form>
+        .login-card h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 24px;
+        }
 
-<p>Ainda não tem uma conta? 
-    <a href="{% url 'core:register' %}">Cadastre-se aqui</a>
-</p>
+        /* Inputs */
+        .login-card input[type="text"],
+        .login-card input[type="password"],
+        .login-card input[type="email"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        /* Botão */
+        .login-card button {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .login-card button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Link de cadastro */
+        .login-card p {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .login-card a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-card a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h1>Login</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <!-- mantém a página de destino -->
+            <input type="hidden" name="next" value="{{ next }}">
+
+            <button type="submit">Entrar</button>
+        </form>
+
+        <p>Ainda não tem uma conta? 
+            <a href="{% url 'core:register' %}">Cadastre-se aqui</a>
+        </p>
+    </div>
+</body>
+</html>

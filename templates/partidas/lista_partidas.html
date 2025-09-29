@@ -1,18 +1,65 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Lista de Partidas</h1>
+<div class="content-container">
+    <h2>Lista de Partidas</h2>
 
-{% if partidas %}
-    <ul>
-    {% for partida in partidas %}
-        <li>
-            {{ partida.time_casa }} x {{ partida.time_visitante }} - {{ partida.data }}
-            <a href="{% url 'core:avaliar_partida' partida.id %}">Avaliar</a>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>Não há partidas registradas.</p>
-{% endif %}
+    {% if partidas %}
+        <ul class="partidas-list">
+        {% for partida in partidas %}
+            <li class="partida-item">
+                <span>{{ partida.time_casa }} x {{ partida.time_visitante }} - {{ partida.data }}</span>
+                <a href="{% url 'core:avaliar_partida' partida.id %}" class="btn-avaliar">Avaliar</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Não há partidas registradas.</p>
+    {% endif %}
+</div>
+
+<style>
+/* Container principal */
+.content-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Lista de partidas */
+.partidas-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Item de partida */
+.partida-item {
+    background-color: #fff;
+    padding: 12px 15px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Botão de avaliar */
+.btn-avaliar {
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+.btn-avaliar:hover {
+    background-color: #0056b3;
+}
+</style>
 {% endblock %}

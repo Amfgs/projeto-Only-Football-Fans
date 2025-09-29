@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-  <h2 class="mb-4">Registrar Partida</h2>
+<div class="content-container">
+  <h2>Registrar Partida</h2>
 
-  <form method="post" class="p-4 shadow rounded bg-light">
+  <form method="post" class="form-card">
     {% csrf_token %}
 
-    <div class="mb-3">
-      <label for="time_casa" class="form-label">Time da Casa:</label>
+    <div class="form-group">
+      <label for="time_casa">Time da Casa:</label>
       <input list="times_casa" name="time_casa" id="time_casa" class="form-control" placeholder="Digite o nome do time" required>
       <datalist id="times_casa">
         {% for time in times %}
@@ -17,8 +17,8 @@
       </datalist>
     </div>
 
-    <div class="mb-3">
-      <label for="time_visitante" class="form-label">Time Visitante:</label>
+    <div class="form-group">
+      <label for="time_visitante">Time Visitante:</label>
       <input list="times_visitante" name="time_visitante" id="time_visitante" class="form-control" placeholder="Digite o nome do time" required>
       <datalist id="times_visitante">
         {% for time in times %}
@@ -27,12 +27,64 @@
       </datalist>
     </div>
 
-    <div class="mb-3">
-      <label for="data" class="form-label">Data e Hora:</label>
+    <div class="form-group">
+      <label for="data">Data e Hora:</label>
       <input type="datetime-local" name="data" id="data" class="form-control" required>
     </div>
 
-    <button type="submit" class="btn btn-primary">Registrar</button>
+    <button type="submit" class="btn-submit">Registrar</button>
   </form>
 </div>
+
+<style>
+/* Container principal */
+.content-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Formulário */
+.form-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Inputs e labels */
+.form-card label {
+    font-weight: 500;
+    margin-top: 6px;
+}
+
+.form-card input, .form-card datalist {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Botões */
+.btn-submit {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+</style>
 {% endblock %}

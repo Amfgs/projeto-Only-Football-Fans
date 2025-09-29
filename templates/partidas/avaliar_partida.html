@@ -1,39 +1,111 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2 class="mb-4">Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
+<div class="content-container">
+    <h2>Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
 
-    <form method="post" class="p-4 shadow rounded bg-light">
+    <form method="post" class="form-avaliacao">
         {% csrf_token %}
 
         <!-- Nota da partida -->
-        <div class="mb-3">
-            <label for="nota" class="form-label">Nota da partida (0 a 5):</label>
-            <input type="number" class="form-control" id="nota" name="nota" min="0" max="5" required>
+        <div class="form-group">
+            <label for="nota">Nota da partida (0 a 5):</label>
+            <input type="number" id="nota" name="nota" min="0" max="5" required>
         </div>
 
         <!-- Melhor jogador -->
-        <div class="mb-3">
-            <label for="melhor_jogador" class="form-label">Melhor jogador:</label>
-            <input type="text" class="form-control" id="melhor_jogador" name="melhor_jogador" placeholder="Digite o nome do melhor jogador">
+        <div class="form-group">
+            <label for="melhor_jogador">Melhor jogador:</label>
+            <input type="text" id="melhor_jogador" name="melhor_jogador" placeholder="Digite o nome do melhor jogador">
         </div>
 
         <!-- Pior jogador -->
-        <div class="mb-3">
-            <label for="pior_jogador" class="form-label">Pior jogador:</label>
-            <input type="text" class="form-control" id="pior_jogador" name="pior_jogador" placeholder="Digite o nome do pior jogador">
+        <div class="form-group">
+            <label for="pior_jogador">Pior jogador:</label>
+            <input type="text" id="pior_jogador" name="pior_jogador" placeholder="Digite o nome do pior jogador">
         </div>
 
         <!-- Comentário -->
-        <div class="mb-3">
-            <label for="comentario_avaliacao" class="form-label">Comentário:</label>
-            <textarea class="form-control" id="comentario_avaliacao" name="comentario_avaliacao" rows="4" placeholder="Escreva seu comentário"></textarea>
+        <div class="form-group">
+            <label for="comentario_avaliacao">Comentário:</label>
+            <textarea id="comentario_avaliacao" name="comentario_avaliacao" rows="4" placeholder="Escreva seu comentário"></textarea>
         </div>
 
         <!-- Botões -->
-        <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
-        <a href="{% url 'core:lista_partidas' %}" class="btn btn-secondary ms-2">Voltar</a>
+        <div class="form-buttons">
+            <button type="submit" class="btn-submit">Enviar Avaliação</button>
+            <a href="{% url 'core:lista_partidas' %}" class="btn-cancel">Voltar</a>
+        </div>
     </form>
 </div>
+
+<style>
+/* Container principal */
+.content-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Formulário de avaliação */
+.form-avaliacao {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Grupos de campos */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Inputs e textarea */
+.form-group input,
+.form-group textarea {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+/* Botões */
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-submit {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+</style>
 {% endblock %}
