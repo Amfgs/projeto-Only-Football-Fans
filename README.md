@@ -72,10 +72,10 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   [Print do BackLog Jira da Semana 2](images/backlog2.png) 
   
   Link do deploy
-  [link deploy] https://only-football-fans.azurewebsites.net/login/
+  https://only-football-fans.azurewebsites.net/login/
   
   Screencast do deploy
-  [screencast Do Deploy] https://youtu.be/qQXrqmGd0Qc?si=59rGLao9UOxthSZA
+  https://youtu.be/qQXrqmGd0Qc?si=59rGLao9UOxthSZA
   
   Issue/Bug Tracker
   [issue/bug tracker](images/bug_tracker1.png)
