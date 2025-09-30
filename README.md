@@ -51,7 +51,7 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 <details>
   <summary>- ✅ Semana 1 </summary>
   
-  [Screencast](https://youtu.be/Fxc6gBIscdQ)
+  [Screencast](https://youtu.be/sAhcepC54wo?si=YJVDuvhsIz8HFJP9)
   
   [Histórias](https://docs.google.com/document/d/1KJ7e-UgdJZPT6Hks4MEKToqq0ciq734pU-kY532tJzU/edit?usp=sharing )
   
