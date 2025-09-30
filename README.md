@@ -51,7 +51,7 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 <details>
   <summary>- ✅ Semana 1 </summary>
   
-  [Screencast](https://youtu.be/sAhcepC54wo?si=YJVDuvhsIz8HFJP9)
+  [Screencast](https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4)
   
   [Histórias](https://docs.google.com/document/d/1KJ7e-UgdJZPT6Hks4MEKToqq0ciq734pU-kY532tJzU/edit?usp=sharing )
   
@@ -75,7 +75,7 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   https://only-football-fans.azurewebsites.net/login/
   
   Screencast do deploy
-  https://youtu.be/qQXrqmGd0Qc?si=59rGLao9UOxthSZA
+  https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4
   
   Issue/Bug Tracker
   [issue/bug tracker](images/bug_tracker1.png)
