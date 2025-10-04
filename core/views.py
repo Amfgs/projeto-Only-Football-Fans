@@ -17,7 +17,6 @@ User = get_user_model()
 # USUÁRIOS: login, logout, registro
 # ----------------------------
 
-
 def register_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -195,6 +194,14 @@ def registrar_partida(request):
 def avaliar_partida(request, partida_id):
     partida = get_object_or_404(Partida, id=partida_id)
 
+    # ======== ADIÇÃO PARA MENSAGEM DE PARTIDA JÁ AVALIADA ========
+    if request.user.is_authenticated:
+        ja_avaliou = AvaliacaoPartida.objects.filter(partida=partida, usuario=request.user).exists()
+        if ja_avaliou:
+            messages.warning(request, "Você já avaliou esta partida!")
+            return redirect("core:lista_partidas")
+    # ===============================================================
+
     if request.method == "POST":
         nota = int(request.POST.get("nota", 0))
         melhor_nome = request.POST.get("melhor_jogador", "").strip()
@@ -212,6 +219,8 @@ def avaliar_partida(request, partida_id):
             pior_jogador=pior_jogador,
             comentario_avaliacao=comentario
         )
+
+        messages.success(request, "Avaliação registrada com sucesso!")
         return redirect("core:lista_partidas")
 
     return render(request, "partidas/avaliar_partida.html", {"partida": partida})

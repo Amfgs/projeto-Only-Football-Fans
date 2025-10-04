@@ -4,6 +4,15 @@
 <div class="content-container">
     <h2>Lista de Partidas</h2>
 
+    <!-- MESSAGES -->
+    {% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     {% if partidas %}
         <div class="partidas-grid">
         {% for partida in partidas %}
@@ -30,6 +39,19 @@
     max-width: 1000px;
     margin: 0 auto;
 }
+
+/* Mensagens do Django */
+.messages-container {
+    margin-bottom: 15px;
+}
+.message {
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+.message.success { background-color: #d4edda; color: #155724; }
+.message.warning { background-color: #fff3cd; color: #856404; }
 
 /* Grid de partidas */
 .partidas-grid {
