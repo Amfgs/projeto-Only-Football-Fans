@@ -5,14 +5,17 @@
     <h2>Lista de Partidas</h2>
 
     {% if partidas %}
-        <ul class="partidas-list">
+        <div class="partidas-grid">
         {% for partida in partidas %}
-            <li class="partida-item">
-                <span>{{ partida.time_casa }} x {{ partida.time_visitante }} - {{ partida.data }}</span>
+            <div class="partida-card">
+                <div class="partida-info">
+                    <h3>{{ partida.time_casa }} x {{ partida.time_visitante }}</h3>
+                    <p>{{ partida.data }}</p>
+                </div>
                 <a href="{% url 'core:avaliar_partida' partida.id %}" class="btn-avaliar">Avaliar</a>
-            </li>
+            </div>
         {% endfor %}
-        </ul>
+        </div>
     {% else %}
         <p>Não há partidas registradas.</p>
     {% endif %}
@@ -24,38 +27,55 @@
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
-/* Lista de partidas */
-.partidas-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* Grid de partidas */
+.partidas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
 }
 
-/* Item de partida */
-.partida-item {
+/* Card de partida */
+.partida-card {
     background-color: #fff;
-    padding: 12px 15px;
-    border-radius: 6px;
+    padding: 20px;
+    border-radius: 12px;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.partida-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+}
+
+.partida-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.1em;
+}
+
+.partida-info p {
+    margin: 0;
+    color: #555;
+    font-size: 0.9em;
 }
 
 /* Botão de avaliar */
 .btn-avaliar {
+    margin-top: 10px;
     background-color: #007bff;
     color: white;
     text-decoration: none;
-    padding: 6px 12px;
-    border-radius: 5px;
-    font-size: 0.9em;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.95em;
+    text-align: center;
 }
 
 .btn-avaliar:hover {
