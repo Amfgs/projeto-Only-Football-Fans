@@ -25,6 +25,12 @@
     {% if partida %}
     <h2 class="mt-4">Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
 
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
     <form method="POST" class="form-card">
         {% csrf_token %}
 
@@ -96,6 +102,13 @@
 
 .mt-4 {
     margin-top: 1.5rem;
+}
+
+.alert {
+    background-color: #ffdddd;
+    border-left: 6px solid #f44336;
+    padding: 10px;
+    margin-bottom: 15px;
 }
 </style>
 {% endblock %}

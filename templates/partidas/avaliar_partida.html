@@ -4,6 +4,12 @@
 <div class="content-container">
     <h2>Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
 
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
     <form method="post" class="form-avaliacao">
         {% csrf_token %}
 
@@ -106,6 +112,13 @@
 
 .btn-cancel:hover {
     background-color: #5a6268;
+}
+
+.alert {
+    background-color: #ffdddd;
+    border-left: 6px solid #f44336;
+    padding: 10px;
+    margin-bottom: 15px;
 }
 </style>
 {% endblock %}

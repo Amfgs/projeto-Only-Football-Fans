@@ -74,6 +74,61 @@
             padding: 80px 20px 20px;
             width: calc(100% - 200px);
         }
+
+        /* Modal popup */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -85,12 +140,12 @@
         <p><strong>Menu</strong></p>
         <ul>
             <li><a href="{% url 'core:nova_avaliacao' %}">Avaliar estádio</a></li>
-            <li><a href="{% url 'core:lista_partidas' %}">Avaliar partida</a></li>
+            <li><a href="#" onclick="abrirModal()">Avaliar Partida</a></li>
+            <li><a href="{% url 'core:lista_partidas' %}">Histórico</a></li>
             <li><a href="{% url 'core:galeria' %}">Galeria</a></li>
             <li><a href="{% url 'core:registrar_partida' %}">Agenda</a></li>
             <li><a href="#">Assistir jogos</a></li>
             <li><a href="#">Configurações</a></li>
-            <li><a href="#">Histórico</a></li>
             <li>
                 <form action="{% url 'core:logout' %}" method="post">
                     {% csrf_token %}
@@ -104,5 +159,45 @@
         {% block content %}
         {% endblock %}
     </div>
+
+    <!-- Modal Popup Avaliar Partida -->
+    <div id="avaliarModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Partidas Pendentes</h2>
+                <span class="close" onclick="fecharModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                {% for partida in partidas %}
+                    <div class="card">
+                        <span>{{ partida.time_casa }} x {{ partida.time_visitante }} - {{ partida.data }}</span>
+                        <a href="{% url 'core:avaliar_partida' partida.id %}">
+                            <button>Avaliar</button>
+                        </a>
+                    </div>
+                {% empty %}
+                    <p>Você já avaliou todas as partidas.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function abrirModal() {
+            document.getElementById("avaliarModal").style.display = "block";
+        }
+
+        function fecharModal() {
+            document.getElementById("avaliarModal").style.display = "none";
+        }
+
+        // Fecha modal ao clicar fora
+        window.onclick = function(event) {
+            var modal = document.getElementById("avaliarModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
