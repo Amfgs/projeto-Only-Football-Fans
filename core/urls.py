@@ -7,7 +7,7 @@ app_name = 'core'
 urlpatterns = [
     # Emoções
     path('emocao/', views.home, name='emocao_index'),
-    path('emocao/avaliacao/nova/', views.nova_avaliacao, name='nova_avaliacao'),
+    path('emocao/avaliacao/inicio/', views.avaliacao_inicio, name='avaliacao_inicio'),
     path('emocao/avaliar/<int:time_id>/', views.avaliar_time, name='avaliar_time'),
     path('emocao/resultado/', views.resultado_avaliacoes, name='resultado_avaliacoes'),
 
