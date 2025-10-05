@@ -77,6 +77,10 @@ def home(request):
 # EMOÇÕES
 # ----------------------------
 
+
+def avaliacao_inicio(request):
+    return render(request, 'emocao/avaliacao_inicio.html')
+
 def nova_avaliacao(request):
     if request.method == "POST":
         estadio_nome = request.POST.get("estadio")
