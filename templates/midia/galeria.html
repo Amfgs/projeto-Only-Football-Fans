@@ -10,6 +10,12 @@
                 <div class="card-partida">
                     <h4>{{ partida }}</h4>  {# Usa o __str__ da Partida #}
 
+                    <!-- Imagem de exemplo -->
+                    <img src="/static/images/exemplo.jpg" alt="Imagem do jogo {{ partida }}" style="max-width:100%; margin:10px 0;">
+
+                    <!-- Legenda curta -->
+                    <p class="descricao-partida">Resumo ou destaque da partida.</p>
+
                     <div class="partida-buttons">
                         <button class="btn-game">Jogo 1 <br><span>fotos/vídeos</span></button>
                         <button class="btn-game">Jogo 2 <br><span>fotos/vídeos</span></button>
@@ -89,6 +95,13 @@
 
 .btn-add-media:hover {
     background-color: #218838;
+}
+
+/* Legenda curta da partida */
+.descricao-partida {
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 5px;
 }
 </style>
 {% endblock %}
