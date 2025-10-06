@@ -205,3 +205,44 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# === Django: static/media gerados localmente ===
+static/
+static_root/
+staticfiles/
+media/
+media_root/
+
+# Arquivos de configuração/segredos locais (não commitar!)
+*.env
+*.env.*        # .env.dev, .env.local etc.
+.env.local
+secrets.json
+*.pem
+*.key
+
+# Logs de servidores/app
+*.log
+gunicorn*.log
+uwsgi*.log
+
+# Arquivos de SO / editores
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+
+# Virtualenvs locais (extra segurança caso use nomes diferentes)
+.venv*/
+venv*/
+env*/
+
+# Artefatos de build front-end (se usar bundler/Node no mesmo repo)
+# descomente se aplicável
+# node_modules/
+# build/
+# dist/
+# .parcel-cache/
+# .next/
+# next-env.d.ts
