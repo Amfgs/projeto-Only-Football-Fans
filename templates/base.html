@@ -160,45 +160,7 @@
         {% endblock %}
     </div>
 
-    <!-- Modal Popup Avaliar Partida -->
-    <div id="avaliarModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Partidas Pendentes</h2>
-                <span class="close" onclick="fecharModal()">&times;</span>
-            </div>
-            <div class="modal-body">
-                {% for partida in partidas %}
-                    <div class="card">
-                        <span>{{ partida.time_casa }} x {{ partida.time_visitante }} - {{ partida.data }}</span>
-                        <a href="{% url 'core:avaliar_partida' partida.id %}">
-                            <button>Avaliar</button>
-                        </a>
-                    </div>
-                {% empty %}
-                    <p>Você já avaliou todas as partidas.</p>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function abrirModal() {
-            document.getElementById("avaliarModal").style.display = "block";
-        }
-
-        function fecharModal() {
-            document.getElementById("avaliarModal").style.display = "none";
-        }
-
-        // Fecha modal ao clicar fora
-        window.onclick = function(event) {
-            var modal = document.getElementById("avaliarModal");
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
-</body>
-</html>
+    <!-- Pop-Up -->
+{% include 'partidas/popup_avaliar_partida.html' %}
+<a href="#" onclick="abrirModal()">Avaliar Partida</a>
 

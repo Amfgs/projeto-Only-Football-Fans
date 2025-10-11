@@ -1,89 +1,173 @@
-<div id="modalAvaliarPartida" class="modal">
+<!-- popup_avaliar_partida.html -->
+<div id="avaliarModal" class="modal">
     <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Partidas Pendentes de Avaliação</h2>
-        <div class="cards-container">
-            {% for partida in partidas %}
-            <div class="card">
-                <p><strong>{{ partida.time_casa }} x {{ partida.time_visitante }}</strong></p>
-                <p>{{ partida.data|date:"d/m/Y H:i" }}</p>
-                <a href="{% url 'core:avaliar_partida' partida.id %}" class="btn-avaliar">Avaliar</a>
-            </div>
-            {% empty %}
-            <p>Você já avaliou todas as partidas!</p>
-            {% endfor %}
+        <div class="modal-header">
+            <h2>Partidas Pendentes de Avaliação</h2>
+            <span class="close" onclick="fecharModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            {% if partidas %}
+                {% for partida in partidas %}
+                    {% if partida.id not in partidas_avaliadas %}
+                        <div class="card">
+                            <div class="card-info">
+                                <p class="times"><strong>{{ partida.time_casa }} x {{ partida.time_visitante }}</strong></p>
+                                <p class="data">{{ partida.data|date:"d/m/Y H:i" }}</p>
+                            </div>
+                            <a href="{% url 'core:avaliar_partida' partida.id %}" class="btn-avaliar">Avaliar</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% if partidas|length == partidas_avaliadas|length %}
+                    <p class="no-partidas">Você já avaliou todas as partidas!</p>
+                {% endif %}
+            {% else %}
+                <p class="no-partidas">Não há partidas cadastradas.</p>
+            {% endif %}
         </div>
     </div>
 </div>
 
 <style>
+/* Modal geral */
 .modal {
     display: none;
     position: fixed;
-    z-index: 20;
+    z-index: 100;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
+    overflow-y: auto;
+    background-color: rgba(0,0,0,0.6);
+    animation: fadeIn 0.3s ease-in-out;
 }
 
+/* Conteúdo do modal */
 .modal-content {
-    background-color: #f9f9f9;
-    margin: 10% auto;
-    padding: 20px;
-    border-radius: 8px;
-    width: 60%;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px 30px;
+    border-radius: 12px;
+    width: 70%;
+    max-width: 900px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    animation: slideUp 0.4s ease-in-out;
 }
 
-.cards-container {
+/* Header */
+.modal-header {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.modal-header h2 {
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.close {
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s ease;
+}
+
+.close:hover {
+    color: #ff4d4d;
+}
+
+/* Corpo do modal */
+.modal-body {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
     gap: 15px;
 }
 
+/* Card das partidas */
 .card {
     background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    flex: 1 1 45%;
+    padding: 15px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* Info dentro do card */
+.card-info .times {
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+    color: #222;
+}
+
+.card-info .data {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* Botão Avaliar */
 .btn-avaliar {
-    display: inline-block;
-    margin-top: 10px;
     background-color: #007bff;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 5px;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
     text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
 }
 
 .btn-avaliar:hover {
     background-color: #0056b3;
 }
 
-.close {
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+/* Mensagem de nenhuma partida */
+.no-partidas {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+    padding: 15px 0;
+    font-size: 1.1rem;
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes slideUp {
+    from {transform: translateY(20px); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
 }
 </style>
 
 <script>
-const modal = document.getElementById('modalAvaliarPartida');
-const span = document.querySelector('.close');
-
-// Abre modal via função, será chamada pelo botão da sidebar
 function abrirModal() {
-    modal.style.display = "block";
+    document.getElementById("avaliarModal").style.display = "block";
 }
 
-span.onclick = () => modal.style.display = "none";
-window.onclick = (event) => {
-    if (event.target == modal) modal.style.display = "none";
+function fecharModal() {
+    document.getElementById("avaliarModal").style.display = "none";
+}
+
+// Fecha modal ao clicar fora
+window.onclick = function(event) {
+    var modal = document.getElementById("avaliarModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 </script>
