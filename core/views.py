@@ -174,7 +174,9 @@ def adicionar_midia(request, partida_id):
 
 def lista_partidas(request):
     partidas = Partida.objects.all().order_by("-data")
-    return render(request, "partidas/lista_partidas.html", {"partidas": partidas})
+    avaliacoes = AvaliacaoPartida.objects.filter(usuario=request.user)
+    partidas_avaliadas = {a.partida_id for a in avaliacoes}
+    return render(request, "partidas/lista_partidas.html", {"partidas": partidas, "partidas_avaliadas": partidas_avaliadas})
 
 
 def registrar_partida(request):
@@ -228,6 +230,16 @@ def avaliar_partida(request, partida_id):
         return redirect("core:lista_partidas")
 
     return render(request, "partidas/avaliar_partida.html", {"partida": partida})
+
+def ver_avaliacao(request, partida_id):
+    partida = get_object_or_404(Partida, id=partida_id)
+    avaliacao = AvaliacaoPartida.objects.filter(partida=partida, usuario=request.user).first()
+
+    if not avaliacao:
+        messages.error(request, "Você ainda não avaliou esta partida.")
+        return redirect("core:lista_partidas")
+
+    return render(request, "partidas/ver_avaliacao.html", {"avaliacao": avaliacao, "partida": partida})
 
 
 def registrar_gols(request, partida_id):
