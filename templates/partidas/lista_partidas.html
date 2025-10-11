@@ -21,7 +21,11 @@
                     <h3>{{ partida.time_casa }} x {{ partida.time_visitante }}</h3>
                     <p>{{ partida.data }}</p>
                 </div>
-                <a href="{% url 'core:avaliar_partida' partida.id %}" class="btn-avaliar">Avaliar</a>
+                {% if partida.id in partidas_avaliadas %}
+                    <a href="{% url 'core:ver_avaliacao' partida.id %}" class="btn-avaliar btn-secondary">Ver avaliação</a>
+                {% else %}
+                    <a href="{% url 'core:avaliar_partida' partida.id %}" class="btn-avaliar">Avaliar</a>
+                {% endif %}
             </div>
         {% endfor %}
         </div>
@@ -102,6 +106,15 @@
 
 .btn-avaliar:hover {
     background-color: #0056b3;
+}
+
+/* Botão secundário (já avaliado) */
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
 }
 </style>
 {% endblock %}

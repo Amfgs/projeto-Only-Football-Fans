@@ -24,7 +24,7 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='usuarios/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='core:login'), name='logout'),
-
+    path('partidas/ver/<int:partida_id>/', views.ver_avaliacao, name='ver_avaliacao'),
 
     # Página inicial
     path('', views.home, name='home'),
