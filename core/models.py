@@ -8,7 +8,11 @@ from django.core.exceptions import ValidationError
 from PIL import Image as PilImage
 import os
 
-# Validação de tamanho máximo (Commit 1)
+# =======================
+# COMMIT 1 + COMMIT 2
+# Validação de tamanho máximo (5MB) + miniaturas automáticas
+# =======================
+
 def validar_tamanho_arquivo(arquivo):
     limite = 5 * 1024 * 1024  # 5 MB
     if arquivo.size > limite:
@@ -30,13 +34,13 @@ class Imagem(models.Model):
         on_delete=models.CASCADE,
         related_name="imagens"
     )
-    arquivo = models.ImageField(upload_to="imagens/", validators=[validar_tamanho_arquivo])  # Commit 1
-    thumbnail = models.ImageField(upload_to="imagens/thumbnails/", blank=True, null=True)   # Commit 2
+    arquivo = models.ImageField(upload_to="imagens/", validators=[validar_tamanho_arquivo])
+    thumbnail = models.ImageField(upload_to="imagens/thumbnails/", blank=True, null=True)
     criado_em = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
+        """Salva a imagem e gera miniatura automaticamente."""
         super().save(*args, **kwargs)
-        # Geração automática de miniatura (Commit 2)
         if self.arquivo:
             try:
                 caminho = self.arquivo.path
@@ -61,7 +65,7 @@ class Video(models.Model):
         on_delete=models.CASCADE,
         related_name="videos"
     )
-    arquivo = models.FileField(upload_to="videos/", validators=[validar_tamanho_arquivo])  # Commit 1
+    arquivo = models.FileField(upload_to="videos/", validators=[validar_tamanho_arquivo])
     criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -82,17 +86,14 @@ class Audio(models.Model):
 # Fim de Mídia
 
 # Início do app usuarios
-
 class User(AbstractUser):
+    """Classe pronta para extensão futura, sem campos extras por enquanto."""
     pass
-
 # Fim de usuario
 
-# Iniício dp app partidas
+# Início do app partidas
 User = get_user_model()
-# -----------------------
-# Modelo do outro integrante
-# -----------------------
+
 class HistoricoPartida(models.Model):
     usuario = models.CharField(max_length=200)
     time_id = models.IntegerField()
@@ -102,18 +103,14 @@ class HistoricoPartida(models.Model):
     def __str__(self):
         return f"{self.usuario} - Time {self.time_id} - Nota {self.nota}"
 
-# -----------------------
-# Modelo: Jogador
-# -----------------------
+
 class Jogador(models.Model):
     nome = models.CharField(max_length=100)
 
     def __str__(self):
         return str(self.nome) if self.nome else "Jogador sem nome"
 
-# -----------------------
-# Modelo: Partida
-# -----------------------
+
 class Partida(models.Model):
     time_casa = models.CharField(max_length=100, blank=True, null=True, help_text="Nome do time da casa")
     time_visitante = models.CharField(max_length=100, blank=True, null=True, help_text="Nome do time visitante")
@@ -133,21 +130,18 @@ class Partida(models.Model):
         else:
             return f"Partida em {data_value}"
 
-# -----------------------
-# Modelo: Gol
-# -----------------------
+
 class Gol(models.Model):
     partida = models.ForeignKey(Partida, on_delete=models.CASCADE, related_name='gols')
     autor = models.ForeignKey(Jogador, on_delete=models.SET_NULL, null=True, blank=True)
     minuto = models.PositiveIntegerField(help_text="Minuto do gol", null=True, blank=True)
+
     def __str__(self):
         autor_nome = self.autor.nome if self.autor and hasattr(self.autor, 'nome') else "Autor desconhecido"
         minuto_text = f"{self.minuto}'" if self.minuto is not None else "minuto desconhecido"
         return f"Gol de {autor_nome} aos {minuto_text} - {self.partida}"
 
-# -----------------------
-# Modelo: AvaliacaoPartida (SUA PARTE)
-# -----------------------
+
 class AvaliacaoPartida(models.Model):
     partida = models.ForeignKey(Partida, on_delete=models.CASCADE, related_name='avaliacoes')
     usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -159,13 +153,11 @@ class AvaliacaoPartida(models.Model):
     pior_jogador = models.ForeignKey(Jogador, on_delete=models.SET_NULL, null=True, blank=True, related_name='pior_em_avaliacoes')
     comentario_avaliacao = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         usuario_text = self.usuario.username if self.usuario and hasattr(self.usuario, 'username') else "Anônimo"
         return f"Avaliação ({self.nota}) por {usuario_text} - {self.partida}"
 
-# Fim de partidas
-
-# Início de emocao
 
 class AvaliacaoEstadio(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -180,7 +172,7 @@ class AvaliacaoEstadio(models.Model):
         ],
         validators=[MinValueValidator(1), MaxValueValidator(5)],
         blank=False,
-        default = 3
+        default=3
     )
     comentario_estadio = models.TextField(blank=True, null=True)
     data_avaliacao = models.DateTimeField(auto_now_add=True)
@@ -188,19 +180,26 @@ class AvaliacaoEstadio(models.Model):
     def __str__(self):
         return f"Usuário: {self.usuario.username} - Avaliação: {self.avaliacao_experiencia}"
 
-# ====== ADICIONADO MODELO MINIMO TIME ======
+
 class Time(models.Model):
     nome = models.CharField(max_length=100)
 
     def __str__(self):
         return self.nome
 
-# Define AvaliacaoTorcida
+
 class AvaliacaoTorcida(models.Model):
     time = models.CharField(max_length=100)
     comentario_torcida = models.TextField(blank=True, null=True)
     emocao = models.PositiveSmallIntegerField(choices=[(i, str(i)) for i in range(1, 6)])
     presenca = models.PositiveSmallIntegerField(choices=[(i, str(i)) for i in range(1, 6)])
     data_criacao = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return f"Avaliação de {self.time} - Emoção: {self.emocao}, Presença: {self.presenca}"
+
+
+# =======================
+# COMMIT 4
+# Commit vazio: adicionado comentários explicativos sem alterar a lógica
+# =======================
