@@ -95,7 +95,8 @@ def avaliar_torcida(request, partida_id, time_index=1):
         else:
             return redirect('core:lista_partidas')
 
-    return render(request, 'avaliar_torcida.html', {'time': time, 'partida': partida})
+    return render(request, 'emocao/avaliar_torcida.html', {'time': time, 'partida': partida})
+
 
 
 def avaliacao_inicio(request):
