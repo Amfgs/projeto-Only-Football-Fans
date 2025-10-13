@@ -47,3 +47,29 @@ class Audio(models.Model):
 
     def __str__(self):
         return f"Áudio da partida {self.definicao.id}"
+
+
+# -----------------------
+# Novo Modelo: LinkPartida (para a funcionalidade "Assistir jogos")
+# -----------------------
+class LinkPartida(models.Model):
+    # Foreign Key para o modelo Partida no app 'partidas'
+    # Usamos 'partidas.Partida' (string) para evitar problemas de dependência entre apps.
+    partida = models.ForeignKey(
+        'partidas.Partida', 
+        on_delete=models.CASCADE, 
+        related_name='links_assistir',
+        verbose_name="Partida Associada"
+    )
+    # Campo para o link do jogo (URL)
+    url_link = models.URLField(
+        max_length=300,
+        verbose_name="Link do Jogo"
+    )
+    # Campo para o nome do usuário que adicionou o link (pode ser o username logado)
+    usuario = models.CharField(max_length=200, default="Anônimo")
+    # Data de registro
+    data_registro = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Link de {self.partida} - {self.url_link}"

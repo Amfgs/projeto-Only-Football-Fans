@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Assistir Jogos e Adicionar Links</h1>
+<p>Adicione um link de vídeo ou veja os links já registrados para cada partida.</p>
+
+{% if partidas %}
+    {% for partida in partidas %}
+        <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+            
+            <h2>Assistir {{ partida }}</h2> 
+
+            {% if partida.links_assistir.all %}
+                <h4>Links Registrados:</h4>
+                <ul>
+                {% for link in partida.links_assistir.all %}
+                    <li>
+                        <a href="{{ link.url_link }}" target="_blank">
+                            {{ link.url_link }}
+                        </a> 
+                        <br>
+                        <small>Adicionado por: {{ link.usuario }}</small>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>Nenhum link de vídeo registrado.</p>
+            {% endif %}
+
+            <button id="btn-{{ partida.id }}" 
+                    onclick="document.getElementById('form-{{ partida.id }}').style.display='block'; 
+                             this.style.display='none';">
+                Adicionar Link (Clique para aparecer a área de link)
+            </button>
+
+            <div id="form-{{ partida.id }}" style="display: none; margin-top: 10px; padding-top: 10px;">
+                <form action="{% url 'midia:adicionar_midia' partida.id %}" method="post">
+                    {% csrf_token %}
+                    
+                    <p>
+                        <label for="link_{{ partida.id }}">Link do Vídeo ou Transmissão:</label>
+                        <input type="url" id="link_{{ partida.id }}" name="link_jogo" placeholder="Ex: https://youtube.com/link" required>
+                    </p>
+                    <button type="submit">Salvar Link</button>
+                </form>
+            </div>
+            
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Nenhuma partida registrada para adicionar links.</p>
+{% endif %}
+
+{% endblock content %}

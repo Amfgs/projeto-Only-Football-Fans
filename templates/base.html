@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>OFF</title>
-</head>
+    <meta charset="UTF-8">
+    <title>OFF</title>
+    </head>
 <body>
-    <div class="header">
-        <h1>Only Football Fans</h1>
-    </div>
+    <div class="header">
+        <h1>Only Football Fans</h1>
+        
+        <div class="auth-links" style="float: right; padding: 10px;">
+            {% if user.is_authenticated %}
+                Olá, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a> | 
+                <a href="{% url 'register' %}">Cadastro</a>
+            {% endif %}
+        </div>
+            </div>
 
-    <div class="sidebar">
-        <p><strong>Menu</strong></p>
-        <ul>
-            <li><a href="{% url 'emocao:nova_avaliacao' %}">Avaliar estádio</a></li>
-            <li><a href="{% url 'partidas:lista_partidas' %}">Avaliar partida</a></li>
-            <li><a href="{% url 'midia:galeria' %}">Galeria</a></li>
-            <li><a href="{% url 'partidas:registrar_partida' %}">Agenda</a></li>
-            <li><a href="#">Assistir jogos</a></li>
-            <li><a href="#">Configurações</a></li>
-            <li><a href="#">Histórico</a></li>
-        </ul>
-    </div>
+    <div class="sidebar">
+        <p><strong>Menu</strong></p>
+        <ul>
+            <li><a href="{% url 'emocao:nova_avaliacao' %}">Avaliar estádio</a></li>
+            <li><a href="{% url 'partidas:lista_partidas' %}">Avaliar partida</a></li>
+            <li><a href="{% url 'midia:galeria' %}">Galeria</a></li>
+            <li><a href="{% url 'partidas:registrar_partida' %}">Agenda</a></li>
+            
+                        <li><a href="{% url 'midia:lista_links_partidas' %}">Assistir jogos</a></li>
+            
+            <li><a href="#">Configurações</a></li>
+            <li><a href="#">Histórico</a></li>
+        </ul>
+    </div>
 
-    <div class="content">
-        {% block content %}
-        {% endblock %}
-    </div>
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 </html>
-
-<!--Side Bar (Base de algumas páginas)-->
