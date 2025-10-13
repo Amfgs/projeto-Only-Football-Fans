@@ -4,9 +4,11 @@ from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User, AbstractUser
-from django.core.exceptions import ValidationError  # Adicionado para validação de tamanho
+from django.core.exceptions import ValidationError
+from PIL import Image as PilImage
+import os
 
-# Função de validação de tamanho máximo (Commit 1)
+# Validação de tamanho máximo (Commit 1)
 def validar_tamanho_arquivo(arquivo):
     limite = 5 * 1024 * 1024  # 5 MB
     if arquivo.size > limite:
@@ -29,7 +31,25 @@ class Imagem(models.Model):
         related_name="imagens"
     )
     arquivo = models.ImageField(upload_to="imagens/", validators=[validar_tamanho_arquivo])  # Commit 1
+    thumbnail = models.ImageField(upload_to="imagens/thumbnails/", blank=True, null=True)   # Commit 2
     criado_em = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Geração automática de miniatura (Commit 2)
+        if self.arquivo:
+            try:
+                caminho = self.arquivo.path
+                img = PilImage.open(caminho)
+                img.thumbnail((300, 300))
+                thumb_dir = os.path.join(os.path.dirname(caminho), "thumbnails")
+                os.makedirs(thumb_dir, exist_ok=True)
+                thumb_path = os.path.join(thumb_dir, f"thumb_{os.path.basename(caminho)}")
+                img.save(thumb_path)
+                self.thumbnail.name = f"imagens/thumbnails/thumb_{os.path.basename(caminho)}"
+                super().save(update_fields=["thumbnail"])
+            except Exception as e:
+                print(f"Erro ao gerar miniatura: {e}")
 
     def __str__(self):
         return f"Imagem da partida {self.definicao.id}"
@@ -64,8 +84,6 @@ class Audio(models.Model):
 # Início do app usuarios
 
 class User(AbstractUser):
-    # A classe está vazia por enquanto, mas está pronta para receber novos campos,
-    # como 'time_torcido', se for necessário depois.
     pass
 
 # Fim de usuario
