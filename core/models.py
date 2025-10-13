@@ -4,6 +4,13 @@ from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User, AbstractUser
+from django.core.exceptions import ValidationError  # Adicionado para validação de tamanho
+
+# Função de validação de tamanho máximo (Commit 1)
+def validar_tamanho_arquivo(arquivo):
+    limite = 5 * 1024 * 1024  # 5 MB
+    if arquivo.size > limite:
+        raise ValidationError("O tamanho máximo permitido para o arquivo é 5 MB.")
 
 # Início de mídia
 class Definicao(models.Model):
@@ -19,9 +26,9 @@ class Imagem(models.Model):
     definicao = models.ForeignKey(
         Definicao,
         on_delete=models.CASCADE,
-        related_name="imagens"  # todo minusculo
+        related_name="imagens"
     )
-    arquivo = models.ImageField(upload_to="imagens/")
+    arquivo = models.ImageField(upload_to="imagens/", validators=[validar_tamanho_arquivo])  # Commit 1
     criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -32,9 +39,9 @@ class Video(models.Model):
     definicao = models.ForeignKey(
         Definicao,
         on_delete=models.CASCADE,
-        related_name="videos"  # todo minusculo
+        related_name="videos"
     )
-    arquivo = models.FileField(upload_to="videos/")
+    arquivo = models.FileField(upload_to="videos/", validators=[validar_tamanho_arquivo])  # Commit 1
     criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -45,7 +52,7 @@ class Audio(models.Model):
     definicao = models.ForeignKey(
         Definicao,
         on_delete=models.CASCADE,
-        related_name="audios"  # todo minusculo
+        related_name="audios"
     )
     arquivo = models.FileField(upload_to="audios/")
     criado_em = models.DateTimeField(auto_now_add=True)
@@ -142,42 +149,35 @@ class AvaliacaoPartida(models.Model):
 
 # Início de emocao
 
-class AvaliacaoEstadio(models.Model): # Classe criada; essa vai guardar no banco de dados as informações que o usuário inserir
-
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # Assume uma relação de 1:N, onde um único usuário pode fazer várias avaliações, e todas essas, pertencem a esse único usuário
-    estadio = models.CharField(max_length=100, blank=False) # Cria um campo de texto de no máximo 100 caracteres para o usuário inserir o nome do estário que deseja avaliar. 'blank=False' significa que o usuário necessariamente deve preencher esse campo e ele será automaticamente guardado no banco de dados
-
-    avaliacao_experiencia = models.IntegerField( # Define a forma de avaliacao da experiencia do usuário a partida
-        choices=[ # Determina as únicas cinco possibilidades de avaliação
+class AvaliacaoEstadio(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    estadio = models.CharField(max_length=100, blank=False)
+    avaliacao_experiencia = models.IntegerField(
+        choices=[
             (1, '★☆☆☆☆ - Ruim'),
             (2, '★★☆☆☆ - Fraca'),
             (3, '★★★☆☆ - Média'),
             (4, '★★★★☆ - Boa'),
             (5, '★★★★★ - Incrível'),
         ],
-        validators=[MinValueValidator(1), MaxValueValidator(5)], # Define o máximo de estrelas (5) e o mínimo (1)
-        blank=False, # Assume como um campo obrigatório
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        blank=False,
         default = 3
     )
+    comentario_estadio = models.TextField(blank=True, null=True)
+    data_avaliacao = models.DateTimeField(auto_now_add=True)
 
-    comentario_estadio = models.TextField(blank=True, null=True) # Cria um espaço de entrada de comentário opcional de avaliação da partida
-
-    data_avaliacao = models.DateTimeField(auto_now_add=True) # Adiciona a data de avaliação feita pelo usuário a esse estádio
-
-    def __str__(self): # Por padrão, mostra o nome do usuário que fez a avaliação e qual foi a sua avaliação
+    def __str__(self):
         return f"Usuário: {self.usuario.username} - Avaliação: {self.avaliacao_experiencia}"
 
-
 # ====== ADICIONADO MODELO MINIMO TIME ======
-class Time(models.Model): # Modelo mínimo para Time, necessário para rodar AvaliacaoTorcida
+class Time(models.Model):
     nome = models.CharField(max_length=100)
 
     def __str__(self):
         return self.nome
-# ==========================================
 
-
-# Define um novo modelo chamado 'AvaliacaoTorcida', que será mapeado para uma tabela no banco de dados.
+# Define AvaliacaoTorcida
 class AvaliacaoTorcida(models.Model):
     time = models.CharField(max_length=100)
     comentario_torcida = models.TextField(blank=True, null=True)
@@ -186,5 +186,3 @@ class AvaliacaoTorcida(models.Model):
     data_criacao = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"Avaliação de {self.time} - Emoção: {self.emocao}, Presença: {self.presenca}"
-
-# Fim de emocao
