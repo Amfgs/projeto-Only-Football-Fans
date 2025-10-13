@@ -45,6 +45,18 @@
     </form>
 </div>
 
+<!-- Botões -->
+<div class="form-buttons">
+    <button type="submit" class="btn-submit">Enviar Avaliação</button>
+    <a href="{% url 'core:lista_partidas' %}" class="btn-cancel">Voltar</a>
+
+    <!-- ✅ Novo botão -->
+    <a href="{% url 'core:avaliar_torcida' partida.id %}" class="btn-submit" style="background-color: #28a745;">
+        Avaliar Torcida
+    </a>
+</div>
+
+
 <style>
 /* Container principal */
 .content-container {

@@ -11,6 +11,9 @@ urlpatterns = [
     path('emocao/avaliar/<int:time_id>/', views.avaliar_time, name='avaliar_time'),
     path('emocao/resultado/', views.resultado_avaliacoes, name='resultado_avaliacoes'),
     path('emocao/nova-avaliacao/', views.nova_avaliacao, name='nova_avaliacao'),
+    path('partidas/avaliar_torcida/<int:partida_id>/', views.avaliar_torcida, name='avaliar_torcida'),
+    path('partidas/avaliar_torcida/<int:partida_id>/2/', lambda r, partida_id: views.avaliar_torcida(r, partida_id, time_index=2), name='avaliar_torcida_segundo'),
+
 
     # Mídia
     path('midia/galeria/', views.galeria, name='galeria'),

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content-container">
+    <h2>Avaliar Torcida - {{ time }}</h2>
+
+    <form method="post" class="form-avaliacao">
+        {% csrf_token %}
+
+        <!-- Nome do time (somente visual, já vem preenchido) -->
+        <div class="form-group">
+            <label>Time:</label>
+            <input type="text" value="{{ time }}" disabled>
+            <input type="hidden" name="time" value="{{ time }}">
+        </div>
+
+        <!-- Emoção -->
+        <div class="form-group">
+            <label for="emocao">Emoção da torcida (1 a 5):</label>
+            <input type="number" id="emocao" name="emocao" min="1" max="5" required>
+        </div>
+
+        <!-- Presença -->
+        <div class="form-group">
+            <label for="presenca">Presença da torcida (1 a 5):</label>
+            <input type="number" id="presenca" name="presenca" min="1" max="5" required>
+        </div>
+
+        <!-- Comentário -->
+        <div class="form-group">
+            <label for="comentario">Comentário:</label>
+            <textarea id="comentario" name="comentario" rows="4" placeholder="Escreva sua opinião sobre a torcida"></textarea>
+        </div>
+
+        <div class="form-buttons">
+            <button type="submit" class="btn-submit">Enviar Avaliação</button>
+            <a href="{% url 'core:lista_partidas' %}" class="btn-cancel">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<style>
+/* mesmo CSS do outro, ou puxado no base */
+</style>
+{% endblock %}

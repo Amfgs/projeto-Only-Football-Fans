@@ -77,6 +77,26 @@ def home(request):
 # EMOÇÕES
 # ----------------------------
 
+def avaliar_torcida(request, partida_id, time_index=1):
+    partida = get_object_or_404(Partida, id=partida_id)
+    time = partida.time_casa if time_index == 1 else partida.time_visitante
+
+    if request.method == 'POST':
+        AvaliacaoTorcida.objects.create(
+            time=request.POST.get('time'),
+            comentario_torcida=request.POST.get('comentario'),
+            emocao=request.POST.get('emocao'),
+            presenca=request.POST.get('presenca')
+        )
+
+        # Se avaliou o time 1, redireciona para avaliar o time 2
+        if time_index == 1:
+            return redirect('core:avaliar_torcida_segundo', partida_id=partida_id)
+        else:
+            return redirect('core:lista_partidas')
+
+    return render(request, 'avaliar_torcida.html', {'time': time, 'partida': partida})
+
 
 def avaliacao_inicio(request):
     return render(request, 'emocao/avaliacao_inicio.html')
