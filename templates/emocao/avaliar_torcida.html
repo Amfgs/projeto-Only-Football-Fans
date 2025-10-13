@@ -40,6 +40,72 @@
 </div>
 
 <style>
-/* mesmo CSS do outro, ou puxado no base */
+/* Container principal */
+.content-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Formulário */
+.form-avaliacao {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Grupos de campos */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Inputs e textarea */
+.form-group input,
+.form-group textarea {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+/* Botões */
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-submit {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #218838;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
 </style>
 {% endblock %}
