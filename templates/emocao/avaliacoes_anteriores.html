@@ -1,32 +1,327 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="avaliacao-container">
-    <h2>Minhas Avaliações</h2>
+<div class="avaliacoes-container">
+    <div class="avaliacoes-header">
+        <h2 class="avaliacoes-titulo">Minhas Avaliações</h2>
+        <p class="avaliacoes-subtitulo">Histórico das suas experiências em estádios</p>
+    </div>
 
     {% if page_obj %}
-        {% for avaliacao in page_obj %}
-            <div class="avaliacao-card">
-                <p><strong>Estádio:</strong> {{ avaliacao.estadio }}</p>
-                <p><strong>Nota:</strong> {{ avaliacao.avaliacao_experiencia }} estrelas</p>
-                <p><strong>Comentário:</strong> {{ avaliacao.comentario }}</p>
-                <p><em>Data:</em> {{ avaliacao.data_avaliacao }}</p>
-            </div>
-        {% endfor %}
+        <div class="avaliacoes-grid">
+            {% for avaliacao in page_obj %}
+                <div class="avaliacao-card">
+                    <div class="avaliacao-header">
+                        <h3 class="estadio-nome">{{ avaliacao.estadio }}</h3>
+                        <div class="rating-display">
+                            {% with ''|center:avaliacao.avaliacao_experiencia as range %}
+                            {% for i in range %}
+                                <span class="estrela">⭐</span>
+                            {% endfor %}
+                            {% endwith %}
+                            <span class="rating-numero">({{ avaliacao.avaliacao_experiencia }}/5)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="avaliacao-body">
+                        <p class="comentario">{{ avaliacao.comentario }}</p>
+                    </div>
+                    
+                    <div class="avaliacao-footer">
+                        <span class="data-avaliacao">📅 {{ avaliacao.data_avaliacao }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
         <div class="navegacao">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}">⬅️ Anterior</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="nav-botao nav-anterior">
+                    ⬅️ Anterior
+                </a>
             {% endif %}
 
-            <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+            <span class="pagina-atual">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+            </span>
 
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">Próxima ➡️</a>
+                <a href="?page={{ page_obj.next_page_number }}" class="nav-botao nav-proxima">
+                    Próxima ➡️
+                </a>
             {% endif %}
         </div>
     {% else %}
-        <p>Você ainda não fez nenhuma avaliação.</p>
+        <div class="sem-avaliacoes">
+            <div class="vazio-icon">📝</div>
+            <h3>Nenhuma avaliação encontrada</h3>
+            <p>Você ainda não fez nenhuma avaliação.</p>
+            <a href="{% url 'core:nova_avaliacao' %}" class="botao-primario">
+                Fazer Primeira Avaliação
+            </a>
+        </div>
     {% endif %}
 </div>
+
+<style>
+.avaliacoes-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    min-height: 80vh;
+}
+
+.avaliacoes-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.avaliacoes-titulo {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.avaliacoes-subtitulo {
+    color: #6c757d;
+    font-size: 1.2rem;
+}
+
+.avaliacoes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+.avaliacao-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border-left: 5px solid #007bff;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.avaliacao-card:nth-child(2) {
+    border-left-color: #28a745;
+    animation-delay: 0.1s;
+}
+
+.avaliacao-card:nth-child(3) {
+    border-left-color: #ffc107;
+    animation-delay: 0.2s;
+}
+
+.avaliacao-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.avaliacao-header {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #f1f3f4;
+    padding-bottom: 15px;
+}
+
+.estadio-nome {
+    color: #2c3e50;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.rating-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.estrela {
+    font-size: 1.2rem;
+}
+
+.rating-numero {
+    color: #6c757d;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.avaliacao-body {
+    margin-bottom: 20px;
+}
+
+.comentario {
+    color: #495057;
+    line-height: 1.6;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.avaliacao-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #f1f3f4;
+}
+
+.data-avaliacao {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.navegacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.nav-botao {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    text-align: center;
+}
+
+.nav-botao:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+    color: white;
+}
+
+.pagina-atual {
+    color: #2c3e50;
+    font-weight: 600;
+    padding: 10px 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.sem-avaliacoes {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.vazio-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.sem-avaliacoes h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.sem-avaliacoes p {
+    color: #6c757d;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+.botao-primario {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    text-decoration: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.botao-primario:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+    color: white;
+}
+
+/* Animações */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .avaliacoes-container {
+        padding: 30px 15px;
+    }
+    
+    .avaliacoes-titulo {
+        font-size: 2rem;
+    }
+    
+    .avaliacoes-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .avaliacao-card {
+        padding: 20px;
+    }
+    
+    .estadio-nome {
+        font-size: 1.3rem;
+    }
+    
+    .navegacao {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .nav-botao {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .avaliacoes-container {
+        padding: 20px 10px;
+    }
+    
+    .avaliacoes-titulo {
+        font-size: 1.8rem;
+    }
+    
+    .avaliacoes-subtitulo {
+        font-size: 1.1rem;
+    }
+    
+    .avaliacao-card {
+        padding: 15px;
+    }
+    
+    .vazio-icon {
+        font-size: 3rem;
+    }
+    
+    .sem-avaliacoes h3 {
+        font-size: 1.3rem;
+    }
+}
+</style>
 {% endblock %}
