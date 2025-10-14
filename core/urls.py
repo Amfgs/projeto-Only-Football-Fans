@@ -9,7 +9,7 @@ urlpatterns = [
     path('emocao/', views.home, name='emocao_index'),
     path('emocao/avaliacao/inicio/', views.avaliacao_inicio, name='avaliacao_inicio'),
     path('emocao/avaliar/<int:time_id>/', views.avaliar_time, name='avaliar_time'),
-    path('emocao/resultado/', views.resultado_avaliacoes, name='resultado_avaliacoes'),
+    path('emocao/resultado/', views.avaliacoes_anteriores, name='avaliacoes_anteriores'),
     path('emocao/nova-avaliacao/', views.nova_avaliacao, name='nova_avaliacao'),
     path('partidas/avaliar_torcida/<int:partida_id>/', views.avaliar_torcida, name='avaliar_torcida'),
     path('partidas/avaliar_torcida/<int:partida_id>/2/', lambda r, partida_id: views.avaliar_torcida(r, partida_id, time_index=2), name='avaliar_torcida_segundo'),

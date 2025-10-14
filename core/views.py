@@ -137,7 +137,7 @@ def nova_avaliacao(request):
 
 
 
-def avaliacoes_carrossel(request):
+def avaliacoes_anteriores(request):
     """Exibe avaliações do usuário em formato de carrossel"""
     page_number = request.GET.get('page', 1)
     avaliacoes = AvaliacaoEstadio.objects.filter(usuario=request.user).order_by('-data_avaliacao')
