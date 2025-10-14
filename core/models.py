@@ -178,7 +178,8 @@ class AvaliacaoEstadio(models.Model):
     data_avaliacao = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Usuário: {self.usuario.username} - Avaliação: {self.avaliacao_experiencia}"
+        nome = self.usuario.username if self.usuario else "Anônimo"
+        return f"{nome} - {self.avaliacao_experiencia} estrelas"
 
 
 class Time(models.Model):
