@@ -105,8 +105,21 @@ def avaliacao_inicio(request):
 def nova_avaliacao(request):
     if request.method == "POST":
         estadio_nome = request.POST.get("estadio")
-        avaliacao = request.POST.get("avaliacao")
+        avaliacao_raw = request.POST.get("avaliacao")
         comentario = request.POST.get("comentario")
+
+  # Validação mínima
+        if not estadio_nome or not avaliacao_raw:
+            return render(request, "emocao/nova_avaliacao.html", {
+                "erro": "Preencha todos os campos obrigatórios."
+            })
+
+        try:
+            avaliacao = int(avaliacao_raw)
+        except ValueError:
+            return render(request, "emocao/nova_avaliacao.html", {
+                "erro": "A avaliação deve ser um número entre 1 e 5."
+            })
 
         # Só associa o usuário se estiver logado
         usuario = request.user if request.user.is_authenticated else None
@@ -121,6 +134,7 @@ def nova_avaliacao(request):
         return render(request, "emocao/avaliacao_sucesso.html")
 
     return render(request, "emocao/nova_avaliacao.html")
+
 
 
 def avaliacoes_carrossel(request):
