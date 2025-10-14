@@ -143,7 +143,7 @@ def avaliacoes_anteriores(request):
     avaliacoes = AvaliacaoEstadio.objects.filter(usuario=request.user).order_by('-data_avaliacao')
     paginator = Paginator(avaliacoes, 1)
     page_obj = paginator.get_page(page_number)
-    return render(request, "emocao/avaliacoes_carrossel.html", {"page_obj": page_obj})
+    return render(request, "emocao/avaliacoes_anteriores.html", {"page_obj": page_obj})
 
 
 # Avaliações de torcida (POST direto, sem form)
