@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Avaliação enviada com sucesso! ✅</h2>
+  <p>Obrigado por compartilhar sua experiência com o estádio.</p>
+
+  <div style="margin-top: 20px;">
+    <a href="{% url 'core:avaliacao_inicio' %}">
+      <button type="button">Voltar ao Início</button>
+    </a>
+    <a href="{% url 'core:resultado_avaliacoes' %}">
+      <button type="button">Ver Avaliações</button>
+    </a>
+  </div>
+{% endblock %}
