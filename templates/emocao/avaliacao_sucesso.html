@@ -1,15 +1,174 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Avaliação enviada com sucesso! ✅</h2>
-  <p>Obrigado por compartilhar sua experiência com o estádio.</p>
+<div class="confirmacao-container">
+    <div class="confirmacao-card">
+        <div class="confirmacao-icon">✅</div>
+        <h2>Avaliação enviada com sucesso!</h2>
+        <p>Obrigado por compartilhar sua experiência com o estádio.</p>
+        
+        <div class="botoes-container">
+            <a href="{% url 'core:avaliacao_inicio' %}" class="botao botao-secundario">
+                Voltar ao Início
+            </a>
+            <a href="{% url 'core:avaliacoes_anteriores' %}" class="botao">
+                Ver Avaliações
+            </a>
+        </div>
+    </div>
+</div>
 
-  <div style="margin-top: 20px;">
-    <a href="{% url 'core:avaliacao_inicio' %}">
-      <button type="button">Voltar ao Início</button>
-    </a>
-    <a href="{% url 'core:avaliacoes_anteriores' %}">
-      <button type="button">Ver Avaliações</button>
-    </a>
-  </div>
+<style>
+.confirmacao-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.confirmacao-card {
+    background: white;
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.confirmacao-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: bounce 0.6s ease-out;
+}
+
+.confirmacao-card h2 {
+    color: #2ecc71;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.confirmacao-card p {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.botoes-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.botao {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    text-decoration: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    min-width: 140px;
+    text-align: center;
+}
+
+.botao-secundario {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+}
+
+.botao:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+    color: white;
+}
+
+.botao-secundario:hover {
+    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+}
+
+.botao:active {
+    transform: translateY(0);
+}
+
+/* Animações */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .confirmacao-container {
+        min-height: 70vh;
+        padding: 15px;
+    }
+    
+    .confirmacao-card {
+        padding: 40px 30px;
+    }
+    
+    .confirmacao-icon {
+        font-size: 3.5rem;
+    }
+    
+    .confirmacao-card h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .confirmacao-card {
+        padding: 30px 20px;
+    }
+    
+    .botoes-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .botao {
+        width: 100%;
+        max-width: 250px;
+    }
+    
+    .confirmacao-icon {
+        font-size: 3rem;
+    }
+    
+    .confirmacao-card h2 {
+        font-size: 1.3rem;
+    }
+    
+    .confirmacao-card p {
+        font-size: 1rem;
+    }
+}
+</style>
 {% endblock %}
