@@ -208,10 +208,11 @@ def adicionar_midia(request, partida_id):
 # ----------------------------
 
 def lista_partidas(request):
-    partidas = Partida.objects.all().order_by("-data")
+    partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
     avaliacoes = AvaliacaoPartida.objects.filter(usuario=request.user)
     partidas_avaliadas = {a.partida_id for a in avaliacoes}
     return render(request, "partidas/lista_partidas.html", {"partidas": partidas, "partidas_avaliadas": partidas_avaliadas})
+
 
 
 def registrar_partida(request):
@@ -222,11 +223,14 @@ def registrar_partida(request):
         time_visitante_nome = request.POST.get("time_visitante")
         data = request.POST.get("data")
 
-        Partida.objects.create(
+        if request.user.is_authenticated:
+            Partida.objects.create(
+            usuario=request.user,  # <== associando a partida ao usuário logado
             time_casa=time_casa_nome,
             time_visitante=time_visitante_nome,
             data=data
-        )
+            )
+
         return redirect("core:lista_partidas")
 
     return render(request, "partidas/registrar_partida.html", {"times": times})

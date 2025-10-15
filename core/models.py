@@ -112,6 +112,7 @@ class Jogador(models.Model):
 
 
 class Partida(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='partidas')
     time_casa = models.CharField(max_length=100, blank=True, null=True, help_text="Nome do time da casa")
     time_visitante = models.CharField(max_length=100, blank=True, null=True, help_text="Nome do time visitante")
     adversario = models.CharField(max_length=100, blank=True, help_text="Nome do adversário (opcional)")
@@ -129,6 +130,7 @@ class Partida(models.Model):
             return f"{self.adversario} - {data_value}"
         else:
             return f"Partida em {data_value}"
+
 
 
 class Gol(models.Model):
