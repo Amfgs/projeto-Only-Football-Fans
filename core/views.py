@@ -254,15 +254,18 @@ def registrar_partida(request):
 
         if request.user.is_authenticated:
             Partida.objects.create(
-            usuario=request.user,  # <== associando a partida ao usuário logado
-            time_casa=time_casa_nome,
-            time_visitante=time_visitante_nome,
-            data=data
+                usuario=request.user, 
+                time_casa=time_casa_nome,
+                time_visitante=time_visitante_nome,
+                data=data
             )
 
         return redirect("core:lista_partidas")
 
-    return render(request, "partidas/registrar_partida.html", {"times": times})
+    context = {"times": times}
+    context.update(get_partidas_context(request))
+
+    return render(request, "partidas/registrar_partida.html", context)
 
 
 def avaliar_partida(request, partida_id):
