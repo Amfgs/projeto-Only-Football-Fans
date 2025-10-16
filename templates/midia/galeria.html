@@ -1,113 +1,203 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+    {# Mantemos o link para a fonte do Google Fonts, pois o estilo depende dela #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
-<div class="content-container">
-    <h2>Minha Galeria</h2>
+<section class="gallery-container">
+    <h2 class="gallery-title">Minha Galeria</h2>
 
     {% if partidas %}
-        <div class="partidas-list">
+        <div class="partidas-grid">
             {% for partida in partidas %}
-                <div class="card-partida">
-                    <h4>{{ partida }}</h4>  {# Usa o __str__ da Partida #}
+                <article class="partida-card">
+                    <div class="partida-card__header">
+                        <h3 class="partida-card__title">{{ partida }}</h3>
+                        <p class="partida-card__description">Resumo ou destaque da partida.</p>
+                    </div>
 
-                    <!-- Imagem de exemplo -->
-                    <img src="/static/images/exemplo.jpg" alt="Imagem do jogo {{ partida }}" style="max-width:100%; margin:10px 0;">
+                    <img class="partida-card__image" src="{% static 'images/exemplo.jpg' %}" alt="Imagem do jogo {{ partida }}">
 
-                    <!-- Legenda curta -->
-                    <p class="descricao-partida">Resumo ou destaque da partida.</p>
-
-                    <div class="partida-buttons">
-                        <button class="btn-game">Jogo 1 <br><span>fotos/vídeos</span></button>
-                        <button class="btn-game">Jogo 2 <br><span>fotos/vídeos</span></button>
-                        <button class="btn-game">Jogo 3 <br><span>fotos/vídeos</span></button>
+                    <div class="partida-card__actions">
+                        <div class="partida-card__game-buttons">
+                            <button class="btn-game">Jogo 1 <br><span>fotos/vídeos</span></button>
+                            <button class="btn-game">Jogo 2 <br><span>fotos/vídeos</span></button>
+                            <button class="btn-game">Jogo 3 <br><span>fotos/vídeos</span></button>
+                        </div>
 
                         <a href="{% url 'core:adicionar_midia' partida.id %}" class="btn-add-media">
                             Adicionar mídia
                         </a>
                     </div>
-                </div>
+                </article>
             {% endfor %}
         </div>
     {% else %}
-        <p>Nenhuma partida registrada.</p>
+        <p class="no-partidas-message">Nenhuma partida registrada.</p>
     {% endif %}
-</div>
+</section>
 
 <style>
-/* Container principal */
-.content-container {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 800px;
-    margin: 0 auto;
-}
+    /* --- Variáveis de Cor e Estilos Globais --- */
+    :root {
+        --primary-bg: #f4f7f9;
+        --card-bg: #ffffff;
+        --text-primary: #1d2d35;
+        --text-secondary: #657786;
+        --button-dark: #222831;
+        --button-dark-hover: #393e46;
+        --button-green: #00adb5;
+        --button-green-hover: #00939a;
+        --border-color: #e1e8ed;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+    }
 
-/* Lista de partidas */
-.partidas-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+    /* --- Container Principal --- */
+    .gallery-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Poppins', sans-serif;
+    }
 
-/* Card de cada partida */
-.card-partida {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+    .gallery-title {
+        text-align: center;
+        color: var(--text-primary);
+        margin-bottom: 2rem;
+        font-size: 2.25rem;
+    }
 
-/* Botões dentro de cada partida */
-.partida-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-}
+    /* --- Grid de Partidas --- */
+    .partidas-grid {
+        display: grid;
+        grid-template-columns: 1fr; /* 1 coluna por padrão */
+        gap: 1.5rem;
+    }
 
-.btn-game {
-    background-color: #2d2d2d;
-    color: #fff;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease; /* Adicionado para hover suave */
-}
+    /* --- Card de Partida --- */
+    .partida-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-.btn-game span {
-    font-size: 0.8em;
-    display: block;
-}
+    .partida-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
 
-.btn-game:hover {
-    background-color: #444;
-    transform: translateY(-2px);       /* Efeito leve de movimento */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* Sombra suave */
-}
+    .partida-card__header {
+        margin-bottom: 0.5rem;
+    }
 
-/* Botão adicionar mídia */
-.btn-add-media {
-    background-color: #28a745;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: all 0.3s ease; /* Adicionado para hover suave */
-}
+    .partida-card__title {
+        color: var(--text-primary);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 0 0.25rem 0;
+    }
 
-.btn-add-media:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-}
+    .partida-card__description {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        margin: 0;
+    }
 
-/* Legenda curta da partida */
-.descricao-partida {
-    font-size: 0.9em;
-    color: #555;
-    margin-top: 5px;
-}
+    .partida-card__image {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+
+    /* --- Seção de Ações e Botões --- */
+    .partida-card__actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        border-top: 1px solid var(--border-color);
+        padding-top: 1.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .partida-card__game-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .btn-game, .btn-add-media {
+        border: none;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        text-decoration: none;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .btn-game {
+        background-color: var(--button-dark);
+        color: #fff;
+    }
+
+    .btn-game span {
+        font-size: 0.75em;
+        color: #ccc;
+        display: block;
+        margin-top: 2px;
+    }
+
+    .btn-game:hover {
+        background-color: var(--button-dark-hover);
+        transform: translateY(-2px);
+    }
+
+    .btn-add-media {
+        background-color: var(--button-green);
+        color: white;
+    }
+
+    .btn-add-media:hover {
+        background-color: var(--button-green-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 173, 181, 0.3);
+    }
+
+    .no-partidas-message {
+        text-align: center;
+        color: var(--text-secondary);
+        padding: 2rem;
+        background-color: var(--card-bg);
+        border-radius: 12px;
+    }
+
+    /* --- Responsividade --- */
+    @media (max-width: 600px) {
+        .partida-card__actions {
+            flex-direction: column;
+            align-items: stretch; /* Faz os botões ocuparem a largura total */
+        }
+
+        .btn-add-media {
+            width: 100%;
+            box-sizing: border-box; /* Garante que padding não afete a largura */
+        }
+    }
 </style>
 {% endblock %}
