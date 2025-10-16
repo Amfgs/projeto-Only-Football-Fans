@@ -1,131 +1,219 @@
 {% extends 'base.html' %}
 
+{% block extra_head %}
+    {# Inclui a fonte Poppins para consistência visual com o design base #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<div class="content-container">
-    <h2>Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
+<main class="form-container">
+    <h2 class="form-title">Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
 
     {% if messages %}
         {% for message in messages %}
+            {# Reutiliza a classe 'alert' mas com novo estilo #}
             <div class="alert">{{ message }}</div>
         {% endfor %}
     {% endif %}
 
-    <form method="post" class="form-avaliacao">
+    <form method="post" class="form-card form-avaliacao">
         {% csrf_token %}
 
-        <!-- Nota da partida -->
         <div class="form-group">
-            <label for="nota">Nota da partida (0 a 5):</label>
-            <input type="number" id="nota" name="nota" min="0" max="5" required>
+            <label for="nota" class="form-label">Nota da partida (0 a 5):</label>
+            {# Adiciona a classe de input do novo design #}
+            <input type="number" id="nota" name="nota" min="0" max="5" class="form-input" required>
         </div>
 
-        <!-- Melhor jogador -->
         <div class="form-group">
-            <label for="melhor_jogador">Melhor jogador:</label>
-            <input type="text" id="melhor_jogador" name="melhor_jogador" placeholder="Digite o nome do melhor jogador">
+            <label for="melhor_jogador" class="form-label">Melhor jogador:</label>
+            <input type="text" id="melhor_jogador" name="melhor_jogador" placeholder="Digite o nome do melhor jogador" class="form-input">
         </div>
 
-        <!-- Pior jogador -->
         <div class="form-group">
-            <label for="pior_jogador">Pior jogador:</label>
-            <input type="text" id="pior_jogador" name="pior_jogador" placeholder="Digite o nome do pior jogador">
+            <label for="pior_jogador" class="form-label">Pior jogador:</label>
+            <input type="text" id="pior_jogador" name="pior_jogador" placeholder="Digite o nome do pior jogador" class="form-input">
         </div>
 
-        <!-- Comentário -->
         <div class="form-group">
-            <label for="comentario_avaliacao">Comentário:</label>
-            <textarea id="comentario_avaliacao" name="comentario_avaliacao" rows="4" placeholder="Escreva seu comentário"></textarea>
+            <label for="comentario_avaliacao" class="form-label">Comentário:</label>
+            {# Adiciona a classe de input do novo design e o atributo 'rows' original #}
+            <textarea id="comentario_avaliacao" name="comentario_avaliacao" rows="4" placeholder="Escreva seu comentário" class="form-input"></textarea>
         </div>
 
-        <!-- ✅ Botões principais -->
+        {# Usa a classe form-buttons para manter a estrutura original #}
         <div class="form-buttons">
+            {# Reutiliza a classe btn-submit #}
             <button type="submit" class="btn-submit">Enviar Avaliação</button>
+            {# Usa a classe btn-cancel para o botão secundário, estilizaremos no CSS #}
             <a href="{% url 'core:lista_partidas' %}" class="btn-cancel">Voltar</a>
         </div>
     </form>
 
-    <!-- ✅ Botão extra fora do form -->
     <div class="form-buttons">
-        <a href="{% url 'core:avaliar_torcida' partida.id %}" class="btn-submit" style="background-color: #28a745;">
+        {# Reutiliza a classe btn-submit. Estilizaremos com uma cor diferente no CSS. #}
+        <a href="{% url 'core:avaliar_torcida' partida.id %}" class="btn-submit btn-secondary">
             Avaliar Torcida
         </a>
     </div>
-</div>
+</main>
 
 <style>
-/* Container principal */
-.content-container {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 700px;
-    margin: 0 auto;
-}
+    /* --- Variáveis de Estilo (Baseado no design de referência) --- */
+    :root {
+        --primary-bg: #f4f7f9;
+        --card-bg: #ffffff;
+        --text-primary: #1d2d35;
+        --text-secondary: #657786;
+        --button-green: #00adb5;
+        --button-green-hover: #00939a;
+        --button-cancel: #657786; /* Cinza para botão de Voltar/Cancelar */
+        --button-cancel-hover: #4e5d6a;
+        --button-extra: #28a745; /* Cor para o botão 'Avaliar Torcida' (Verde original) */
+        --button-extra-hover: #1e7e34;
+        --border-color: #e1e8ed;
+        --border-focus-color: #00adb5;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+        --alert-bg: #fff3cd; /* Cor de fundo de alerta amarelada */
+        --alert-border: #ffeeba;
+        --alert-text: #856404;
+    }
 
-/* Formulário de avaliação */
-.form-avaliacao {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+    /* --- Container Principal (Adaptado do design de referência) --- */
+    .form-container {
+        max-width: 700px; /* Mantém o max-width original */
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Poppins', sans-serif;
+    }
 
-/* Grupos de campos */
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
+    .form-title {
+        text-align: center;
+        color: var(--text-primary);
+        margin-bottom: 2rem;
+        font-size: 2rem; /* Levemente menor para acomodar a string da partida */
+    }
 
-/* Inputs e textarea */
-.form-group input,
-.form-group textarea {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-}
+    /* --- Card do Formulário (Reutiliza as classes do design de referência) --- */
+    .form-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
 
-/* Botões */
-.form-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 
-.btn-submit {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
+    .form-label {
+        font-weight: 500;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+    }
 
-.btn-submit:hover {
-    background-color: #0056b3;
-}
+    /* --- Inputs e Textarea (Reutiliza as classes do design de referência) --- */
+    .form-input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        color: var(--text-primary);
+        background-color: #fdfdfd;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-.btn-cancel {
-    background-color: #6c757d;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-}
+    .form-input::placeholder {
+        color: #a0b0b8;
+    }
 
-.btn-cancel:hover {
-    background-color: #5a6268;
-}
+    .form-input:focus {
+        outline: none;
+        border-color: var(--border-focus-color);
+        box-shadow: 0 0 0 3px rgba(0, 173, 181, 0.15);
+    }
 
-.alert {
-    background-color: #ffdddd;
-    border-left: 6px solid #f44336;
-    padding: 10px;
-    margin-bottom: 15px;
-}
+    /* --- Botões (Adaptado) --- */
+    .form-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 1rem;
+    }
+
+    /* Estilo para Botões Principais (Enviar e Avaliar Torcida) */
+    .btn-submit {
+        background-color: var(--button-green);
+        color: white;
+        border: none;
+        padding: 0.9rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 1rem;
+        flex-grow: 1; /* Faz os botões ocuparem espaço igual, se estiverem juntos */
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: var(--button-green-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 173, 181, 0.3);
+    }
+
+    /* Estilo específico para o botão "Avaliar Torcida" (mantém a cor verde original) */
+    .btn-secondary {
+        background-color: var(--button-extra);
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--button-extra-hover);
+        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+    }
+
+    /* Estilo para Botão Cancelar/Voltar */
+    .btn-cancel {
+        background-color: var(--button-cancel);
+        color: white;
+        padding: 0.9rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 1rem;
+        flex-grow: 1;
+        text-align: center;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+        background-color: var(--button-cancel-hover);
+    }
+
+    /* --- Estilo para Mensagens de Alerta (Novo design) --- */
+    .alert {
+        background-color: var(--alert-bg);
+        border-left: 5px solid #ffc107; /* Amarelo/Laranja de alerta */
+        color: var(--alert-text);
+        padding: 15px;
+        margin-bottom: 1.5rem; /* Aumenta o espaçamento */
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
 </style>
 {% endblock %}
