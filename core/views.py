@@ -183,13 +183,19 @@ def resultado_avaliacoes(request):
 # ----------------------------
 
 def galeria(request):
-    partidas = Partida.objects.all().order_by("-data")
-    return render(request, "midia/galeria.html", {"partidas": partidas})
+    partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
+    definicoes = Definicao.objects.filter(usuario=request.user)
+    return render(request, "midia/galeria.html", {"partidas": partidas, "definicoes": definicoes})
+
 
 
 def adicionar_midia(request, partida_id):
     partida = get_object_or_404(Partida, id=partida_id)
-    definicao, _ = Definicao.objects.get_or_create(jogo=str(partida), defaults={"descricao": ""})
+    definicao, _ = Definicao.objects.get_or_create(
+    jogo=str(partida),
+    usuario=request.user,   # garante que cada usuário tem seu próprio conjunto
+    defaults={"descricao": ""}
+    )
 
     if request.method == "POST":
         if "imagem" in request.FILES:

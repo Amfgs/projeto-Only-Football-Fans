@@ -20,12 +20,14 @@ def validar_tamanho_arquivo(arquivo):
 
 # Início de mídia
 class Definicao(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="definicoes")
     jogo = models.CharField(max_length=200)
     descricao = models.CharField(max_length=500, blank=True)
     criado_em = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.jogo} - {self.descricao or 'Sem descrição'}"
+
 
 
 class Imagem(models.Model):
