@@ -13,6 +13,13 @@ from .models import (
 
 User = get_user_model()
 
+def get_partidas_context(request):
+    partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
+    avaliacoes = AvaliacaoPartida.objects.filter(usuario=request.user)
+    partidas_avaliadas = {a.partida_id for a in avaliacoes}
+    return {"partidas": partidas, "partidas_avaliadas": partidas_avaliadas}
+
+
 # ----------------------------
 # USUÁRIOS: login, logout, registro
 # ----------------------------
@@ -95,12 +102,16 @@ def avaliar_torcida(request, partida_id, time_index=1):
         else:
             return redirect('core:lista_partidas')
 
-    return render(request, 'emocao/avaliar_torcida.html', {'time': time, 'partida': partida})
+    context = {'time': time, 'partida': partida}
+    context.update(get_partidas_context(request))
+    return render(request, 'emocao/avaliar_torcida.html', context)
 
 
 
 def avaliacao_inicio(request):
-    return render(request, 'emocao/avaliacao_inicio.html')
+    context = {}
+    context.update(get_partidas_context(request))
+    return render(request, 'emocao/avaliacao_inicio.html', context)
 
 def nova_avaliacao(request):
     if request.method == "POST":
@@ -108,7 +119,7 @@ def nova_avaliacao(request):
         avaliacao_raw = request.POST.get("avaliacao")
         comentario = request.POST.get("comentario")
 
-  # Validação mínima
+    # Validação mínima
         if not estadio_nome or not avaliacao_raw:
             return render(request, "emocao/nova_avaliacao.html", {
                 "erro": "Preencha todos os campos obrigatórios."
@@ -133,17 +144,21 @@ def nova_avaliacao(request):
 
         return render(request, "emocao/avaliacao_sucesso.html")
 
-    return render(request, "emocao/nova_avaliacao.html")
+    context = {}
+    context.update(get_partidas_context(request))
+    return render(request, "emocao/nova_avaliacao.html", context)
 
 
 
 def avaliacoes_anteriores(request):
-    """Exibe avaliações do usuário em formato de carrossel"""
     page_number = request.GET.get('page', 1)
     avaliacoes = AvaliacaoEstadio.objects.filter(usuario=request.user).order_by('-data_avaliacao')
     paginator = Paginator(avaliacoes, 1)
     page_obj = paginator.get_page(page_number)
-    return render(request, "emocao/avaliacoes_anteriores.html", {"page_obj": page_obj})
+
+    context = {"page_obj": page_obj}
+    context.update(get_partidas_context(request))
+    return render(request, "emocao/avaliacoes_anteriores.html", context)
 
 
 # Avaliações de torcida (POST direto, sem form)
@@ -169,13 +184,16 @@ def avaliar_time(request, time_id):
 
         return redirect("resultado_avaliacoes")
 
-    return render(request, "avaliacao_form.html", {"time": time})
+    context = {"time": time}
+    context.update(get_partidas_context(request))
+    return render(request, "avaliacao_form.html", context)
 
 
 def resultado_avaliacoes(request):
-    """Exibe todas as avaliações de torcida"""
     avaliacoes = AvaliacaoTorcida.objects.all()
-    return render(request, "emocao/resultado.html", {"avaliacoes": avaliacoes})
+    context = {"avaliacoes": avaliacoes}
+    context.update(get_partidas_context(request))
+    return render(request, "emocao/resultado.html", context)
 
 
 # ----------------------------
@@ -183,9 +201,12 @@ def resultado_avaliacoes(request):
 # ----------------------------
 
 def galeria(request):
-    partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
-    definicoes = Definicao.objects.filter(usuario=request.user)
-    return render(request, "midia/galeria.html", {"partidas": partidas, "definicoes": definicoes})
+    context = {
+        "partidas": Partida.objects.filter(usuario=request.user).order_by("-data"),
+        "definicoes": Definicao.objects.filter(usuario=request.user)
+    }
+    context.update(get_partidas_context(request))  # <- adiciona os dados do popup
+    return render(request, "midia/galeria.html", context)
 
 
 
@@ -206,7 +227,9 @@ def adicionar_midia(request, partida_id):
             Audio.objects.create(definicao=definicao, arquivo=request.FILES["audio"])
         return redirect("core:galeria")
 
-    return render(request, "midia/adicionar_midia.html", {"partida": partida, "definicao": definicao})
+    context = {"partida": partida, "definicao": definicao}
+    context.update(get_partidas_context(request))
+    return render(request, "midia/adicionar_midia.html", context)
 
 
 # ----------------------------
@@ -274,7 +297,9 @@ def avaliar_partida(request, partida_id):
         messages.success(request, "Avaliação registrada com sucesso!")
         return redirect("core:lista_partidas")
 
-    return render(request, "partidas/avaliar_partida.html", {"partida": partida})
+    context = {"partida": partida}
+    context.update(get_partidas_context(request))
+    return render(request, "partidas/avaliar_partida.html", context)
 
 def ver_avaliacao(request, partida_id):
     partida = get_object_or_404(Partida, id=partida_id)
@@ -284,7 +309,9 @@ def ver_avaliacao(request, partida_id):
         messages.error(request, "Você ainda não avaliou esta partida.")
         return redirect("core:lista_partidas")
 
-    return render(request, "partidas/ver_avaliacao.html", {"avaliacao": avaliacao, "partida": partida})
+    context = {"avaliacao": avaliacao, "partida": partida}
+    context.update(get_partidas_context(request))
+    return render(request, "partidas/ver_avaliacao.html", context)
 
 
 def registrar_gols(request, partida_id):
@@ -300,4 +327,6 @@ def registrar_gols(request, partida_id):
 
         return redirect("detalhe_partida", partida_id=partida.id)
 
-    return render(request, "registrar_gols.html", {"partida": partida})
+    context = {"partida": partida}
+    context.update(get_partidas_context(request))
+    return render(request, "registrar_gols.html", context)
