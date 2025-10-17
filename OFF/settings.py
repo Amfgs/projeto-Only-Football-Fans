@@ -16,7 +16,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
 TARGET_ENV = os.getenv('TARGET_ENV', 'dev')
-NOT_PROD = not TARGET_ENV.lower().startswith('prod')
+try:
+    NOT_PROD = not TARGET_ENV.lower().startswith('prod')
+except AttributeError:
+    TARGET_ENV = 'dev'
+    NOT_PROD = True
 
 # ======================
 # MODO DE DESENVOLVIMENTO
@@ -166,3 +170,4 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 # PADRÃO DO DJANGO
 # ======================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
