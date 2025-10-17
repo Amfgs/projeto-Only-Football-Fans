@@ -118,7 +118,6 @@ class Link(models.Model):
 # Fim de Mídia
 
 # Início do app partidas
-User = get_user_model()
 
 class HistoricoPartida(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='historicos')
