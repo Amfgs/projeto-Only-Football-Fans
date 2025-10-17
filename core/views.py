@@ -24,12 +24,17 @@ def get_partidas_context(request):
 # USUÁRIOS: login, logout, registro
 # ----------------------------
 
+
 def register_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm_password')
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '')
+        confirm_password = request.POST.get('confirm_password', '')
+
+        # >>> ADIÇÃO: ler os campos novos do formulário
+        time_favorito = request.POST.get('time_favorito') or ''
+        avatar = request.FILES.get('avatar')  # precisa do enctype no form
 
         if password != confirm_password:
             return render(request, 'usuarios/register.html', {'error': 'Senhas não coincidem'})
@@ -38,16 +43,19 @@ def register_view(request):
         if Usuario.objects.filter(email=email).exists():
             return render(request, 'usuarios/register.html', {'error': 'Email já cadastrado'})
 
-        # Cria o usuário corretamente
-        user = Usuario.objects.create_user(username=username, email=email, password=password)
+        # >>> ADIÇÃO: salvar já com time_favorito e avatar
+        user = Usuario.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+            time_favorito=time_favorito,
+            avatar=avatar
+        )
 
-        # Faz login automático
         login(request, user)
-
         return redirect('core:home')
 
     return render(request, 'usuarios/register.html')
-
 
 user_login(request):
     if request.method == 'POST':
