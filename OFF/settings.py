@@ -15,12 +15,19 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
-TARGET_ENV = os.getenv('TARGET_ENV', 'dev')
-try:
-    NOT_PROD = not TARGET_ENV.lower().startswith('prod')
-except AttributeError:
+# ======================
+# CONFIGURAÇÕES DE AMBIENTE
+# ======================
+
+TARGET_ENV = os.getenv('TARGET_ENV')
+if not TARGET_ENV:
     TARGET_ENV = 'dev'
-    NOT_PROD = True
+
+NOT_PROD = not str(TARGET_ENV).lower().startswith('prod')
+
+print("DEBUG >>> TARGET_ENV =", TARGET_ENV)
+print("DEBUG >>> NOT_PROD =", NOT_PROD)
+
 
 # ======================
 # MODO DE DESENVOLVIMENTO
@@ -170,4 +177,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 # PADRÃO DO DJANGO
 # ======================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
