@@ -11,7 +11,7 @@ from .models import (
     Definicao, Gol, AvaliacaoPartida, Jogador, Link
 )
 
-User = get_user_model()
+Usuario = get_user_model()
 
 def get_partidas_context(request):
     partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
@@ -33,13 +33,13 @@ def register_view(request):
 
         if password != confirm_password:
             return render(request, 'usuarios/register.html', {'error': 'Senhas não coincidem'})
-        if User.objects.filter(username=username).exists():
+        if Usuario.objects.filter(username=username).exists():
             return render(request, 'usuarios/register.html', {'error': 'Usuário já existe'})
-        if User.objects.filter(email=email).exists():
+        if Usuario.objects.filter(email=email).exists():
             return render(request, 'usuarios/register.html', {'error': 'Email já cadastrado'})
 
         # Cria o usuário corretamente
-        user = User.objects.create_user(username=username, email=email, password=password)
+        user = Usuario.objects.create_user(username=username, email=email, password=password)
 
         # Faz login automático
         login(request, user)
