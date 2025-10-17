@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from django.db.models import Q 
+from django.db.models import Q
 
 from .models import (
     AvaliacaoTorcida, AvaliacaoEstadio, Time, Partida, Imagem, Video, Audio,
@@ -23,7 +23,6 @@ def get_partidas_context(request):
 # ----------------------------
 # USUÁRIOS: login, logout, registro
 # ----------------------------
-
 
 def register_view(request):
     if request.method == 'POST':
@@ -57,7 +56,8 @@ def register_view(request):
 
     return render(request, 'usuarios/register.html')
 
-user_login(request):
+
+def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username', '').strip()
         password = request.POST.get('password', '')
@@ -115,11 +115,11 @@ def avaliar_torcida(request, partida_id, time_index=1):
     return render(request, 'emocao/avaliar_torcida.html', context)
 
 
-
 def avaliacao_inicio(request):
     context = {}
     context.update(get_partidas_context(request))
     return render(request, 'emocao/avaliacao_inicio.html', context)
+
 
 def nova_avaliacao(request):
     if request.method == "POST":
@@ -127,7 +127,7 @@ def nova_avaliacao(request):
         avaliacao_raw = request.POST.get("avaliacao")
         comentario = request.POST.get("comentario")
 
-    # Validação mínima
+        # Validação mínima
         if not estadio_nome or not avaliacao_raw:
             return render(request, "emocao/nova_avaliacao.html", {
                 "erro": "Preencha todos os campos obrigatórios."
@@ -155,7 +155,6 @@ def nova_avaliacao(request):
     context = {}
     context.update(get_partidas_context(request))
     return render(request, "emocao/nova_avaliacao.html", context)
-
 
 
 def avaliacoes_anteriores(request):
@@ -217,13 +216,12 @@ def galeria(request):
     return render(request, "midia/galeria.html", context)
 
 
-
 def adicionar_midia(request, partida_id):
     partida = get_object_or_404(Partida, id=partida_id)
     definicao, _ = Definicao.objects.get_or_create(
-    jogo=str(partida),
-    usuario=request.user,   # garante que cada usuário tem seu próprio conjunto
-    defaults={"descricao": ""}
+        jogo=str(partida),
+        usuario=request.user,
+        defaults={"descricao": ""}
     )
 
     if request.method == "POST":
@@ -242,10 +240,6 @@ def adicionar_midia(request, partida_id):
 
 @login_required
 def adicionar_link(request, definicao_id):
-    """
-    View para adicionar um novo link (URL) a uma definição de mídia existente,
-    sem usar forms.py, processando o POST diretamente.
-    """
     definicao = get_object_or_404(Definicao, pk=definicao_id, usuario=request.user)
 
     if request.method == 'POST':
@@ -259,7 +253,7 @@ def adicionar_link(request, definicao_id):
                 url=url
             )
             messages.success(request, f"Link '{titulo}' adicionado com sucesso!")
-            return redirect('core:adicionar_midia', partida_id=definicao.id) 
+            return redirect('core:adicionar_midia', partida_id=definicao.id)
         else:
             messages.error(request, "Título e URL são obrigatórios para adicionar o link.")
 
@@ -270,56 +264,37 @@ def adicionar_link(request, definicao_id):
     context.update(get_partidas_context(request))
     return render(request, 'midia/adicionar_link.html', context)
 
+
 @login_required
 def adicionar_link_page(request):
-    """
-    Lida com o formulário de cadastro de um novo Link.
-    """
     if request.method == 'POST':
         nome_do_jogo = request.POST.get('nome_do_jogo')
         url = request.POST.get('url')
 
         if nome_do_jogo and url:
-            #  Como o link não está associado a uma Definicao,
-            # ele fica solto (definicao=None)
             Link.objects.create(
                 nome_do_jogo=nome_do_jogo,
                 url=url,
             )
             messages.success(request, f"Link de {nome_do_jogo} cadastrado com sucesso!")
-            # Retorna para a página de lista
-            return redirect('core:lista_links') 
+            return redirect('core:lista_links')
         else:
             messages.error(request, "Nome do Jogo e URL são obrigatórios.")
 
-    context = {
-        'page_title': 'Cadastrar Novo Link de Jogo',
-    }
+    context = {'page_title': 'Cadastrar Novo Link de Jogo'}
     context.update(get_partidas_context(request))
-    # Renderiza o novo template de formulário
     return render(request, 'midia/adicionar_link_page.html', context)
 
 
 @login_required
 def lista_links(request):
-    """
-    Lista todos os links de mídia cadastrados pelo usuário.
-    """
-    from django.db.models import Q 
-    
     user_definicoes = Definicao.objects.filter(usuario=request.user)
-    
-    # Busca links que pertencem a Definições do usuário OU que são soltos (novos)
     links = Link.objects.filter(
         Q(definicao__in=user_definicoes) | Q(definicao__isnull=True)
     ).order_by('-criado_em')
 
-    context = {
-        'links': links,
-        'page_title': 'Links de Replay e Mídia',
-    }
+    context = {'links': links, 'page_title': 'Links de Replay e Mídia'}
     context.update(get_partidas_context(request))
-    # Renderiza o template de listagem 
     return render(request, 'midia/lista_links.html', context)
 
 
@@ -331,8 +306,10 @@ def lista_partidas(request):
     partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
     avaliacoes = AvaliacaoPartida.objects.filter(usuario=request.user)
     partidas_avaliadas = {a.partida_id for a in avaliacoes}
-    return render(request, "partidas/lista_partidas.html", {"partidas": partidas, "partidas_avaliadas": partidas_avaliadas})
-
+    return render(request, "partidas/lista_partidas.html", {
+        "partidas": partidas,
+        "partidas_avaliadas": partidas_avaliadas
+    })
 
 
 def registrar_partida(request):
@@ -345,7 +322,7 @@ def registrar_partida(request):
 
         if request.user.is_authenticated:
             Partida.objects.create(
-                usuario=request.user, 
+                usuario=request.user,
                 time_casa=time_casa_nome,
                 time_visitante=time_visitante_nome,
                 data=data
@@ -355,20 +332,17 @@ def registrar_partida(request):
 
     context = {"times": times}
     context.update(get_partidas_context(request))
-
     return render(request, "partidas/registrar_partida.html", context)
 
 
 def avaliar_partida(request, partida_id):
     partida = get_object_or_404(Partida, id=partida_id)
 
-    # ======== ADIÇÃO PARA MENSAGEM DE PARTIDA JÁ AVALIADA ========
     if request.user.is_authenticated:
         ja_avaliou = AvaliacaoPartida.objects.filter(partida=partida, usuario=request.user).exists()
         if ja_avaliou:
             messages.warning(request, "Você já avaliou esta partida!")
             return redirect("core:lista_partidas")
-    # ===============================================================
 
     if request.method == "POST":
         nota = int(request.POST.get("nota", 0))
@@ -394,6 +368,7 @@ def avaliar_partida(request, partida_id):
     context = {"partida": partida}
     context.update(get_partidas_context(request))
     return render(request, "partidas/avaliar_partida.html", context)
+
 
 def ver_avaliacao(request, partida_id):
     partida = get_object_or_404(Partida, id=partida_id)
