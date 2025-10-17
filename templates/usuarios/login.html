@@ -1,10 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Login - OFF</title>
     <style>
-        /* Corpo da página */
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
@@ -15,7 +15,6 @@
             margin: 0;
         }
 
-        /* Card do formulário */
         .login-card {
             background-color: #fff;
             padding: 30px 40px;
@@ -23,15 +22,14 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 400px;
+            text-align: center;
         }
 
         .login-card h1 {
-            text-align: center;
             color: #007bff;
             margin-bottom: 24px;
         }
 
-        /* Inputs */
         .login-card input[type="text"],
         .login-card input[type="password"],
         .login-card input[type="email"] {
@@ -43,7 +41,6 @@
             box-sizing: border-box;
         }
 
-        /* Botão */
         .login-card button {
             width: 100%;
             padding: 10px 12px;
@@ -60,9 +57,7 @@
             background-color: #0056b3;
         }
 
-        /* Link de cadastro */
         .login-card p {
-            text-align: center;
             margin-top: 16px;
         }
 
@@ -75,20 +70,35 @@
         .login-card a:hover {
             text-decoration: underline;
         }
+
+        .login-card ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+            color: red;
+        }
     </style>
 </head>
 <body>
     <div class="login-card">
         <h1>Login</h1>
-        <form method="post">
+        <form method="post" action="{% url 'core:login' %}" class="login-form">
             {% csrf_token %}
             {{ form.as_p }}
 
             <!-- mantém a página de destino -->
             <input type="hidden" name="next" value="{{ next }}">
 
-            <button type="submit">Entrar</button>
+            <button type="submit" class="botao-login">Entrar</button>
         </form>
+
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
         <p>Ainda não tem uma conta? 
             <a href="{% url 'core:register' %}">Cadastre-se aqui</a>
@@ -96,3 +106,4 @@
     </div>
 </body>
 </html>
+

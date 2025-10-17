@@ -15,9 +15,17 @@ from .models import (
 User = get_user_model()
 
 def get_partidas_context(request):
+    """
+    Retorna o contexto de partidas e partidas avaliadas pelo usuário logado.
+    Se o usuário não estiver logado, retorna listas vazias.
+    """
+    if not request.user.is_authenticated:
+        return {"partidas": [], "partidas_avaliadas": set()}
+
     partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
     avaliacoes = AvaliacaoPartida.objects.filter(usuario=request.user)
     partidas_avaliadas = {a.partida_id for a in avaliacoes}
+    
     return {"partidas": partidas, "partidas_avaliadas": partidas_avaliadas}
 
 
@@ -109,18 +117,21 @@ def avaliar_torcida(request, partida_id, time_index=1):
 
 
 
+@login_required(login_url='/login/')
 def avaliacao_inicio(request):
     context = {}
     context.update(get_partidas_context(request))
     return render(request, 'emocao/avaliacao_inicio.html', context)
 
+
+@login_required(login_url='/login/')
 def nova_avaliacao(request):
     if request.method == "POST":
         estadio_nome = request.POST.get("estadio")
         avaliacao_raw = request.POST.get("avaliacao")
         comentario = request.POST.get("comentario")
 
-    # Validação mínima
+        # Validação mínima
         if not estadio_nome or not avaliacao_raw:
             return render(request, "emocao/nova_avaliacao.html", {
                 "erro": "Preencha todos os campos obrigatórios."
@@ -133,14 +144,12 @@ def nova_avaliacao(request):
                 "erro": "A avaliação deve ser um número entre 1 e 5."
             })
 
-        # Só associa o usuário se estiver logado
-        usuario = request.user if request.user.is_authenticated else None
-
+        # Cria avaliação associada ao usuário logado
         AvaliacaoEstadio.objects.create(
             estadio=estadio_nome,
             avaliacao_experiencia=avaliacao,
             comentario_estadio=comentario,
-            usuario=usuario
+            usuario=request.user
         )
 
         return render(request, "emocao/avaliacao_sucesso.html")
@@ -150,7 +159,7 @@ def nova_avaliacao(request):
     return render(request, "emocao/nova_avaliacao.html", context)
 
 
-
+@login_required(login_url='/login/')
 def avaliacoes_anteriores(request):
     page_number = request.GET.get('page', 1)
     avaliacoes = AvaliacaoEstadio.objects.filter(usuario=request.user).order_by('-data_avaliacao')
