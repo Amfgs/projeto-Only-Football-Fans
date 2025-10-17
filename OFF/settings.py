@@ -156,7 +156,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_URL = "/midia/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "midia")
-AUTH_USER_MODEL = 'core.User'
+AUTH_USER_MODEL = 'core.Usuario'
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'core:home'
@@ -167,3 +167,4 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 dias
 
 # Se True, a sessão expira ao fechar o navegador
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
