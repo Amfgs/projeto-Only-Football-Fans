@@ -85,6 +85,24 @@ class Audio(models.Model):
 
     def __str__(self):
         return f"Áudio da partida {self.definicao.id}"
+    
+
+
+class Link(models.Model):
+    # Alterar esta linha para permitir Links soltos (sem Definicao prévia)
+    definicao = models.ForeignKey(
+        Definicao,
+        on_delete=models.SET_NULL, # SET_NULL para manter a integridade
+        related_name="links",
+        null=True,                # Permite ser NULL no DB
+        blank=True                # Permite ser vazio no Admin/Form
+    )
+    # Novo campo para o nome do jogo
+    nome_do_jogo = models.CharField(max_length=200, verbose_name="Nome do Jogo") 
+    titulo = models.CharField(max_length=255, verbose_name="Título do Link", null=True, blank=True)
+    url = models.URLField(max_length=2000, verbose_name="URL do Link (Ex: YouTube)")
+    criado_em = models.DateTimeField(auto_now_add=True)
+    
 # Fim de Mídia
 
 # Início do app usuarios

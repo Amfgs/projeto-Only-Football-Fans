@@ -5,10 +5,11 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.db.models import Q 
 
 from .models import (
     AvaliacaoTorcida, AvaliacaoEstadio, Time, Partida, Imagem, Video, Audio,
-    Definicao, Gol, AvaliacaoPartida, Jogador
+    Definicao, Gol, AvaliacaoPartida, Jogador, Link
 )
 
 User = get_user_model()
@@ -230,6 +231,89 @@ def adicionar_midia(request, partida_id):
     context = {"partida": partida, "definicao": definicao}
     context.update(get_partidas_context(request))
     return render(request, "midia/adicionar_midia.html", context)
+
+
+@login_required
+def adicionar_link(request, definicao_id):
+    """
+    View para adicionar um novo link (URL) a uma definição de mídia existente,
+    sem usar forms.py, processando o POST diretamente.
+    """
+    definicao = get_object_or_404(Definicao, pk=definicao_id, usuario=request.user)
+
+    if request.method == 'POST':
+        titulo = request.POST.get('titulo')
+        url = request.POST.get('url')
+
+        if titulo and url:
+            Link.objects.create(
+                definicao=definicao,
+                titulo=titulo,
+                url=url
+            )
+            messages.success(request, f"Link '{titulo}' adicionado com sucesso!")
+            return redirect('core:adicionar_midia', partida_id=definicao.id) 
+        else:
+            messages.error(request, "Título e URL são obrigatórios para adicionar o link.")
+
+    context = {
+        'definicao': definicao,
+        'page_title': f'Adicionar Link à Partida {definicao.jogo}',
+    }
+    context.update(get_partidas_context(request))
+    return render(request, 'midia/adicionar_link.html', context)
+
+@login_required
+def adicionar_link_page(request):
+    """
+    Lida com o formulário de cadastro de um novo Link.
+    """
+    if request.method == 'POST':
+        nome_do_jogo = request.POST.get('nome_do_jogo')
+        url = request.POST.get('url')
+
+        if nome_do_jogo and url:
+            #  Como o link não está associado a uma Definicao,
+            # ele fica solto (definicao=None)
+            Link.objects.create(
+                nome_do_jogo=nome_do_jogo,
+                url=url,
+            )
+            messages.success(request, f"Link de {nome_do_jogo} cadastrado com sucesso!")
+            # Retorna para a página de lista
+            return redirect('core:lista_links') 
+        else:
+            messages.error(request, "Nome do Jogo e URL são obrigatórios.")
+
+    context = {
+        'page_title': 'Cadastrar Novo Link de Jogo',
+    }
+    context.update(get_partidas_context(request))
+    # Renderiza o novo template de formulário
+    return render(request, 'midia/adicionar_link_page.html', context)
+
+
+@login_required
+def lista_links(request):
+    """
+    Lista todos os links de mídia cadastrados pelo usuário.
+    """
+    from django.db.models import Q 
+    
+    user_definicoes = Definicao.objects.filter(usuario=request.user)
+    
+    # Busca links que pertencem a Definições do usuário OU que são soltos (novos)
+    links = Link.objects.filter(
+        Q(definicao__in=user_definicoes) | Q(definicao__isnull=True)
+    ).order_by('-criado_em')
+
+    context = {
+        'links': links,
+        'page_title': 'Links de Replay e Mídia',
+    }
+    context.update(get_partidas_context(request))
+    # Renderiza o template de listagem 
+    return render(request, 'midia/lista_links.html', context)
 
 
 # ----------------------------

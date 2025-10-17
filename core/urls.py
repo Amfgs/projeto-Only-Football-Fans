@@ -18,7 +18,8 @@ urlpatterns = [
     # Mídia
     path('midia/galeria/', views.galeria, name='galeria'),
     path('midia/adicionar/<int:partida_id>/', views.adicionar_midia, name='adicionar_midia'),
-
+    path('midia/links/', views.lista_links, name='lista_links'),                                   # Rota de Listagem de Links
+    path('midia/links/cadastrar/', views.adicionar_link_page, name='adicionar_link_page'), # <--- NOVA ROTA
     # Partidas
     path('partidas/', views.lista_partidas, name='lista_partidas'),
     path('partidas/registrar/', views.registrar_partida, name='registrar_partida'),
