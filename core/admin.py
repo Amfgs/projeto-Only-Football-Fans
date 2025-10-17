@@ -13,13 +13,14 @@ from .models import (
 class CustomUserAdmin(UserAdmin):
     # Campos extras nas telas do admin
     fieldsets = UserAdmin.fieldsets + (
-        ('Informações adicionais', {'fields': ('time_favorito', 'pais', 'avatar')}),
+        ('Informações adicionais', {'fields': ('time_favorito', 'avatar')}),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
-        ('Informações adicionais', {'fields': ('time_favorito', 'pais', 'avatar')}),
+        ('Informações adicionais', {'fields': ('time_favorito', 'avatar')}),
     )
-    list_display = ('username', 'email', 'time_favorito', 'pais', 'is_staff', 'is_superuser')
-    search_fields = ('username', 'email', 'time_favorito', 'pais')
+    list_display = ('username', 'email', 'time_favorito', 'is_staff', 'is_superuser')
+    search_fields = ('username', 'email', 'time_favorito')
+
 
 # --- Demais modelos (registro simples) ---
 @admin.register(Definicao)
