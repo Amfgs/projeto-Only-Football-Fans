@@ -19,18 +19,14 @@ env_path = BASE_DIR / '.env'
 if env_path.exists():
     load_dotenv(env_path)
 else:
-    print("Nenhum arquivo .env encontrado, seguindo em modo DEV.")
+    print(">>> MARCADOR: .env não encontrado, usando DEV")
 
-# ======================
-# CONFIGURAÇÕES DE AMBIENTE
-# ======================
+# Força DEV para testar de vez
+TARGET_ENV = 'dev'
+NOT_PROD = True
 
-TARGET_ENV = os.getenv('TARGET_ENV', 'dev')  # <- Valor padrão direto aqui
-NOT_PROD = not str(TARGET_ENV).lower().startswith('prod')
-
-print("DEBUG >>> TARGET_ENV =", TARGET_ENV)
-print("DEBUG >>> NOT_PROD =", NOT_PROD)
-
+print(">>> MARCADOR: TARGET_ENV =", TARGET_ENV)
+print(">>> MARCADOR: NOT_PROD =", NOT_PROD)
 
 # ======================
 # MODO DE DESENVOLVIMENTO
@@ -180,6 +176,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 # PADRÃO DO DJANGO
 # ======================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 
 
