@@ -1,111 +1,156 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<div class="content-container">
-    <h2>Avaliar Torcida - {{ time }}</h2>
+{% block extra_head %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    {# Opcional: Fonte para estrelas (usaremos Unicode, mas é bom ter uma fonte forte) #}
+{% endblock %}
 
-    <form method="post" class="form-avaliacao">
+{% block content %}
+<main class="form-container">
+    <h2 class="form-title">🎉 Avalie a torcida do {{ time }}!</h2>
+
+    <form method="post" class="form-card form-avaliacao">
         {% csrf_token %}
 
-        <!-- Nome do time (somente visual, já vem preenchido) -->
         <div class="form-group">
-            <label>Time:</label>
-            <input type="text" value="{{ time }}" disabled>
+            <label class="form-label">Time em Campo:</label>
+            <input type="text" value="{{ time }}" disabled class="form-input" style="background-color: #f0f0f0; font-weight: 500;">
             <input type="hidden" name="time" value="{{ time }}">
         </div>
 
-        <!-- Emoção -->
         <div class="form-group">
-            <label for="emocao">Emoção da torcida (1 a 5):</label>
-            <input type="number" id="emocao" name="emocao" min="1" max="5" required>
+            <label class="form-label label-rating">🔥 Emoção da Torcida:</label>
+            <div class="star-rating-group" dir="rtl">
+                {% for i in "54321" %}
+                    <input type="radio" id="emocao_{{ i }}" name="emocao" value="{{ i }}" required />
+                    <label for="emocao_{{ i }}" title="{{ i }} Estrelas"></label>
+                {% endfor %}
+            </div>
         </div>
 
-        <!-- Presença -->
         <div class="form-group">
-            <label for="presenca">Presença da torcida (1 a 5):</label>
-            <input type="number" id="presenca" name="presenca" min="1" max="5" required>
+            <label class="form-label label-rating">📣 Presença e Barulho:</label>
+            <div class="star-rating-group" dir="rtl">
+                {% for i in "54321" %}
+                    <input type="radio" id="presenca_{{ i }}" name="presenca" value="{{ i }}" required />
+                    <label for="presenca_{{ i }}" title="{{ i }} Estrelas"></label>
+                {% endfor %}
+            </div>
         </div>
 
-        <!-- Comentário -->
         <div class="form-group">
-            <label for="comentario">Comentário:</label>
-            <textarea id="comentario" name="comentario" rows="4" placeholder="Escreva sua opinião sobre a torcida"></textarea>
+            <label for="comentario" class="form-label">✍️ Seu Comentário:</label>
+            <textarea id="comentario" name="comentario" rows="4" placeholder="Descreva o espetáculo nas arquibancadas! Fizeram a diferença?" class="form-input"></textarea>
         </div>
 
         <div class="form-buttons">
-            <button type="submit" class="btn-submit">Enviar Avaliação</button>
-            <a href="{% url 'core:lista_partidas' %}" class="btn-cancel">Cancelar</a>
+            <button type="submit" class="btn-submit">Mandar o Review da Torcida</button>
+            <a href="{% url 'core:lista_partidas' %}" class="btn-cancel">Cancelar Avaliação</a>
         </div>
     </form>
-</div>
+</main>
 
 <style>
-/* Container principal */
-.content-container {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 700px;
-    margin: 0 auto;
-}
+    /* --- Variáveis de Estilo (Consistente com o design de referência) --- */
+    :root {
+        --card-bg: #ffffff;
+        --text-primary: #1d2d35;
+        --button-green: #28a745; 
+        --button-green-hover: #218838;
+        --button-cancel: #657786;
+        --button-cancel-hover: #4e5d6a;
+        --border-color: #e1e8ed;
+        --border-focus-color: #00adb5;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+        --star-color: gold; /* Cor das estrelas preenchidas */
+    }
 
-/* Formulário */
-.form-avaliacao {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+    /* --- Container Principal e Card --- */
+    .form-container { max-width: 700px; margin: 2rem auto; padding: 1rem; font-family: 'Poppins', sans-serif; }
+    .form-title { text-align: center; color: var(--text-primary); margin-bottom: 2rem; font-size: 2.25rem; }
+    .form-card { background-color: var(--card-bg); border-radius: 12px; padding: 2rem; box-shadow: 0 4px 15px var(--shadow-color); border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 1.5rem; }
+    
+    /* Grupos e Labels */
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-label { font-weight: 500; color: var(--text-primary); font-size: 0.95rem; }
 
-/* Grupos de campos */
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
+    /* Inputs Padrão e Textarea */
+    .form-input { 
+        width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--border-color); 
+        border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 1rem; 
+        color: var(--text-primary); background-color: #fdfdfd; box-sizing: border-box; 
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-input:focus { outline: none; border-color: var(--border-focus-color); box-shadow: 0 0 0 3px rgba(0, 173, 181, 0.15); }
 
-/* Inputs e textarea */
-.form-group input,
-.form-group textarea {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-}
+    /* --- ESTILOS DO SISTEMA DE ESTRELAS --- */
+    .label-rating {
+        margin-bottom: 0.5rem; /* Ajusta o espaçamento acima das estrelas */
+    }
 
-/* Botões */
-.form-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
+    .star-rating-group {
+        /* Configura o container para exibir os radio buttons na ordem reversa, 
+           o que é crucial para a técnica CSS do seletor ~ (irmão geral) */
+        display: flex;
+        unicode-bidi: bidi-override;
+        direction: rtl; /* Força a renderização da direita para a esquerda */
+        justify-content: flex-end;
+    }
 
-.btn-submit {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
+    .star-rating-group > input {
+        /* Esconde os radio buttons nativos, mantendo a funcionalidade */
+        display: none;
+    }
 
-.btn-submit:hover {
-    background-color: #218838;
-}
+    .star-rating-group > label {
+        /* Estiliza os labels para aparecerem como estrelas */
+        display: inline-block;
+        padding: 0 4px; /* Espaçamento entre as estrelas */
+        font-size: 2rem; /* Tamanho das estrelas */
+        color: #ccc; /* Cor das estrelas vazias (cinza claro) */
+        cursor: pointer;
+        transition: color 0.3s;
+    }
 
-.btn-cancel {
-    background-color: #6c757d;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-}
+    /* Desenha a estrela (usando o caractere Unicode) */
+    .star-rating-group > label:before {
+        content: "\2605"; /* Unicode da estrela preenchida */
+    }
 
-.btn-cancel:hover {
-    background-color: #5a6268;
-}
+    /* 1. Efeito de Hover: Preenche a estrela atual e todas as anteriores */
+    .star-rating-group > label:hover,
+    .star-rating-group > label:hover ~ label {
+        color: var(--star-color);
+    }
+
+    /* 2. Efeito de Click/Checked: Preenche a estrela selecionada e todas as anteriores */
+    .star-rating-group > input:checked ~ label {
+        color: var(--star-color);
+    }
+
+    /* 3. Manter Hover após Seleção (Resetar o Hover): Garante que, ao passar o mouse, 
+       o estado checked não seja sobreposto de forma indesejada */
+    .star-rating-group:not(:hover) > input:checked ~ label {
+        color: var(--star-color);
+    }
+
+    /* --- Estilos dos Botões (Mantidos e Reforçados) --- */
+    .form-buttons { display: flex; gap: 10px; margin-top: 1rem; }
+
+    .btn-submit {
+        background-color: var(--button-green); color: white; border: none; padding: 0.9rem 1.5rem;
+        border-radius: 8px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 500;
+        font-size: 1rem; flex-grow: 1; text-align: center; text-decoration: none; transition: all 0.3s ease;
+    }
+    .btn-submit:hover { background-color: var(--button-green-hover); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3); }
+
+    .btn-cancel {
+        background-color: var(--button-cancel); color: white; padding: 0.9rem 1.5rem; border-radius: 8px;
+        text-decoration: none; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 500;
+        font-size: 1rem; flex-grow: 1; text-align: center; transition: background-color 0.3s ease;
+    }
+    .btn-cancel:hover { background-color: var(--button-cancel-hover); }
 </style>
 {% endblock %}
