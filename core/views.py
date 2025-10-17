@@ -13,6 +13,11 @@ from .models import (
 
 Usuario = get_user_model()
 
+
+# ----------------------------
+# Função auxiliar
+# ----------------------------
+
 def get_partidas_context(request):
     partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
     avaliacoes = AvaliacaoPartida.objects.filter(usuario=request.user)
@@ -31,9 +36,8 @@ def register_view(request):
         password = request.POST.get('password', '')
         confirm_password = request.POST.get('confirm_password', '')
 
-        # >>> ADIÇÃO: ler os campos novos do formulário
         time_favorito = request.POST.get('time_favorito') or ''
-        avatar = request.FILES.get('avatar')  # precisa do enctype no form
+        avatar = request.FILES.get('avatar')
 
         if password != confirm_password:
             return render(request, 'usuarios/register.html', {'error': 'Senhas não coincidem'})
@@ -42,7 +46,6 @@ def register_view(request):
         if Usuario.objects.filter(email=email).exists():
             return render(request, 'usuarios/register.html', {'error': 'Email já cadastrado'})
 
-        # >>> ADIÇÃO: salvar já com time_favorito e avatar
         user = Usuario.objects.create_user(
             username=username,
             email=email,
@@ -64,7 +67,7 @@ def user_login(request):
 
         user = authenticate(request, username=username, password=password)
         if user:
-            login(request, user)  # Cria sessão persistente
+            login(request, user)
             return redirect('core:home')
         else:
             messages.error(request, "Usuário ou senha incorretos.")
@@ -73,7 +76,6 @@ def user_login(request):
 
 
 def user_logout(request):
-    """Logout do usuário"""
     logout(request)
     return redirect("core:login")
 
@@ -84,7 +86,7 @@ def user_logout(request):
 
 def home(request):
     if not request.user.is_authenticated:
-        return redirect('core:login')  # redireciona para login
+        return redirect('core:login')
     return render(request, 'base.html')
 
 
@@ -104,7 +106,6 @@ def avaliar_torcida(request, partida_id, time_index=1):
             presenca=request.POST.get('presenca')
         )
 
-        # Se avaliou o time 1, redireciona para avaliar o time 2
         if time_index == 1:
             return redirect('core:avaliar_torcida_segundo', partida_id=partida_id)
         else:
@@ -127,7 +128,6 @@ def nova_avaliacao(request):
         avaliacao_raw = request.POST.get("avaliacao")
         comentario = request.POST.get("comentario")
 
-        # Validação mínima
         if not estadio_nome or not avaliacao_raw:
             return render(request, "emocao/nova_avaliacao.html", {
                 "erro": "Preencha todos os campos obrigatórios."
@@ -140,7 +140,6 @@ def nova_avaliacao(request):
                 "erro": "A avaliação deve ser um número entre 1 e 5."
             })
 
-        # Só associa o usuário se estiver logado
         usuario = request.user if request.user.is_authenticated else None
 
         AvaliacaoEstadio.objects.create(
@@ -168,7 +167,6 @@ def avaliacoes_anteriores(request):
     return render(request, "emocao/avaliacoes_anteriores.html", context)
 
 
-# Avaliações de torcida (POST direto, sem form)
 def avaliar_time(request, time_id):
     time = get_object_or_404(Time, id=time_id)
 
@@ -184,7 +182,6 @@ def avaliar_time(request, time_id):
             time=time
         )
 
-        # Se houver sequência de times a avaliar, redireciona para o próximo
         proximo_time = Time.objects.filter(nome="Time 2").first()
         if proximo_time and time.nome == "Time 1":
             return redirect("avaliar_time", time_id=proximo_time.id)
@@ -212,7 +209,7 @@ def galeria(request):
         "partidas": Partida.objects.filter(usuario=request.user).order_by("-data"),
         "definicoes": Definicao.objects.filter(usuario=request.user)
     }
-    context.update(get_partidas_context(request))  # <- adiciona os dados do popup
+    context.update(get_partidas_context(request))
     return render(request, "midia/galeria.html", context)
 
 
