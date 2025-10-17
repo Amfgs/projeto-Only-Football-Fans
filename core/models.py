@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from PIL import Image as PilImage
 import os
@@ -12,6 +12,18 @@ import os
 # COMMIT 1 + COMMIT 2
 # Validação de tamanho máximo (5MB) + miniaturas automáticas
 # =======================
+
+# Início do app usuarios
+
+class Usuario(AbstractUser):
+    time_favorito = models.CharField(max_length=100, blank=True, null=True)
+    pais = models.CharField(max_length=100, blank=True, null=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+
+    def __str__(self):
+        return self.username
+        
+# Fim de usuario
 
 def validar_tamanho_arquivo(arquivo):
     limite = 5 * 1024 * 1024  # 5 MB
@@ -105,17 +117,11 @@ class Link(models.Model):
     
 # Fim de Mídia
 
-# Início do app usuarios
-class User(AbstractUser):
-    """Classe pronta para extensão futura, sem campos extras por enquanto."""
-    pass
-# Fim de usuario
-
 # Início do app partidas
 User = get_user_model()
 
 class HistoricoPartida(models.Model):
-    usuario = models.CharField(max_length=200)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='historicos')
     time_id = models.IntegerField()
     nota = models.IntegerField()
     data = models.DateTimeField(default=timezone.now)
@@ -132,7 +138,7 @@ class Jogador(models.Model):
 
 
 class Partida(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='partidas')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name='partidas')
     time_casa = models.CharField(max_length=100, blank=True, null=True, help_text="Nome do time da casa")
     time_visitante = models.CharField(max_length=100, blank=True, null=True, help_text="Nome do time visitante")
     adversario = models.CharField(max_length=100, blank=True, help_text="Nome do adversário (opcional)")
@@ -166,7 +172,7 @@ class Gol(models.Model):
 
 class AvaliacaoPartida(models.Model):
     partida = models.ForeignKey(Partida, on_delete=models.CASCADE, related_name='avaliacoes')
-    usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     nota = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(5)],
         help_text="Nota da partida (0 a 5)"
