@@ -1,0 +1,118 @@
+[
+  {
+    "model": "core.usuario",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$0Ndbi3BYG0XwCwO7IvV5F5$UihMKjKz4a5sLUnDRyo0c2P1S0HghD3jBBSdxEh5cpc=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "usuario_teste",
+      "first_name": "Carlos",
+      "last_name": "Silva",
+      "email": "usuario_teste@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-10-10T00:00:00Z",
+      "time_favorito": "Sport Recife"
+    }
+  },
+  {
+    "model": "core.time",
+    "pk": 1,
+    "fields": {
+      "nome": "Sport Recife"
+    }
+  },
+  {
+    "model": "core.time",
+    "pk": 2,
+    "fields": {
+      "nome": "Santa Cruz"
+    }
+  },
+  {
+    "model": "core.jogador",
+    "pk": 1,
+    "fields": {
+      "nome": "Diego Souza"
+    }
+  },
+  {
+    "model": "core.partida",
+    "pk": 1,
+    "fields": {
+      "usuario": 1,
+      "time_casa": "Sport Recife",
+      "time_visitante": "Santa Cruz",
+      "adversario": "",
+      "data": "2024-10-11T19:00:00Z",
+      "registro_externo_id": null,
+      "created_at": "2024-10-11T19:00:00Z"
+    }
+  },
+  {
+    "model": "core.gol",
+    "pk": 1,
+    "fields": {
+      "partida": 1,
+      "autor": 1,
+      "minuto": 32
+    }
+  },
+  {
+    "model": "core.avaliacaopartida",
+    "pk": 1,
+    "fields": {
+      "partida": 1,
+      "usuario": 1,
+      "nota": 5,
+      "melhor_jogador": 1,
+      "pior_jogador": null,
+      "comentario_avaliacao": "Partida excelente, time jogou muito bem!",
+      "created_at": "2024-10-12T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.avaliacaoestadio",
+    "pk": 1,
+    "fields": {
+      "usuario": 1,
+      "estadio": "Ilha do Retiro",
+      "avaliacao_experiencia": 5,
+      "comentario_estadio": "Ambiente ótimo e seguro.",
+      "data_avaliacao": "2024-10-12T12:00:00Z"
+    }
+  },
+  {
+    "model": "core.avaliacaotorcida",
+    "pk": 1,
+    "fields": {
+      "time": "Sport Recife",
+      "comentario_torcida": "Torcida empolgante, apoiou do início ao fim!",
+      "emocao": 5,
+      "presenca": 5,
+      "data_criacao": "2024-10-12T14:00:00Z"
+    }
+  },
+  {
+    "model": "core.definicao",
+    "pk": 1,
+    "fields": {
+      "usuario": 1,
+      "jogo": "Sport Recife x Santa Cruz",
+      "descricao": "Final do Campeonato Pernambucano",
+      "criado_em": "2024-10-11"
+    }
+  },
+  {
+    "model": "core.link",
+    "pk": 1,
+    "fields": {
+      "definicao": 1,
+      "nome_do_jogo": "Sport Recife x Santa Cruz",
+      "titulo": "Melhores momentos",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "criado_em": "2024-10-11T22:00:00Z"
+    }
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "name": "projeto-only-football-fans",
+  "version": "1.0.0",
+  "description": "## 📌 Visão Geral   O **OnlyFootballFans** é um aplicativo web desenvolvido em **Django**, projetado para ser o diário digital das experiências futebolísticas dos torcedores.   Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assistiram, criando um **histórico único de memórias em estádios e partidas**.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amfgs/projeto-Only-Football-Fans.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Amfgs/projeto-Only-Football-Fans/issues"
+  },
+  "homepage": "https://github.com/Amfgs/projeto-Only-Football-Fans#readme",
+  "devDependencies": {
+    "cypress": "^15.4.0",
+    "start-server-and-test": "^2.1.2"
+  }
+}

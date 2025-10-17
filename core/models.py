@@ -17,7 +17,6 @@ import os
 
 class Usuario(AbstractUser):
     time_favorito = models.CharField(max_length=100, blank=True, null=True)
-    pais = models.CharField(max_length=100, blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
 
     def __str__(self):
