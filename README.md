@@ -23,7 +23,7 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 - **Diego Magnata** – [dfm@cesar.school](mailto:dfm@cesar.school)  
   🟢 *Scrum Master – Time de Desenvolvimento*  
 
-- **Luiz Guilherme** – [lgsgs@cesar.school](mailto:lgsgs@cesar.school)  
+- **Guilherme Silvestre** – [lgsgs@cesar.school](mailto:lgsgs@cesar.school)  
   🟢 *Engenheiro de QA – Time de Desenvolvimento*  
 
 - **Matheus Fialho** – [mgfm@cesar.school](mailto:mgfm@cesar.school)  

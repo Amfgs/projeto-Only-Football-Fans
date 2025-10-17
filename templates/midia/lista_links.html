@@ -1,0 +1,39 @@
+{% extends "base.html" %} 
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid">
+        <h1 class="mt-4">{{ page_title }}</h1>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="mb-4">
+            <a href="{% url 'core:adicionar_link_page' %}" class="btn btn-primary btn-lg">
+                Adicionar Novo Link de Jogo
+            </a>
+        </div>
+        
+        <h2 class="mt-4 mb-3">Seus Links Cadastrados</h2>
+        <div class="list-group">
+        {% for link in links %}
+            <a href="{{ link.url }}" target="_blank" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1">{{ link.nome_do_jogo|default:link.titulo }}</h5>
+                    <small class="text-muted">Adicionado em: {{ link.criado_em|date:"d/m/Y" }}</small>
+                </div>
+                <span class="badge bg-secondary rounded-pill">Ver Link</span>
+            </a>
+        {% empty %}
+            <div class="alert alert-info">
+                Você ainda não adicionou nenhum link. Clique no botão "Adicionar Novo Link de Jogo" para começar!
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
