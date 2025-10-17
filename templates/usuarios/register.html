@@ -91,13 +91,19 @@
             <p class="error">{{ error }}</p>
         {% endif %}
 
-        <form method="post">
-            {% csrf_token %}
-            <input type="text" name="username" placeholder="Nome de usuário" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Senha" required>
-            <input type="password" name="confirm_password" placeholder="Confirmar senha" required>
-            <button type="submit">Registrar</button>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <input type="text" name="username" placeholder="Nome de usuário" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <input type="password" name="password" placeholder="Senha" required>
+          <input type="password" name="confirm_password" placeholder="Confirmar senha" required>
+
+          <!-- novos campos -->
+          <input type="text" name="time_favorito" placeholder="Time favorito (opcional)">
+          <input type="file" name="avatar" accept="image/*">
+
+          <button type="submit">Registrar</button>
         </form>
 
         <p>Já tem conta? <a href="{% url 'core:login' %}">Login</a></p>
