@@ -148,9 +148,9 @@ body {
             <li><a href="#" onclick="abrirModal()">Avaliar Partida</a></li>
             <li><a href="{% url 'core:lista_partidas' %}">Histórico</a></li>
             <li><a href="{% url 'core:galeria' %}">Galeria</a></li>
-            <li><a href="{% url 'core:registrar_partida' %}">Agenda</a></li>
+            <li><a href="{% url 'core:registrar_partida' %}">Registrar Partidas</a></li>
             <li><a href="{% url 'core:lista_links' %}">Assistir jogos</a></li>
-            <li><a href="{% url 'core:home' %}">Configurações</a></li>
+            <li><a href="{% url 'core:perfil' %}">Configurações</a></li>
             <li>
                 <form action="{% url 'core:logout' %}" method="post">
                     {% csrf_token %}

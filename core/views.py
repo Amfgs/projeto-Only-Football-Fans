@@ -402,5 +402,5 @@ def registrar_gols(request, partida_id):
 # ----------------------------
 
 @login_required
-def home(request):
-    return render(request, 'usuarios/home.html')
+def perfil(request):
+    return render(request, 'usuarios/perfil.html')

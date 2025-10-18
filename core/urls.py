@@ -32,5 +32,6 @@ urlpatterns = [
     path('partidas/ver/<int:partida_id>/', views.ver_avaliacao, name='ver_avaliacao'),
 
     # Página inicial
-    path('', views.home, name='home'),
+    path('', views.registrar_partida, name='home'),
+    path('perfil/', views.perfil, name='perfil'),
 ]
