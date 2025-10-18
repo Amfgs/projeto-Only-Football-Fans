@@ -396,3 +396,11 @@ def registrar_gols(request, partida_id):
     context = {"partida": partida}
     context.update(get_partidas_context(request))
     return render(request, "registrar_gols.html", context)
+
+# ----------------------------
+# HOME PAGE
+# ----------------------------
+
+@login_required
+def home(request):
+    return render(request, 'usuarios/home.html')

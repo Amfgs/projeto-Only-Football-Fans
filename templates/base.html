@@ -150,7 +150,7 @@ body {
             <li><a href="{% url 'core:galeria' %}">Galeria</a></li>
             <li><a href="{% url 'core:registrar_partida' %}">Agenda</a></li>
             <li><a href="{% url 'core:lista_links' %}">Assistir jogos</a></li>
-            <li><a href="#">Configurações</a></li>
+            <li><a href="{% url 'core:home' %}">Configurações</a></li>
             <li>
                 <form action="{% url 'core:logout' %}" method="post">
                     {% csrf_token %}
