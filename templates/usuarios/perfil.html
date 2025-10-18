@@ -1,69 +1,158 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<div class="home-container">
-    <div class="profile-card">
-        <div class="profile-image">
-            {% if user.usuario.imagem %}
-                <img src="{{ user.usuario.imagem.url }}" alt="Foto de perfil">
+<div class="profile-page">
+    <!-- Background superior -->
+    <div class="profile-header">
+        <div class="profile-banner"></div>
+        <div class="profile-avatar">
+            {% if user.avatar %}
+                <img src="{{ user.avatar.url }}">
             {% else %}
-                <img src="/static/img/default-user.png" alt="Foto padrão">
+                <img src="{% static 'img/default-user.png' %}">
             {% endif %}
         </div>
-        <div class="profile-info">
-            <h2>{{ user.username }}</h2>
-            <div class="time-preferido">
-                <span>Time preferido:</span>
-                <strong>{{ user.usuario.time_preferido }}</strong>
-            </div>
-        </div>
+    </div>
+
+    <!-- Informações do usuário -->
+    <div class="profile-info">
+        <h2>{{ user.username }}</h2>
+        <p class="email">{{ user.email }}</p>
+
+        {% if user.time_favorito %}
+        <p class="time-favorito"><strong>Time favorito:</strong> {{ user.time_favorito }}</p>
+        {% else %}
+        <p class="time-favorito"><strong>Time favorito:</strong> Não informado</p>
+        {% endif %}
+
+        {% comment %} <div class="botoes">
+            <a href="{% url 'core:editar_perfil' %}" class="btn btn-primary">Editar Perfil</a>
+            <a href="{% url 'core:logout' %}" class="btn btn-danger">Sair</a>
+        </div> {% endcomment %}
     </div>
 </div>
 
 <style>
-.home-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 60vh;
-}
-.profile-card {
+/* ---------- Estrutura geral ---------- */
+.profile-page {
+    font-family: 'Arial', sans-serif;
+    max-width: 500px;
+    margin: 50px auto 100px auto;
     background: #fff;
-    padding: 40px 48px;
     border-radius: 20px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    text-align: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    overflow: hidden;
 }
-.profile-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 22px;
-}
-.profile-image img {
-    width: 180px;
+
+/* ---------- Banner superior ---------- */
+.profile-header {
+    position: relative;
     height: 180px;
-    border-radius: 50%;
+    background: linear-gradient(120deg, #007bff, #00c6ff);
+}
+
+.profile-banner {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border: 4px solid #007bff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+
+/* ---------- Avatar ---------- */
+.profile-avatar {
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid #fff;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     background: #f2f2f2;
 }
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ---------- Informações ---------- */
+.profile-info {
+    text-align: center;
+    padding: 80px 20px 30px;
+}
+
 .profile-info h2 {
-    margin-bottom: 12px;
-    font-size: 2em;
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 6px;
 }
-.time-preferido {
-    font-size: 1.15em;
-    margin-top: 10px;
+
+.profile-info .email {
+    font-size: 1em;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.time-favorito {
+    font-size: 1.1em;
     color: #333;
+    margin-bottom: 25px;
 }
-.time-preferido span {
-    color: #555;
-    margin-right: 6px;
+
+/* ---------- Botões ---------- */
+.botoes {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
 }
-.time-preferido strong {
-    color: #007bff;
+
+.botoes .btn {
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #b02a37;
+}
+
+/* ---------- Responsividade ---------- */
+@media (max-width: 576px) {
+    .profile-page {
+        margin: 30px 15px 80px;
+    }
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        bottom: -50px;
+    }
+    .profile-info {
+        padding: 70px 15px 20px;
+    }
+    .profile-info h2 {
+        font-size: 1.5em;
+    }
 }
 </style>
 {% endblock %}
