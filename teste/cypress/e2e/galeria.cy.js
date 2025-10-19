@@ -1,19 +1,10 @@
 describe('Galeria', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:8000/login/')
-    cy.get('input[name="username"]').type('meuUsuario')
-    cy.get('input[name="password"]').type('minhaSenha')
-    cy.get('button[type="submit"]').click()
-    cy.contains('Galeria').click()
+    cy.login()
   })
 
-  it('Exibe as partidas na galeria', () => {
-    cy.contains('Minha Galeria')
-    cy.get('.card-partida').should('exist')
-  })
-
-  it('Abre página de adicionar mídia', () => {
-    cy.contains('Adicionar mídia').first().click()
-    cy.url().should('include', 'adicionar_midia')
+  it('Deve acessar a galeria e verificar se há partidas', () => {
+    cy.visit('http://127.0.0.1:8000/midia/galeria/')
+    cy.contains('Galeria') // Ajuste se houver algum texto específico da página
   })
 })

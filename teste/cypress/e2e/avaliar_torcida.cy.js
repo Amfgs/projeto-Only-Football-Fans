@@ -1,16 +1,16 @@
 describe('Avaliar Torcida', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:8000/login/')
-    cy.get('input[name="username"]').type('meuUsuario')
-    cy.get('input[name="password"]').type('minhaSenha')
-    cy.get('button[type="submit"]').click()
-    cy.contains('Avaliar Torcida').click()
+    cy.login()
   })
 
-  it('Avalia a torcida do time 1', () => {
-    cy.get('textarea[name="comentario"]').type('Torcida muito animada!')
-    cy.get('select[name="emocao"]').select('4')
-    cy.get('select[name="presenca"]').select('5')
+  it('Deve avaliar torcida da primeira partida', () => {
+    cy.visit('http://127.0.0.1:8000/partidas/avaliar_torcida/5/') // ID da partida
+    cy.get('input[name="time"]').type('Time Casa')
+    cy.get('input[name="emocao"]').type('4')
+    cy.get('input[name="presenca"]').type('5')
+    cy.get('textarea[name="comentario"]').type('Torcida animada')
     cy.get('button[type="submit"]').click()
+
+    cy.contains('Próximo') // ou redirecionamento para próxima etapa
   })
 })
