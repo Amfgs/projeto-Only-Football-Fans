@@ -1,8 +1,8 @@
 describe('Menu lateral', () => {
   beforeEach(() => {
     cy.visit('http://localhost:8000/login/')
-    cy.get('input[name="username"]').type('meuUsuario')
-    cy.get('input[name="password"]').type('minhaSenha')
+    cy.get('input[name="username"]').type('Jaime')
+    cy.get('input[name="password"]').type('Jaime**12')
     cy.get('button[type="submit"]').click()
   })
 
