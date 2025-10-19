@@ -19,10 +19,11 @@ Usuario = get_user_model()
 # ----------------------------
 
 def get_partidas_context(request):
+    if not request.user.is_authenticated:
+        return {'partidas': Partida.objects.none()}  # lista vazia, sem erro
+
     partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
-    avaliacoes = AvaliacaoPartida.objects.filter(usuario=request.user)
-    partidas_avaliadas = {a.partida_id for a in avaliacoes}
-    return {"partidas": partidas, "partidas_avaliadas": partidas_avaliadas}
+    return {'partidas': partidas}
 
 
 # ----------------------------
@@ -94,6 +95,7 @@ def home(request):
 # EMOÇÕES
 # ----------------------------
 
+@login_required(login_url='/login/')
 def avaliar_torcida(request, partida_id, time_index=1):
     partida = get_object_or_404(Partida, id=partida_id)
     time = partida.time_casa if time_index == 1 else partida.time_visitante
@@ -116,6 +118,7 @@ def avaliar_torcida(request, partida_id, time_index=1):
     return render(request, 'emocao/avaliar_torcida.html', context)
 
 
+@login_required(login_url='/login/')
 def avaliacao_inicio(request):
     context = {}
     context.update(get_partidas_context(request))
@@ -204,6 +207,7 @@ def resultado_avaliacoes(request):
 # MÍDIA
 # ----------------------------
 
+@login_required(login_url='/login/')
 def galeria(request):
     context = {
         "partidas": Partida.objects.filter(usuario=request.user).order_by("-data"),
@@ -299,6 +303,7 @@ def lista_links(request):
 # PARTIDAS
 # ----------------------------
 
+@login_required(login_url='/login/')
 def lista_partidas(request):
     partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
     avaliacoes = AvaliacaoPartida.objects.filter(usuario=request.user)
@@ -308,7 +313,7 @@ def lista_partidas(request):
         "partidas_avaliadas": partidas_avaliadas
     })
 
-
+@login_required(login_url='/login/')
 def registrar_partida(request):
     times = Time.objects.all()
 
@@ -331,7 +336,7 @@ def registrar_partida(request):
     context.update(get_partidas_context(request))
     return render(request, "partidas/registrar_partida.html", context)
 
-
+@login_required(login_url='/login/')
 def avaliar_partida(request, partida_id):
     partida = get_object_or_404(Partida, id=partida_id)
 
