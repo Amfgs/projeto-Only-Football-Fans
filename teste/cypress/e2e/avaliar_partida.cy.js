@@ -8,9 +8,9 @@ describe('Avaliar Partida', () => {
     cy.get('input[name="nota"]').type('4')
     cy.get('input[name="melhor_jogador"]').type('Messi')
     cy.get('input[name="pior_jogador"]').type('Maradona')
-    cy.get('textarea[name="comentario"]').type('Partida interessante.')
-    cy.get('button[type="submit"]').click()
+    cy.get('textarea[name="comentario_avaliacao"]').type('Partida interessante.')
+    cy.contains('button', 'Enviar Avaliação').click()
 
-    cy.contains('Avaliação registrada com sucesso!')
+    cy.contains('Avaliação registrada com sucesso!') // Ajuste conforme mensagem real
   })
 })
