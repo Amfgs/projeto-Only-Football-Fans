@@ -23,7 +23,7 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 - **Diego Magnata** – [dfm@cesar.school](mailto:dfm@cesar.school)  
   🟢 *Scrum Master – Time de Desenvolvimento*  
 
-- **Luiz Guilherme** – [lgsgs@cesar.school](mailto:lgsgs@cesar.school)  
+- **Guilherme Silvestre** – [lgsgs@cesar.school](mailto:lgsgs@cesar.school)  
   🟢 *Engenheiro de QA – Time de Desenvolvimento*  
 
 - **Matheus Fialho** – [mgfm@cesar.school](mailto:mgfm@cesar.school)  
@@ -51,7 +51,7 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 <details>
   <summary>- ✅ Semana 1 </summary>
   
-  [Screencast](https://youtu.be/Fxc6gBIscdQ)
+  [Screencast](https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4)
   
   [Histórias](https://docs.google.com/document/d/1KJ7e-UgdJZPT6Hks4MEKToqq0ciq734pU-kY532tJzU/edit?usp=sharing )
   
@@ -64,12 +64,18 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 
 <details>
   <summary>- ✅ Semana 2 </summary>
+
+  Programação em Dupla / Relato
+  [Print da Sessão de Programação em Dupla](images/programacao_dupla.png)
+  
+  BackLog Jira Atualizado
+  [Print do BackLog Jira da Semana 2](images/backlog2.png) 
   
   Link do deploy
-  [link deploy]()
+  https://only-football-fans.azurewebsites.net/login/
   
   Screencast do deploy
-  [screencast Do Deploy]()
+  https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4
   
   Issue/Bug Tracker
   [issue/bug tracker](images/bug_tracker1.png)

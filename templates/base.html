@@ -1,79 +1,139 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
+<head> 
     <meta charset="UTF-8">
     <title>OFF</title>
     <style>
         /* Reset básico */
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            display: flex;
-            height: 100vh;
-        }
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    height: 100vh;
+}
 
-        /* Cabeçalho */
-        .header {
-            position: fixed;
-            top: 0;
-            left: 200px;
-            width: calc(100% - 200px);
-            background-color: #1a1a1a;
-            color: #fff;
-            padding: 15px;
-            text-align: center;
-            z-index: 10;
-        }
+/* Cabeçalho */
+.header {
+    position: fixed;
+    top: 0;
+    left: 200px;
+    width: calc(100% - 200px);
+    background-color: #0056b3; /* tom mais escuro do azul */
+    color: #ffffff;
+    padding: 15px;
+    text-align: center;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* sombra leve */
+}
 
-        /* Sidebar */
-        .sidebar {
-            width: 200px;
-            background-color: #2d2d2d;
-            color: #fff;
-            padding-top: 20px;
-            position: fixed;
-            top: 0;
-            bottom: 0;
-        }
+/* Sidebar */
+.sidebar {
+    width: 200px;
+    background: linear-gradient(to bottom, #007bff, #3399ff); /* gradiente azul */
+    color: #ffffff;
+    padding-top: 20px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2); /* sombra lateral */
+}
 
-        .sidebar p {
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
+.sidebar p {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
 
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
 
-        .sidebar ul li {
-            padding: 10px 15px;
-        }
+.sidebar ul li {
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+}
 
-        .sidebar ul li a,
-        .sidebar ul li form button {
-            text-decoration: none;
-            color: #fff;
-            display: block;
-            width: 100%;
-            text-align: left;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 15px;
-        }
+.sidebar ul li a,
+.sidebar ul li form button {
+    text-decoration: none;
+    color: #ffffff;
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    transition: color 0.3s ease, background-color 0.3s ease; /* transição suave */
+}
 
-        .sidebar ul li:hover {
-            background-color: #444;
-        }
+.sidebar ul li:hover {
+    background-color: #66b3ff; /* azul mais claro no hover */
+}
 
-        /* Conteúdo principal */
-        .content {
-            margin-left: 200px;
-            padding: 80px 20px 20px;
-            width: calc(100% - 200px);
-        }
+/* Conteúdo principal */
+.content {
+    margin-left: 200px;
+    padding: 80px 20px 20px;
+    width: calc(100% - 200px);
+}
+
+/* Modal popup */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 800px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #000;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card button {
+    padding: 5px 10px;
+    cursor: pointer;
+}
     </style>
 </head>
 <body>
@@ -84,13 +144,13 @@
     <div class="sidebar">
         <p><strong>Menu</strong></p>
         <ul>
-            <li><a href="{% url 'core:nova_avaliacao' %}">Avaliar estádio</a></li>
-            <li><a href="{% url 'core:lista_partidas' %}">Avaliar partida</a></li>
+            <li><a href="{% url 'core:avaliacao_inicio' %}">Avaliar estádio</a></li>
+            <li><a href="#" onclick="abrirModal()">Avaliar Partida</a></li>
+            <li><a href="{% url 'core:lista_partidas' %}">Histórico</a></li>
             <li><a href="{% url 'core:galeria' %}">Galeria</a></li>
-            <li><a href="{% url 'core:registrar_partida' %}">Agenda</a></li>
-            <li><a href="#">Assistir jogos</a></li>
-            <li><a href="#">Configurações</a></li>
-            <li><a href="#">Histórico</a></li>
+            <li><a href="{% url 'core:registrar_partida' %}">Registrar Partidas</a></li>
+            <li><a href="{% url 'core:lista_links' %}">Assistir jogos</a></li>
+            <li><a href="{% url 'core:perfil' %}">Configurações</a></li>
             <li>
                 <form action="{% url 'core:logout' %}" method="post">
                     {% csrf_token %}
@@ -104,5 +164,8 @@
         {% block content %}
         {% endblock %}
     </div>
-</body>
-</html>
+
+    <!-- Pop-Up -->
+{% include 'partidas/popup_avaliar_partida.html' %}
+
+

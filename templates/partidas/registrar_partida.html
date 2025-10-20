@@ -1,90 +1,144 @@
 {% extends 'base.html' %}
 
+{% block extra_head %}
+    {# Link para a fonte do Google Fonts para manter a consistência visual #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<div class="content-container">
-  <h2>Registrar Partida</h2>
+<main class="form-container">
+    <h2 class="form-title">Registrar Partida</h2>
 
-  <form method="post" class="form-card">
-    {% csrf_token %}
+    <form method="post" class="form-card">
+        {% csrf_token %}
 
-    <div class="form-group">
-      <label for="time_casa">Time da Casa:</label>
-      <input list="times_casa" name="time_casa" id="time_casa" class="form-control" placeholder="Digite o nome do time" required>
-      <datalist id="times_casa">
-        {% for time in times %}
-          <option value="{{ time.nome }}">
-        {% endfor %}
-      </datalist>
-    </div>
+        <div class="form-group">
+            <label for="time_casa" class="form-label">Time da Casa:</label>
+            <input list="times_casa" name="time_casa" id="time_casa" class="form-input" placeholder="Digite ou selecione o nome do time" required>
+            <datalist id="times_casa">
+                {% for time in times %}
+                <option value="{{ time.nome }}">
+                {% endfor %}
+            </datalist>
+        </div>
 
-    <div class="form-group">
-      <label for="time_visitante">Time Visitante:</label>
-      <input list="times_visitante" name="time_visitante" id="time_visitante" class="form-control" placeholder="Digite o nome do time" required>
-      <datalist id="times_visitante">
-        {% for time in times %}
-          <option value="{{ time.nome }}">
-        {% endfor %}
-      </datalist>
-    </div>
+        <div class="form-group">
+            <label for="time_visitante" class="form-label">Time Visitante:</label>
+            <input list="times_visitante" name="time_visitante" id="time_visitante" class="form-input" placeholder="Digite ou selecione o nome do time" required>
+            <datalist id="times_visitante">
+                {% for time in times %}
+                <option value="{{ time.nome }}">
+                {% endfor %}
+            </datalist>
+        </div>
 
-    <div class="form-group">
-      <label for="data">Data e Hora:</label>
-      <input type="datetime-local" name="data" id="data" class="form-control" required>
-    </div>
+        <div class="form-group">
+            <label for="data" class="form-label">Data e Hora:</label>
+            <input type="datetime-local" name="data" id="data" class="form-input" required>
+        </div>
 
-    <button type="submit" class="btn-submit">Registrar</button>
-  </form>
-</div>
+        <button type="submit" class="btn-submit">Registrar</button>
+    </form>
+</main>
 
 <style>
-/* Container principal */
-.content-container {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 700px;
-    margin: 0 auto;
-}
+    /* --- Variáveis de Estilo (Consistente com a Galeria) --- */
+    :root {
+        --primary-bg: #f4f7f9;
+        --card-bg: #ffffff;
+        --text-primary: #1d2d35;
+        --text-secondary: #657786;
+        --button-green: #00adb5;
+        --button-green-hover: #00939a;
+        --border-color: #e1e8ed;
+        --border-focus-color: #00adb5;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+    }
 
-/* Formulário */
-.form-card {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
+    /* --- Container Principal --- */
+    .form-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Poppins', sans-serif;
+    }
 
-/* Inputs e labels */
-.form-card label {
-    font-weight: 500;
-    margin-top: 6px;
-}
+    .form-title {
+        text-align: center;
+        color: var(--text-primary);
+        margin-bottom: 2rem;
+        font-size: 2.25rem;
+    }
 
-.form-card input, .form-card datalist {
-    padding: 8px 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-    box-sizing: border-box;
-}
+    /* --- Card do Formulário --- */
+    .form-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem; /* Aumenta o espaçamento entre os campos */
+    }
 
-/* Botões */
-.btn-submit {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 500;
-    margin-top: 10px;
-}
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 
-.btn-submit:hover {
-    background-color: #0056b3;
-}
+    .form-label {
+        font-weight: 500;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        color: var(--text-primary);
+        background-color: #fdfdfd;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-input::placeholder {
+        color: #a0b0b8;
+    }
+
+    /* Efeito de foco para melhor UX */
+    .form-input:focus {
+        outline: none;
+        border-color: var(--border-focus-color);
+        box-shadow: 0 0 0 3px rgba(0, 173, 181, 0.15);
+    }
+
+    /* --- Botão de Envio --- */
+    .btn-submit {
+        background-color: var(--button-green);
+        color: white;
+        border: none;
+        padding: 0.9rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 1rem;
+        margin-top: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: var(--button-green-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 173, 181, 0.3);
+    }
 </style>
 {% endblock %}

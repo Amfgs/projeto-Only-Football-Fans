@@ -1,39 +1,268 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Avaliar Estádio</h2>
+<div class="avaliacao-container">
+    <div class="avaliacao-card">
+        <h2 class="avaliacao-titulo">Avaliar Estádio</h2>
 
-{% if messages %}
-  <ul>
-    {% for message in messages %}
-      <li style="color: red;">{{ message }}</li>
-    {% endfor %}
-  </ul>
-{% endif %}
+        {% if messages %}
+        <div class="mensagens-erro">
+            {% for message in messages %}
+            <div class="mensagem-erro">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
 
-<form method="POST">
-    {% csrf_token %}
+        <form method="POST" class="avaliacao-form">
+            {% csrf_token %}
 
-    <!-- Estádio -->
-    <label for="estadio">Estádio:</label><br>
-    <input type="text" id="estadio" name="estadio" value="{{ request.POST.estadio }}" required><br><br>
+            <!-- Estádio -->
+            <div class="form-group">
+                <label for="estadio" class="form-label">Estádio:</label>
+                <input type="text" id="estadio" name="estadio" value="{{ request.POST.estadio }}" 
+                       class="form-input" placeholder="Nome do estádio" required>
+            </div>
 
-    <!-- Avaliação -->
-    <p>Avaliação da experiência:</p>
-    {% for i in "12345" %}
-        <label>
-            <input type="radio" name="avaliacao" value="{{ i }}"
-                {% if request.POST.avaliacao == i %}checked{% endif %}>
-            {{ i }}
-        </label>
-    {% endfor %}
-    <br><br>
+            <!-- Avaliação -->
+            <div class="form-group">
+                <p class="avaliacao-texto">Avaliação da experiência:</p>
+                <div class="rating-group">
+                    {% for i in "12345" %}
+                    <label class="rating-label">
+                        <input type="radio" name="avaliacao" value="{{ i }}"
+                            class="rating-input" 
+                            {% if request.POST.avaliacao == i %}checked{% endif %}>
+                        <span class="rating-star">{{ i }} ⭐</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
 
-    <!-- Comentário -->
-    <label for="comentario">Comentário:</label><br>
-    <textarea id="comentario" name="comentario" rows="3" placeholder="Escreva seu comentário...">{{ request.POST.comentario }}</textarea>
-    <br><br>
+            <!-- Comentário -->
+            <div class="form-group">
+                <label for="comentario" class="form-label">Comentário:</label>
+                <textarea id="comentario" name="comentario" rows="4" 
+                          class="form-textarea" 
+                          placeholder="Compartilhe sua experiência com o estádio...">{{ request.POST.comentario }}</textarea>
+            </div>
 
-    <button type="submit">Enviar Avaliação</button>
-</form>
+            <button type="submit" class="botao-enviar">Enviar Avaliação</button>
+        </form>
+    </div>
+</div>
+
+<style>
+.avaliacao-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 80vh;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.avaliacao-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.avaliacao-titulo {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.mensagens-erro {
+    margin-bottom: 25px;
+}
+
+.mensagem-erro {
+    background: #fee;
+    color: #c33;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border-left: 4px solid #c33;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e1e8ed;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.avaliacao-texto {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.rating-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.rating-label {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.rating-input {
+    display: none;
+}
+
+.rating-star {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #f8f9fa;
+    border: 2px solid #e1e8ed;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #6c757d;
+    transition: all 0.3s ease;
+    min-width: 60px;
+    text-align: center;
+}
+
+.rating-input:checked + .rating-star {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border-color: #007bff;
+    transform: scale(1.05);
+}
+
+.rating-label:hover .rating-star {
+    transform: translateY(-2px);
+    border-color: #007bff;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.botao-enviar {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    padding: 16px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.botao-enviar:hover {
+    background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.botao-enviar:active {
+    transform: translateY(0);
+}
+
+/* Animações */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .avaliacao-container {
+        padding: 20px 15px;
+        min-height: 70vh;
+    }
+    
+    .avaliacao-card {
+        padding: 30px 25px;
+    }
+    
+    .avaliacao-titulo {
+        font-size: 1.7rem;
+    }
+    
+    .rating-group {
+        justify-content: center;
+    }
+    
+    .rating-star {
+        padding: 10px 16px;
+        min-width: 50px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .avaliacao-card {
+        padding: 25px 20px;
+    }
+    
+    .avaliacao-titulo {
+        font-size: 1.5rem;
+    }
+    
+    .rating-group {
+        gap: 8px;
+    }
+    
+    .rating-star {
+        padding: 8px 12px;
+        min-width: 45px;
+        font-size: 0.85rem;
+    }
+    
+    .form-input, .form-textarea {
+        padding: 12px 14px;
+    }
+    
+    .botao-enviar {
+        padding: 14px 30px;
+        font-size: 1rem;
+    }
+}
+</style>
 {% endblock %}

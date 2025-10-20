@@ -1,97 +1,183 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<div class="content-container">
-    <h2>Adicionar mídia - Partida {{ definicao.id }}</h2>
+{% block extra_head %}
+    {# Inclui a fonte Poppins para consistência visual com o design base #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+{% endblock %}
 
-    <form method="post" enctype="multipart/form-data" class="media-form">
+{% block content %}
+<main class="form-container">
+    <h2 class="form-title">Adicionar Mídia - Partida {{ definicao.id }}</h2>
+
+    {# O 'form-card' é usado para dar o estilo de card ao formulário #}
+    <form method="post" enctype="multipart/form-data" class="form-card media-form">
         {% csrf_token %}
 
-        <!-- Imagem -->
         <div class="form-group">
-            <label for="imagem">Selecionar imagem:</label>
-            <input type="file" id="imagem" name="imagem" accept="image/*">
+            <label for="imagem" class="form-label">Selecionar imagem:</label>
+            <input type="file" id="imagem" name="imagem" accept="image/*" class="form-input-file">
         </div>
 
-        <!-- Vídeo -->
         <div class="form-group">
-            <label for="video">Selecionar vídeo:</label>
-            <input type="file" id="video" name="video" accept="video/*">
+            <label for="video" class="form-label">Selecionar vídeo:</label>
+            <input type="file" id="video" name="video" accept="video/*" class="form-input-file">
         </div>
 
-        <!-- Áudio -->
         <div class="form-group">
-            <label for="audio">Selecionar áudio:</label>
-            <input type="file" id="audio" name="audio" accept="audio/*">
+            <label for="audio" class="form-label">Selecionar áudio:</label>
+            <input type="file" id="audio" name="audio" accept="audio/*" class="form-input-file">
         </div>
 
         <div class="form-buttons">
+            {# Reutiliza a classe btn-submit para o botão primário "Enviar" #}
             <button type="submit" class="btn-submit">Enviar</button>
+            {# Reutiliza a classe btn-cancel para o botão secundário "Cancelar" #}
             <a href="{% url 'core:galeria' %}" class="btn-cancel">Cancelar</a>
         </div>
     </form>
-</div>
+</main>
 
 <style>
-/* Container principal */
-.content-container {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 600px;
-    margin: 0 auto;
-}
+    /* --- Variáveis de Estilo (Consistente com o design de referência) --- */
+    :root {
+        --primary-bg: #f4f7f9;
+        --card-bg: #ffffff;
+        --text-primary: #1d2d35;
+        --text-secondary: #657786;
+        --button-green: #00adb5;
+        --button-green-hover: #00939a;
+        --button-cancel: #657786; /* Cinza para botão de Cancelar */
+        --button-cancel-hover: #4e5d6a;
+        --border-color: #e1e8ed;
+        --border-focus-color: #00adb5;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+    }
 
-/* Formulário */
-.media-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+    /* --- Container Principal (Reutiliza classes) --- */
+    .form-container {
+        max-width: 600px; /* Mantém o max-width original */
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Poppins', sans-serif;
+    }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
+    .form-title {
+        text-align: center;
+        color: var(--text-primary);
+        margin-bottom: 2rem;
+        font-size: 2.25rem;
+    }
 
-.form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
+    /* --- Card do Formulário (Reutiliza classes) --- */
+    .form-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem; /* Espaçamento consistente */
+    }
 
-.form-group input[type="file"] {
-    padding: 5px;
-}
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 
-/* Botões */
-.form-buttons {
-    display: flex;
-    gap: 10px;
-}
+    .form-label {
+        font-weight: 500;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+    }
 
-.btn-submit {
-    background-color: #2d2d2d;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
+    /* --- Inputs de Arquivo (Customizados para o novo design) --- */
+    .form-input-file {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        color: var(--text-primary);
+        background-color: #fdfdfd;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-.btn-submit:hover {
-    background-color: #444;
-}
+    /* Efeito de foco suave */
+    .form-input-file:focus {
+        outline: none;
+        border-color: var(--border-focus-color);
+        box-shadow: 0 0 0 3px rgba(0, 173, 181, 0.15);
+    }
 
-.btn-cancel {
-    text-decoration: none;
-    color: #2d2d2d;
-    border: 1px solid #2d2d2d;
-    padding: 8px 15px;
-    border-radius: 5px;
-}
+    /* Pequeno ajuste para o botão de seleção nativo em alguns browsers */
+    .form-input-file::-webkit-file-upload-button {
+        padding: 0.5rem 0.8rem;
+        border: none;
+        background-color: var(--button-green);
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 10px;
+        transition: background-color 0.3s;
+    }
 
-.btn-cancel:hover {
-    background-color: #eee;
-}
+    .form-input-file::-webkit-file-upload-button:hover {
+        background-color: var(--button-green-hover);
+    }
+
+    /* --- Botões (Adaptado) --- */
+    .form-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 1rem;
+    }
+
+    /* Estilo para Botão Primário (Enviar) */
+    .btn-submit {
+        background-color: var(--button-green);
+        color: white;
+        border: none;
+        padding: 0.9rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 1rem;
+        flex-grow: 1;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: var(--button-green-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 173, 181, 0.3);
+    }
+
+    /* Estilo para Botão Cancelar/Voltar */
+    .btn-cancel {
+        background-color: var(--button-cancel);
+        color: white;
+        padding: 0.9rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 1rem;
+        flex-grow: 1;
+        text-align: center;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+        background-color: var(--button-cancel-hover);
+    }
 </style>
 {% endblock %}
