@@ -84,7 +84,6 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   [quadro jira](images/quadrojira2.png)
 </details>
 - ⏳ **Semana 3**  
-
 - ⏳ **Semana 4**  
 
 ---
