@@ -13,6 +13,7 @@ import os
 # Validação de tamanho máximo (5MB) + miniaturas automáticas
 # =======================
 
+
 # Início do app usuarios
 
 class Usuario(AbstractUser):
