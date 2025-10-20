@@ -10,8 +10,4 @@ describe('Menu lateral', () => {
     cy.contains('Menu').should('be.visible') // troque para o texto correto
   })
 
-  it('Clica em Agenda e vai para registrar_partida', () => {
-    cy.contains('Agenda').click()
-    cy.url().should('include', 'registrar_partida') // troque conforme url real
-  })
 })

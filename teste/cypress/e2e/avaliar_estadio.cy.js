@@ -1,15 +1,16 @@
-describe('Avaliar Estádio', () => {
+describe('Avaliar Partida', () => {
   beforeEach(() => {
     cy.login()
   })
 
-  it('Deve avaliar um estádio', () => {
-    cy.visit('http://127.0.0.1:8000/emocao/avaliacao/inicio/')
-    cy.get('input[name="estadio"]').type('Estádio Legal')
-    cy.get('input[name="avaliacao"]').type('5')
-    cy.get('textarea[name="comentario"]').type('Ótima experiência!')
+  it('Deve avaliar a primeira partida da lista', () => {
+    cy.visit('http://127.0.0.1:8000/partidas/avaliar/5/') // Atualizar ID dinamicamente se quiser
+    cy.get('input[name="nota"]').type('4')
+    cy.get('input[name="melhor_jogador"]').type('Messi')
+    cy.get('input[name="pior_jogador"]').type('Maradona')
+    cy.get('textarea[name="comentario_avaliacao"]').type('Partida interessante.')
     cy.get('button[type="submit"]').click()
 
-    cy.contains('Avaliação registrada com sucesso!') // Ajuste se o template for diferente
+    cy.contains('Avaliação registrada com sucesso!') // Ajuste conforme mensagem real
   })
 })

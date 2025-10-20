@@ -26,8 +26,8 @@
 
 Cypress.Commands.add('login', () => {
   cy.visit('http://127.0.0.1:8000/login/')
-  cy.get('input[name="username"]').type('meuUsuario')
-  cy.get('input[name="password"]').type('minhaSenha')
+  cy.get('input[name="username"]').type('Jaime')
+  cy.get('input[name="password"]').type('Jaime**12')
   cy.get('button[type="submit"]').click()
   cy.url().should('eq', 'http://127.0.0.1:8000/')
 })
