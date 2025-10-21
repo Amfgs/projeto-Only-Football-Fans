@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+    <!-- Fonte Poppins (mesma usada nos outros templates) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main class="form-container">
+    <h2 class="form-title">Avaliação da Partida</h2>
+
+    {% if avaliacao %}
+    <div class="form-card">
+        <div class="info-linha">
+            <h3>{{ avaliacao.partida.time_casa }} x {{ avaliacao.partida.time_visitante }}</h3>
+            <p class="data">{{ avaliacao.partida.data|date:"d/m/Y H:i" }}</p>
+        </div>
+
+        <div class="avaliacao-detalhes">
+            <p><strong>Usuário:</strong> {{ avaliacao.usuario.username }}</p>
+            <p><strong>Nota:</strong> ⭐ {{ avaliacao.nota }}/5</p>
+
+            {% if avaliacao.melhor_jogador %}
+                <p><strong>Melhor jogador:</strong> {{ avaliacao.melhor_jogador }}</p>
+            {% endif %}
+
+            {% if avaliacao.pior_jogador %}
+                <p><strong>Pior jogador:</strong> {{ avaliacao.pior_jogador }}</p>
+            {% endif %}
+
+            {% if avaliacao.comentario %}
+                <p><strong>Comentário:</strong></p>
+                <div class="comentario">{{ avaliacao.comentario }}</div>
+            {% else %}
+                <p><em>Sem comentário registrado.</em></p>
+            {% endif %}
+        </div>
+
+        <div class="form-buttons">
+            <a href="{% url 'core:lista_partidas' %}" class="btn-cancel">Voltar para Lista</a>
+            <a href="{% url 'core:avaliar_torcida' avaliacao.partida.id %}" class="btn-submit btn-secondary">Avaliar Torcida</a>
+        </div>
+    </div>
+    {% else %}
+        <p>Essa avaliação não foi encontrada.</p>
+        <a href="{% url 'core:lista_partidas' %}" class="btn-cancel">Voltar</a>
+    {% endif %}
+</main>
+
+<style>
+    :root {
+        --primary-bg: #f4f7f9;
+        --card-bg: #ffffff;
+        --text-primary: #1d2d35;
+        --text-secondary: #657786;
+        --button-green: #00adb5;
+        --button-green-hover: #00939a;
+        --button-cancel: #657786;
+        --button-cancel-hover: #4e5d6a;
+        --button-extra: #28a745;
+        --button-extra-hover: #1e7e34;
+        --border-color: #e1e8ed;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+    }
+
+    .form-container {
+        max-width: 700px;
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .form-title {
+        text-align: center;
+        color: var(--text-primary);
+        margin-bottom: 2rem;
+        font-size: 2rem;
+    }
+
+    .form-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .info-linha {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .info-linha h3 {
+        font-size: 1.3rem;
+        color: var(--text-primary);
+        margin: 0;
+    }
+
+    .data {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .avaliacao-detalhes p {
+        margin: 0.5rem 0;
+        color: var(--text-primary);
+    }
+
+    .comentario {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    .form-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 1rem;
+    }
+
+    .btn-submit {
+        background-color: var(--button-green);
+        color: white;
+        border: none;
+        padding: 0.9rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 1rem;
+        flex-grow: 1;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: var(--button-green-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 173, 181, 0.3);
+    }
+
+    .btn-secondary {
+        background-color: var(--button-extra);
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--button-extra-hover);
+        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-cancel {
+        background-color: var(--button-cancel);
+        color: white;
+        padding: 0.9rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 1rem;
+        flex-grow: 1;
+        text-align: center;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+        background-color: var(--button-cancel-hover);
+    }
+</style>
+{% endblock %}

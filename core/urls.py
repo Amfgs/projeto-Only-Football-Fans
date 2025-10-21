@@ -31,5 +31,6 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),   # <- Logout personalizado
 
     # Página inicial
-    path('', views.home, name='home'),
+    path('', views.registrar_partida, name='home'),
+    path('perfil/', views.perfil, name='perfil'),
 ]
