@@ -83,7 +83,15 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   Quadro Jira
   [quadro jira](images/quadrojira2.png)
 </details>
-- ⏳ **Semana 3**  
+<details>
+  <summary>- ✅ Semana 3 </summary>
+  
+  BackLog Jira Atualizado
+  [Print do BackLog Jira da Semana 3](images/backlog3.png) 
+  
+  Quadro Jira
+  [quadro jira](images/quadrojira3.png)
+</details>
 - ⏳ **Semana 4**  
 
 ---
