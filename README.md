@@ -94,6 +94,7 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 
   Issue/ Bug Tracker 
   [Open](images/bug_tracker2_open.png)
+  
   [Closed](images/bug_tracker2_closed.png)
 
   Screencast dos Testes
