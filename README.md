@@ -93,6 +93,7 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   [Quadro jira da Semana 3](images/quadrojira3.png)
 
   Issue/ Bug Tracker 
+  
   [Open](images/bug_tracker2_open.png)
   
   [Closed](images/bug_tracker2_closed.png)
