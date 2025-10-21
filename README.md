@@ -78,10 +78,10 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4
   
   Issue/Bug Tracker
-  [issue/bug tracker](images/bug_tracker1.png)
+  [Issue/Bug tracker](images/bug_tracker1.png)
   
   Quadro Jira
-  [quadro jira](images/quadrojira2.png)
+  [Quadro jira](images/quadrojira2.png)
 </details>
 <details>
   <summary>- ✅ Semana 3 </summary>
@@ -90,7 +90,14 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   [Print do BackLog Jira da Semana 3](images/backlog3.png) 
   
   Quadro Jira
-  [quadro jira](images/quadrojira3.png)
+  [Quadro jira](images/quadrojira3.png)
+
+  Issue/ Bug Tracker - Open
+  [Open](images/bug_tracker2_open.png)
+
+  Issue/ Bug Tracker - Closed
+  [Closed](images/bug_tracker2_closed.png)
+  
 </details>
 - ⏳ **Semana 4**  
 
