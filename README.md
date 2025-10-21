@@ -97,6 +97,16 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 
   Issue/ Bug Tracker - Closed
   [Closed](images/bug_tracker2_closed.png)
+
+  Issue/ Bug Tracker 
+  [Open](images/bug_tracker2_open.png)
+  [Closed](images/bug_tracker2_closed.png)
+
+  Screencast dos Testes
+  https://youtu.be/c-wovCPDYfY?si=dTk3_qhHd_bDsY7F
+
+  Programação em Dupla / Relato 2
+  [Print da Sessão de Programação em Dupla](images/programacao_dupla2.png)
   
 </details>
 - ⏳ **Semana 4**  
