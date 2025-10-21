@@ -92,12 +92,6 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   Quadro Jira
   [Quadro jira da Semana 3](images/quadrojira3.png)
 
-  Issue/ Bug Tracker - Open
-  [Open](images/bug_tracker2_open.png)
-
-  Issue/ Bug Tracker - Closed
-  [Closed](images/bug_tracker2_closed.png)
-
   Issue/ Bug Tracker 
   [Open](images/bug_tracker2_open.png)
   [Closed](images/bug_tracker2_closed.png)
