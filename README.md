@@ -87,10 +87,10 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   <summary>- ✅ Semana 3 </summary>
   
   BackLog Jira Atualizado
-  [Print do BackLog Jira da Semana 2](images/backlog3.png)
+  [Print do BackLog Jira da Semana 3](images/backlog3.png)
   
   Quadro Jira
-  [Quadro jira](images/quadrojira3.png)
+  [Quadro jira da Semana 3](images/quadrojira3.png)
 
   Issue/ Bug Tracker - Open
   [Open](images/bug_tracker2_open.png)
