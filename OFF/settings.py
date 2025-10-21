@@ -19,22 +19,28 @@ env_path = BASE_DIR / '.env'
 if env_path.exists():
     load_dotenv(env_path)
 else:
-    print(">>> MARCADOR: .env não encontrado, usando DEV")
+    print(">>> MARCADOR: .env não encontrado, usando variáveis de ambiente / DEV")
 
-# Força DEV para testar de vez
-TARGET_ENV = 'dev'
-NOT_PROD = True
+# ======================
+# FEATURE FLAG DEV / PROD
+# ======================
+
+TARGET_ENV = os.getenv('TARGET_ENV', 'Dev')
+NOT_PROD = not TARGET_ENV.lower().startswith('prod')
 
 print(">>> MARCADOR: TARGET_ENV =", TARGET_ENV)
 print(">>> MARCADOR: NOT_PROD =", NOT_PROD)
 
 # ======================
-# MODO DE DESENVOLVIMENTO
+# CONFIGURAÇÕES DE AMBIENTE
 # ======================
+
 if NOT_PROD:
+    # === DESENVOLVIMENTO ===
     DEBUG = True
-    SECRET_KEY = 'django-insecure-cxqukjo1i+k72)^x5x=e5*$r8&t6tz%*%a8q@@cnm=wf)-lncf'
+    SECRET_KEY = 'django-insecure-cxqukjo1i+k72)^x5x=e5*$r8&t6tz%*%a8q@@cnm=wf)-lncf'  # substitua pela sua chave local
     ALLOWED_HOSTS = []
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -42,14 +48,12 @@ if NOT_PROD:
         }
     }
 
-# ======================
-# MODO DE PRODUÇÃO (Heroku, Render etc.)
-# ======================
 else:
+    # === PRODUÇÃO ===
     SECRET_KEY = os.getenv('SECRET_KEY')
     DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
-    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(' ')
-    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(' ')
+    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split()
+    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split()
 
     SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', '0').lower() in ['true', 't', '1']
     if SECURE_SSL_REDIRECT:
@@ -176,7 +180,3 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 # PADRÃO DO DJANGO
 # ======================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-
-
