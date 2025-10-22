@@ -17,8 +17,8 @@ if NOT_PROD:
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = '<A SECRET KEY DO SEU PROJETO>'
-    ALLOWED_HOSTS = []
+    SECRET_KEY = '<60zm-t6f&&s4pdu=pn3u4ie2$qykg(22gpq+fe@=qz@gf(shjp>'
+    ALLOWED_HOSTS = [only-footballfans.azurewebsites.net]
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
