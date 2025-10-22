@@ -59,15 +59,13 @@ jobs:
         with:
           name: python-app
 
-      - name: Azure login
+      - name: Azure login (OIDC)
         uses: azure/login@v2
         with:
-          auth-type: service-principal
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_56A7A1319 }}
-          enant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_98C4810E8 }}
-          lient-secret: ${{ secrets.AZUREAPPSERVICE_CLIENTSECRET }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_98C4810E8 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91C68765 }}
-
+          # auth-type: oidc  # ⚠️ Removido, pois estava causando erro
 
       - name: Deploy to Azure Web App (Production)
         uses: azure/webapps-deploy@v3
