@@ -7,4 +7,4 @@ python manage.py collectstatic --noinput
 python manage.py migrate --noinput
 
 # Inicia Gunicorn
-exec gunicorn OFF.wsgi:application --bind 0.0.0.0:8000 --workers 3
+exec gunicorn OFF.wsgi:application --bind 127.0.0.1:8000 --workers 3
