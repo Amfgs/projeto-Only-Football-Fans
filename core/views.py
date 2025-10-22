@@ -19,7 +19,6 @@ Usuario = get_user_model()
 # ----------------------------
 
 def get_partidas_context(request):
-<<<<<<< HEAD
     """
     Retorna o contexto de partidas e partidas avaliadas pelo usuário logado.
     Se o usuário não estiver logado, retorna listas vazias.
@@ -30,15 +29,8 @@ def get_partidas_context(request):
     partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
     avaliacoes = AvaliacaoPartida.objects.filter(usuario=request.user)
     partidas_avaliadas = {a.partida_id for a in avaliacoes}
-    
-    return {"partidas": partidas, "partidas_avaliadas": partidas_avaliadas}
-=======
-    if not request.user.is_authenticated:
-        return {'partidas': Partida.objects.none()}  # lista vazia, sem erro
 
-    partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
-    return {'partidas': partidas}
->>>>>>> 7f474583b0fb50050fab49e08d20cef759d526fc
+    return {"partidas": partidas, "partidas_avaliadas": partidas_avaliadas}
 
 
 # ----------------------------
@@ -133,10 +125,6 @@ def avaliar_torcida(request, partida_id, time_index=1):
     return render(request, 'emocao/avaliar_torcida.html', context)
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 7f474583b0fb50050fab49e08d20cef759d526fc
 @login_required(login_url='/login/')
 def avaliacao_inicio(request):
     context = {}
@@ -144,20 +132,14 @@ def avaliacao_inicio(request):
     return render(request, 'emocao/avaliacao_inicio.html', context)
 
 
-<<<<<<< HEAD
 @login_required(login_url='/login/')
-=======
->>>>>>> 7f474583b0fb50050fab49e08d20cef759d526fc
 def nova_avaliacao(request):
     if request.method == "POST":
         estadio_nome = request.POST.get("estadio")
         avaliacao_raw = request.POST.get("avaliacao")
         comentario = request.POST.get("comentario")
 
-<<<<<<< HEAD
         # Validação mínima
-=======
->>>>>>> 7f474583b0fb50050fab49e08d20cef759d526fc
         if not estadio_nome or not avaliacao_raw:
             return render(request, "emocao/nova_avaliacao.html", {
                 "erro": "Preencha todos os campos obrigatórios."
@@ -170,12 +152,7 @@ def nova_avaliacao(request):
                 "erro": "A avaliação deve ser um número entre 1 e 5."
             })
 
-<<<<<<< HEAD
         # Cria avaliação associada ao usuário logado
-=======
-        usuario = request.user if request.user.is_authenticated else None
-
->>>>>>> 7f474583b0fb50050fab49e08d20cef759d526fc
         AvaliacaoEstadio.objects.create(
             estadio=estadio_nome,
             avaliacao_experiencia=avaliacao,
@@ -190,10 +167,7 @@ def nova_avaliacao(request):
     return render(request, "emocao/nova_avaliacao.html", context)
 
 
-<<<<<<< HEAD
 @login_required(login_url='/login/')
-=======
->>>>>>> 7f474583b0fb50050fab49e08d20cef759d526fc
 def avaliacoes_anteriores(request):
     page_number = request.GET.get('page', 1)
     avaliacoes = AvaliacaoEstadio.objects.filter(usuario=request.user).order_by('-data_avaliacao')
@@ -348,6 +322,7 @@ def lista_partidas(request):
         "partidas_avaliadas": partidas_avaliadas
     })
 
+
 @login_required(login_url='/login/')
 def registrar_partida(request):
     times = Time.objects.all()
@@ -370,6 +345,7 @@ def registrar_partida(request):
     context = {"times": times}
     context.update(get_partidas_context(request))
     return render(request, "partidas/registrar_partida.html", context)
+
 
 @login_required(login_url='/login/')
 def avaliar_partida(request, partida_id):
@@ -437,8 +413,9 @@ def registrar_gols(request, partida_id):
     context.update(get_partidas_context(request))
     return render(request, "registrar_gols.html", context)
 
+
 # ----------------------------
-# HOME PAGE
+# PERFIL
 # ----------------------------
 
 @login_required
