@@ -62,7 +62,7 @@ jobs:
       - name: Azure login (OIDC)
         uses: azure/login@v2
         with:
-          auth-type: service-principal
+          auth-type: SERVICE_PRINCIPAL
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5619319 }}
           client-secret: ${{ secrets.AZUREAPPSERVICE_CLIENTSECRET }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_98C41C1EDA3A0E8 }}
