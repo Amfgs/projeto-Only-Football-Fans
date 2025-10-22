@@ -84,13 +84,18 @@
         <h1>Login</h1>
         <form method="post" action="{% url 'core:login' %}" class="login-form">
             {% csrf_token %}
-            {{ form.as_p }}
 
-            <!-- mantém a página de destino -->
+            <label for="username">Usuário:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required>
+
             <input type="hidden" name="next" value="{{ next }}">
 
             <button type="submit" class="botao-login">Entrar</button>
         </form>
+
 
         {% if messages %}
             <ul>
