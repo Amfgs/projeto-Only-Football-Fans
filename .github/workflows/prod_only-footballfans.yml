@@ -75,7 +75,7 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_56A7A1319 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_98C4810E8 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91C68765 }}
-          auth-type: 'oidc'
+          auth-type: 'service_principal'
 
 
 
