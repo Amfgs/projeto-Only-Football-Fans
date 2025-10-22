@@ -1,39 +1,58 @@
 name: Build and deploy Python app to Azure Web App - Only-FootballFans
 
+
 on:
   push:
     branches:
       - prod
   workflow_dispatch:
 
-    #wnfkEM KJVENWVKRN
+
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
 
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python version
+
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Create virtual environment and install dependencies
+
+      - name: Install dependencies
         run: |
-          python -m venv antenv
-          source antenv/bin/activate
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Upload artifact for deployment
+
+      # Opcional: rode testes aqui
+      # - name: Run tests
+      #   run: |
+      #     source .venv/bin/activate
+      #     pytest -q
+
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: |
             .
+            !.git/
+            !.github/
+            !.venv/
             !antenv/
+            !**/__pycache__/
+            !**/*.pyc
+
 
   deploy:
     runs-on: ubuntu-latest
@@ -42,23 +61,31 @@ jobs:
       id-token: write
       contents: read
 
+
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: python-app
 
-      - name: Login to Azure
+
+      - name: Azure login (OIDC)
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_56A7A1CE069841C0837E5D481A5B9319 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_98C4810B6A314502BAAE51C1EDA3A0E8 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91C68B93152B44828D30B78399EE7765 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_56A7A1319 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_98C4810E8 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91C68765 }}
           auth-type: federated
-          workload-identity-token-file: ${{ github.token }}
 
-      - name: Deploy to Azure Web App (Production)
+
+
+      - name: Deploy to Azure Web App (production)
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'Only-FootballFans'
-          slot-name: 'Production'
+          # slot-name: 'production'   # opcional; remova para slot padrão
+          # package: '.'             # opcional; por padrão usa o workspace atual
+
+
+
+
