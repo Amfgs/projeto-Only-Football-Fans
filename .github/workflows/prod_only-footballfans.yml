@@ -63,7 +63,7 @@ jobs:
         uses: azure/login@v2.4.0
         with:
           auth-type: oidc
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91C68765 }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
 
       - name: Deploy to Azure Web App (Production)
