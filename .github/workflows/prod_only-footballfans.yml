@@ -62,10 +62,9 @@ jobs:
       - name: Azure login (OIDC)
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_56A7A1319 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_98C4810E8 }}
+          auth-type: oidc
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91C68765 }}
-          # auth-type: oidc  # ⚠️ Removido, pois estava causando erro
+
 
       - name: Deploy to Azure Web App (Production)
         uses: azure/webapps-deploy@v3
