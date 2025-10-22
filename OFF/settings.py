@@ -34,7 +34,7 @@ print(">>> MARCADOR: NOT_PROD =", NOT_PROD)
 # MODO DE DESENVOLVIMENTO
 # ======================
 if NOT_PROD:
-    DEBUG = False
+    DEBUG = True
     SECRET_KEY = 'django-insecure-cxqukjo1i+k72)^x5x=e5*$r8&t6tz%*%a8q@@cnm=wf)-lncf'
     ALLOWED_HOSTS = []
     CSRF_TRUSTED_ORIGINS = []
