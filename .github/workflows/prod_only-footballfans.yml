@@ -62,8 +62,11 @@ jobs:
       - name: Azure login (OIDC)
         uses: azure/login@v2
         with:
-          auth-type: oidc
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91C68765 }}
+          auth-type: service-principal
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_ID }}
 
 
       - name: Deploy to Azure Web App (Production)
