@@ -19,11 +19,13 @@ env_path = BASE_DIR / '.env'
 if env_path.exists():
     load_dotenv(env_path)
 else:
-    print(">>> MARCADOR: .env não encontrado, usando DEV")
+    print(">>> MARCADOR: .env não encontrado, usando valores do sistema")
 
-# Força DEV para testar de vez
-TARGET_ENV = 'dev'
-NOT_PROD = True
+# ======================
+# AMBIENTE
+# ======================
+TARGET_ENV = os.getenv('TARGET_ENV', 'dev')  # 'dev' ou 'prod'
+NOT_PROD = TARGET_ENV != 'prod'
 
 print(">>> MARCADOR: TARGET_ENV =", TARGET_ENV)
 print(">>> MARCADOR: NOT_PROD =", NOT_PROD)
@@ -35,6 +37,7 @@ if NOT_PROD:
     DEBUG = True
     SECRET_KEY = 'django-insecure-cxqukjo1i+k72)^x5x=e5*$r8&t6tz%*%a8q@@cnm=wf)-lncf'
     ALLOWED_HOSTS = []
+    CSRF_TRUSTED_ORIGINS = []
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -43,18 +46,25 @@ if NOT_PROD:
     }
 
 # ======================
-# MODO DE PRODUÇÃO (Heroku, Render etc.)
+# MODO DE PRODUÇÃO
 # ======================
 else:
-    SECRET_KEY = os.getenv('SECRET_KEY')
     DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
-    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(' ')
-    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(' ')
+    SECRET_KEY = os.getenv('SECRET_KEY')
 
+    # ALLOWED_HOSTS e CSRF
+    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'onlyfootballfanscc.azurewebsites.net').split(',')
+    CSRF_TRUSTED_ORIGINS = os.getenv(
+        'CSRF_TRUSTED_ORIGINS',
+        'https://onlyfootballfanscc.azurewebsites.net'
+    ).split(' ')
+
+    # HTTPS se ativado
     SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', '0').lower() in ['true', 't', '1']
     if SECURE_SSL_REDIRECT:
         SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+    # Banco de dados PostgreSQL
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -69,9 +79,7 @@ else:
 # ======================
 # APLICAÇÕES
 # ======================
-
 INSTALLED_APPS = [
-    # apps padrão do Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -79,10 +87,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # compressão e cache
     'whitenoise.runserver_nostatic',
-
-    # app principal do projeto
     'core',
 ]
 
@@ -169,14 +174,10 @@ LOGOUT_REDIRECT_URL = 'core:home'
 # ======================
 # SESSÕES
 # ======================
-SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 dias
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 # ======================
 # PADRÃO DO DJANGO
 # ======================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-
-
