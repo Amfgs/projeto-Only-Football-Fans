@@ -37,7 +37,6 @@ if NOT_PROD:
     DEBUG = True
     SECRET_KEY = 'django-insecure-cxqukjo1i+k72)^x5x=e5*$r8&t6tz%*%a8q@@cnm=wf)-lncf'
     ALLOWED_HOSTS = []
-    CSRF_TRUSTED_ORIGINS = []
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -49,15 +48,15 @@ if NOT_PROD:
 # MODO DE PRODUÇÃO
 # ======================
 else:
-    DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
     SECRET_KEY = os.getenv('SECRET_KEY')
+    DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
 
     # ALLOWED_HOSTS e CSRF
     ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'onlyfootballfanscc.azurewebsites.net').split(',')
     CSRF_TRUSTED_ORIGINS = os.getenv(
         'CSRF_TRUSTED_ORIGINS',
         'https://onlyfootballfanscc.azurewebsites.net'
-    ).split(' ')
+    ).split(',')
 
     # HTTPS se ativado
     SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', '0').lower() in ['true', 't', '1']
