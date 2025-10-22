@@ -35,7 +35,10 @@ if NOT_PROD:
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = 'django-insecure-cxqukjo1i+k72)^x5x=e5*$r8&t6tz%*%a8q@@cnm=wf)-lncf'
 
+    # ✅ Corrigido — adicionado domínio Azure e CSRF confiável
     ALLOWED_HOSTS = ['onlyfootballfanscc.azurewebsites.net', 'localhost', '127.0.0.1']
+    CSRF_TRUSTED_ORIGINS = ['https://onlyfootballfanscc.azurewebsites.net']
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -50,6 +53,7 @@ else:
     ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split()
     CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split()
 
+    # ✅ Garante redirecionamento HTTPS no Azure
     SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', '0').lower() in ['true', 't', '1']
     if SECURE_SSL_REDIRECT:
         SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -183,3 +187,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # PADRÃO DO DJANGO
 # ======================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'core.Usuario'
