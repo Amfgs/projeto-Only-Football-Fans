@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      TARGET_ENV: prod  # define variável de ambiente para o Django
 
     steps:
       - uses: actions/checkout@v4
