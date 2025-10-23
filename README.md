@@ -101,6 +101,9 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   Screencast dos Testes
   https://youtu.be/c-wovCPDYfY?si=dTk3_qhHd_bDsY7F
 
+  Screencast do CI/CD
+  https://youtu.be/XMa_inb8q7g?si=d223A3XJ7rpS5TtO
+
   Screencast do Deployment das Novas Histórias
   https://youtu.be/3ujceBWA1Cs?si=PcHjT4azrKEH4oLb
 
