@@ -34,12 +34,15 @@ jobs:
           python manage.py migrate
 
       - name: Run pytest
-        run: .venv/bin/pytest -q
-        continue-on-error: true  # ignora erro se não houver testes
+        run: |
+          source .venv/bin/activate
+          .venv/bin/pytest -q
+        continue-on-error: true
 
       - name: Run Cypress tests
         run: |
-          npx cypress run || true  # ignora erros se não houver testes
+          npx cypress run
+        continue-on-error: true
 
       - name: Collect static files
         run: |
@@ -69,10 +72,10 @@ jobs:
         with:
           name: python-app
 
-      - name: Azure login using Service Principal
-        uses: azure/login@v2.33.0
+      - name: Azure Login
+        uses: azure/login@v2
         with:
-          auth-type: SERVICE_PRINCIPAL
+          auth-type: service-principal
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
