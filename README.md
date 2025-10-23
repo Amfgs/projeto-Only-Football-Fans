@@ -101,6 +101,9 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   Screencast dos Testes
   https://youtu.be/c-wovCPDYfY?si=dTk3_qhHd_bDsY7F
 
+  Screencast do Deployment das Novas Histórias
+  https://youtu.be/3ujceBWA1Cs?si=PcHjT4azrKEH4oLb
+
   Programação em Dupla / Relato 2
   [Print da Sessão de Programação em Dupla](images/programacao_dupla2.png)
   
