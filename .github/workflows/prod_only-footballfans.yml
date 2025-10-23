@@ -35,11 +35,11 @@ jobs:
 
       - name: Run pytest
         run: .venv/bin/pytest -q
-        continue-on-error: true
+        continue-on-error: true  # ignora erro se não houver testes
 
       - name: Run Cypress tests
         run: |
-          npx cypress run || true
+          npx cypress run || true  # ignora erros se não houver testes
 
       - name: Collect static files
         run: |
@@ -62,9 +62,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    permissions:
-      id-token: write
-      contents: read
 
     steps:
       - name: Download artifact
@@ -72,10 +69,10 @@ jobs:
         with:
           name: python-app
 
-      - name: Azure login via Service Principal
-        uses: azure/login@v2
+      - name: Azure login using Service Principal
+        uses: azure/login@v2.33.0
         with:
-          auth-type: service-principal
+          auth-type: SERVICE_PRINCIPAL
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
