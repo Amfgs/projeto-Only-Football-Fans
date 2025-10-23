@@ -2,22 +2,27 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# ======================
+# BASE_DIR
+# ======================
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Carregar variáveis de ambiente do .env
 load_dotenv(BASE_DIR / '.env')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-TARGET_ENV = os.getenv('TARGET_ENV')
+# ======================
+# ENVIRONMENT
+# ======================
+# Define TARGET_ENV com fallback para 'dev' caso não exista
+TARGET_ENV = os.getenv('TARGET_ENV', 'dev')
 NOT_PROD = not TARGET_ENV.lower().startswith('prod')
 
+# ======================
+# CONFIGURAÇÕES DE AMBIENTE
+# ======================
 if NOT_PROD:
-    # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
-    # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = os.getenv("SECRET_KEY", "")
+    SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
     ALLOWED_HOSTS = ['only-footballfans.azurewebsites.net', '127.0.0.1', 'localhost']
     DATABASES = {
         'default': {
@@ -28,12 +33,10 @@ if NOT_PROD:
 else:
     SECRET_KEY = os.getenv('SECRET_KEY')
     DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
-    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
-    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS').split(' ')
+    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split()
+    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split()
 
-    SECURE_SSL_REDIRECT = \
-        os.getenv('SECURE_SSL_REDIRECT', '0').lower() in ['true', 't', '1']
-
+    SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', '0').lower() in ['true', 't', '1']
     if SECURE_SSL_REDIRECT:
         SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -47,14 +50,10 @@ else:
             'OPTIONS': {'sslmode': 'require'},
         }
     }
-    
-# Application definition
-
 
 # ======================
 # APPS
 # ======================
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -62,15 +61,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    #Adicionar whitenoise na lista de aplicativos instalados
     "whitenoise.runserver_nostatic",
     "core",
 ]
 
+# ======================
+# MIDDLEWARE
+# ======================
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    # Add whitenoise middleware after the security middleware                             
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -82,7 +82,6 @@ MIDDLEWARE = [
 # ======================
 # URLS
 # ======================
-
 ROOT_URLCONF = 'OFF.urls'
 
 TEMPLATES = [
@@ -104,9 +103,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'OFF.wsgi.application'
 
 # ======================
-# PASSWORDS
+# PASSWORD VALIDATORS
 # ======================
-
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -117,7 +115,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # ======================
 # INTERNACIONALIZAÇÃO
 # ======================
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -126,24 +123,19 @@ USE_TZ = True
 # ======================
 # STATIC
 # ======================
-
-# STATIC_URL = "static/"
 STATIC_URL = os.environ.get('DJANGO_STATIC_URL', "/static/")
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ======================
 # MEDIA
 # ======================
-
 MEDIA_URL = '/midia/'
 MEDIA_ROOT = BASE_DIR / 'midia'
 
 # ======================
 # AUTENTICAÇÃO
 # ======================
-
 AUTH_USER_MODEL = 'core.Usuario'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'core:home'
@@ -152,7 +144,6 @@ LOGOUT_REDIRECT_URL = 'core:home'
 # ======================
 # SESSÃO
 # ======================
-
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 dias
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_SAMESITE = None
@@ -163,5 +154,4 @@ CSRF_COOKIE_SECURE = False
 # ======================
 # PADRÃO DJANGO
 # ======================
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
