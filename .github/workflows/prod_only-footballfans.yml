@@ -1,4 +1,4 @@
-name: Build and deploy Python app to Azure Web App - Only-FootballFans
+name: Build, Test and Deploy Django App - Only-FootballFans
 
 on:
   push:
@@ -26,12 +26,26 @@ jobs:
           source .venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
+          npm install -g cypress
 
-      # Opcional: rode testes automáticos se quiser
-      # - name: Run tests
-      #   run: |
-      #     source .venv/bin/activate
-      #     pytest -q
+      - name: Run Django migrations
+        run: |
+          source .venv/bin/activate
+          python manage.py migrate
+
+      - name: Run pytest
+        run: |
+          source .venv/bin/activate
+          pytest -q
+
+      - name: Run Cypress tests
+        run: |
+          npx cypress run
+
+      - name: Collect static files
+        run: |
+          source .venv/bin/activate
+          python manage.py collectstatic --noinput
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -59,16 +73,17 @@ jobs:
         with:
           name: python-app
 
-      - name: Azure login (OIDC)
+      - name: Azure login via Service Principal
         uses: azure/login@v2
         with:
-          auth-type: oidc
+          auth-type: SERVICE_PRINCIPAL
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
 
       - name: Deploy to Azure Web App (Production)
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'Only-FootballFans'
-          # slot-name: 'production'  # opcional — remova se só tiver o slot padrão
-          # package: '.'  # opcional — por padrão usa o diretório atual
+          package: .
