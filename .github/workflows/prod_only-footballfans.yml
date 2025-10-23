@@ -11,8 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      TARGET_ENV: prod  # define variável de ambiente para o Django
 
     steps:
       - uses: actions/checkout@v4
@@ -30,7 +28,7 @@ jobs:
           pip install -r requirements.txt
           npm install -g cypress
 
-      - name: Run Django migrations
+      - name: Run Django migrations (SQLite)
         run: |
           source .venv/bin/activate
           python manage.py migrate
@@ -75,14 +73,14 @@ jobs:
         with:
           name: python-app
 
-      - name: Azure login via Service Principal
+      - name: Azure login (Service Principal)
         uses: azure/login@v2
         with:
-          auth-type: SERVICE_PRINCIPAL
+          auth-type: service-principal
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
 
       - name: Deploy to Azure Web App (Production)
         uses: azure/webapps-deploy@v3

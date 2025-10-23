@@ -2,40 +2,41 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# ======================
-# BASE_DIR
-# ======================
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Carregar variáveis de ambiente do .env
+# Carregar variáveis do .env
 load_dotenv(BASE_DIR / '.env')
 
-# ======================
-# ENVIRONMENT
-# ======================
-# Define TARGET_ENV com fallback para 'dev' caso não exista
+# Configuração de ambiente
 TARGET_ENV = os.getenv('TARGET_ENV', 'dev')
 NOT_PROD = not TARGET_ENV.lower().startswith('prod')
 
 # ======================
-# CONFIGURAÇÕES DE AMBIENTE
+# Configurações de desenvolvimento / CI
 # ======================
 if NOT_PROD:
     DEBUG = True
-    SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
-    ALLOWED_HOSTS = ['only-footballfans.azurewebsites.net', '127.0.0.1', 'localhost']
+    SECRET_KEY = os.getenv("SECRET_KEY", "teste123")
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+    
+    # Banco de dados SQLite para CI/CD e dev local
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+
+# ======================
+# Configurações de produção
+# ======================
 else:
     SECRET_KEY = os.getenv('SECRET_KEY')
     DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
-    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split()
-    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split()
-
+    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(' ')
+    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(' ')
+    
     SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', '0').lower() in ['true', 't', '1']
     if SECURE_SSL_REDIRECT:
         SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -52,7 +53,7 @@ else:
     }
 
 # ======================
-# APPS
+# Aplicativos instalados
 # ======================
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -66,7 +67,7 @@ INSTALLED_APPS = [
 ]
 
 # ======================
-# MIDDLEWARE
+# Middleware
 # ======================
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -80,7 +81,7 @@ MIDDLEWARE = [
 ]
 
 # ======================
-# URLS
+# URLs e WSGI
 # ======================
 ROOT_URLCONF = 'OFF.urls'
 
@@ -103,7 +104,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'OFF.wsgi.application'
 
 # ======================
-# PASSWORD VALIDATORS
+# Validação de senhas
 # ======================
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -113,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # ======================
-# INTERNACIONALIZAÇÃO
+# Internacionalização
 # ======================
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
@@ -121,20 +122,20 @@ USE_I18N = True
 USE_TZ = True
 
 # ======================
-# STATIC
+# Arquivos estáticos
 # ======================
 STATIC_URL = os.environ.get('DJANGO_STATIC_URL', "/static/")
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ======================
-# MEDIA
+# Arquivos de mídia
 # ======================
 MEDIA_URL = '/midia/'
 MEDIA_ROOT = BASE_DIR / 'midia'
 
 # ======================
-# AUTENTICAÇÃO
+# Autenticação
 # ======================
 AUTH_USER_MODEL = 'core.Usuario'
 LOGIN_URL = 'login'
@@ -142,7 +143,7 @@ LOGIN_REDIRECT_URL = 'core:home'
 LOGOUT_REDIRECT_URL = 'core:home'
 
 # ======================
-# SESSÃO
+# Sessão
 # ======================
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 dias
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
@@ -152,6 +153,6 @@ SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
 # ======================
-# PADRÃO DJANGO
+# Padrão Django
 # ======================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
