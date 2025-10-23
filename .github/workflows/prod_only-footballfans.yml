@@ -23,20 +23,18 @@ jobs:
       - name: Install dependencies
         run: |
           python -m venv .venv
-          source .venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
+          .venv/bin/pip install --upgrade pip
+          .venv/bin/pip install -r requirements.txt
+          .venv/bin/pip install pytest
           npm install -g cypress
 
-      - name: Run Django migrations (SQLite)
+      - name: Run Django migrations
         run: |
-          source .venv/bin/activate
-          python manage.py migrate
+          .venv/bin/python manage.py migrate
 
       - name: Run pytest
         run: |
-          source .venv/bin/activate
-          pytest -q
+          .venv/bin/pytest -q
 
       - name: Run Cypress tests
         run: |
@@ -44,8 +42,7 @@ jobs:
 
       - name: Collect static files
         run: |
-          source .venv/bin/activate
-          python manage.py collectstatic --noinput
+          .venv/bin/python manage.py collectstatic --noinput
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -74,9 +71,9 @@ jobs:
           name: python-app
 
       - name: Azure login (Service Principal)
-        uses: azure/login@v2
+        uses: azure/login@v1
         with:
-          auth-type: service-principal
+          auth-type: 'SERVICE_PRINCIPAL'
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
