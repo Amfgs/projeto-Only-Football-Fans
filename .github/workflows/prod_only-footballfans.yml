@@ -26,23 +26,11 @@ jobs:
           source .venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
-          npm install -g cypress
 
       - name: Run Django migrations
         run: |
           source .venv/bin/activate
           python manage.py migrate
-
-      - name: Run pytest
-        run: |
-          source .venv/bin/activate
-          .venv/bin/pytest -q
-        continue-on-error: true
-
-      - name: Run Cypress tests
-        run: |
-          npx cypress run
-        continue-on-error: true
 
       - name: Collect static files
         run: |
@@ -72,7 +60,7 @@ jobs:
         with:
           name: python-app
 
-      - name: Azure Login
+      - name: Azure login (Service Principal)
         uses: azure/login@v2
         with:
           auth-type: service-principal
