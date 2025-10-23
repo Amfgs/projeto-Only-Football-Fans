@@ -69,13 +69,14 @@ jobs:
           name: python-app
 
 
-      - name: Azure login (OIDC)
+      - name: Azure login
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5619319 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_98C41C1EDA3A0E8 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91C6B78399EE7765 }}
-          auth-type: federated
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          auth-type: service-principal
 
 
       - name: Deploy to Azure Web App (production)
