@@ -7,8 +7,8 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 ---
 
 ## 📑 Funcionalidades  
-- ⚽ **Agendamento de Jogos**: planeje sua ida a futuras partidas.  
-- 📖 **Histórico de Jogos**: registre todos os jogos que já assistiu.  
+- ⚽ **Registro de Jogos**: registre jogos na sua agenda.  
+- 📖 **Histórico de Jogos**: visualize uma lista de todos os jogos que já assistiu.  
 - ⭐ **Avaliações Personalizadas**: avalie torcidas, estádios e experiências.  
 - 🖼️ **Galeria de Mídia**: adicione fotos e comentários pessoais.  
 - 🎥 **Links de Replay**: acesse os melhores momentos dos jogos.  
