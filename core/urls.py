@@ -10,6 +10,7 @@ urlpatterns = [
     path('emocao/avaliar/<int:time_id>/', views.avaliar_time, name='avaliar_time'),
     path('emocao/avaliacao/anterior', views.avaliacoes_anteriores, name='avaliacoes_anteriores'),
     path('emocao/nova-avaliacao/', views.nova_avaliacao, name='nova_avaliacao'),
+    path('partida/<int:partida_id>/ver-avaliacao-torcida/', views.ver_avaliacao_torcida, name='ver_avaliacao_torcida'),
 
     # Partidas
     path('partidas/avaliar_torcida/<int:partida_id>/', views.avaliar_torcida, name='avaliar_torcida'),

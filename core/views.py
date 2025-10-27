@@ -112,13 +112,24 @@ def avaliar_torcida(request, partida_id, time_index=1):
             time=request.POST.get('time'),
             comentario_torcida=request.POST.get('comentario'),
             emocao=request.POST.get('emocao'),
-            presenca=request.POST.get('presenca')
+            presenca=request.POST.get('presenca'),
+            
+            # --- CAMPOS ADICIONADOS ---
+            usuario=request.user,
+            partida=partida
+            # --------------------------
         )
 
         if time_index == 1:
+            # Continua o fluxo para avaliar o segundo time (Time Visitante)
+            # (Certifique-se que você tenha uma URL com name='avaliar_torcida_segundo' 
+            #  apontando para esta view com time_index=2)
             return redirect('core:avaliar_torcida_segundo', partida_id=partida_id)
         else:
-            return redirect('core:lista_partidas')
+            # --- MUDANÇA NO REDIRECT ---
+            # Após avaliar o segundo time, volta para a tela de 'ver_avaliacao'
+            messages.success(request, "Avaliações das torcidas registradas com sucesso!")
+            return redirect('core:ver_avaliacao', partida_id=partida.id) 
 
     context = {'time': time, 'partida': partida}
     context.update(get_partidas_context(request))
@@ -210,6 +221,29 @@ def resultado_avaliacoes(request):
     context = {"avaliacoes": avaliacoes}
     context.update(get_partidas_context(request))
     return render(request, "emocao/resultado.html", context)
+
+@login_required(login_url='/login/')
+def ver_avaliacao_torcida(request, partida_id):
+    partida = get_object_or_404(Partida, id=partida_id)
+    
+    # Pega as avaliações (espera-se 2) desta partida por este usuário
+    avaliacoes = AvaliacaoTorcida.objects.filter(
+        partida=partida, 
+        usuario=request.user
+    ).order_by('time') # Ordena pelo nome do time
+
+    if not avaliacoes.exists():
+        messages.error(request, "Você ainda não avaliou as torcidas desta partida.")
+        # Volta para a tela anterior
+        return redirect('core:ver_avaliacao', partida_id=partida.id)
+
+    context = {
+        "partida": partida,
+        "avaliacoes": avaliacoes
+    }
+    context.update(get_partidas_context(request))
+    # Renderiza o novo template que você pediu
+    return render(request, "emocao/ver_ava_torcida.html", context)
 
 
 # ----------------------------
@@ -391,7 +425,23 @@ def ver_avaliacao(request, partida_id):
         messages.error(request, "Você ainda não avaliou esta partida.")
         return redirect("core:lista_partidas")
 
-    context = {"avaliacao": avaliacao, "partida": partida}
+    # --- NOVA LÓGICA ---
+    # A sua view 'avaliar_torcida' tem lógica para time_index=1 e time_index=2.
+    # Vamos assumir que "avaliado" significa que existem 2 registros (um para cada time).
+    avaliacoes_torcida_count = AvaliacaoTorcida.objects.filter(
+        partida=partida, 
+        usuario=request.user
+    ).count()
+
+    # Se a contagem for 2 ou mais, consideramos que a avaliação foi feita.
+    torcida_ja_avaliada = avaliacoes_torcida_count >= 2
+    # ---------------------
+
+    context = {
+        "avaliacao": avaliacao, 
+        "partida": partida,
+        "torcida_ja_avaliada": torcida_ja_avaliada  # <-- Passa a variável para o template
+    }
     context.update(get_partidas_context(request))
     return render(request, "partidas/ver_avaliacao.html", context)
 
