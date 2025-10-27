@@ -50,7 +50,6 @@ else:
     
 # Application definition
 
-
 # ======================
 # APPS
 # ======================
