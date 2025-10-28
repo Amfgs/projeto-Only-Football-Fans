@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.db.models import Q
 
+
 from .models import (
     AvaliacaoTorcida, AvaliacaoEstadio, Time, Partida, Imagem, Video, Audio,
     Definicao, Gol, AvaliacaoPartida, Jogador, Link
@@ -259,9 +260,13 @@ def galeria(request):
     context.update(get_partidas_context(request))
     return render(request, "midia/galeria.html", context)
 
+# ============================
+# ADICIONAR MÍDIA (IMAGEM/VIDEO/AUDIO)
+# ============================
 
+@login_required
 def adicionar_midia(request, partida_id):
-    partida = get_object_or_404(Partida, id=partida_id)
+    partida = get_object_or_404(Partida, id=partida_id, usuario=request.user)
     definicao, _ = Definicao.objects.get_or_create(
         jogo=str(partida),
         usuario=request.user,
@@ -275,12 +280,16 @@ def adicionar_midia(request, partida_id):
             Video.objects.create(definicao=definicao, arquivo=request.FILES["video"])
         if "audio" in request.FILES:
             Audio.objects.create(definicao=definicao, arquivo=request.FILES["audio"])
+        messages.success(request, "Mídia adicionada com sucesso!")
         return redirect("core:galeria")
 
     context = {"partida": partida, "definicao": definicao}
     context.update(get_partidas_context(request))
     return render(request, "midia/adicionar_midia.html", context)
 
+# ============================
+# ADICIONAR LINK ASSOCIADO À DEFINIÇÃO
+# ============================
 
 @login_required
 def adicionar_link(request, definicao_id):
@@ -291,13 +300,14 @@ def adicionar_link(request, definicao_id):
         url = request.POST.get('url')
 
         if titulo and url:
-            Link.objects.create(
-                definicao=definicao,
-                titulo=titulo,
-                url=url
-            )
+            Link.objects.create(definicao=definicao, titulo=titulo, url=url)
             messages.success(request, f"Link '{titulo}' adicionado com sucesso!")
-            return redirect('core:adicionar_midia', partida_id=definicao.id)
+            # Pegando a partida correta para redirect
+            partida = Partida.objects.filter(usuario=request.user, jogo=definicao.jogo).first()
+            if partida:
+                return redirect('core:adicionar_midia', partida_id=partida.id)
+            else:
+                return redirect('core:galeria')
         else:
             messages.error(request, "Título e URL são obrigatórios para adicionar o link.")
 
@@ -308,6 +318,9 @@ def adicionar_link(request, definicao_id):
     context.update(get_partidas_context(request))
     return render(request, 'midia/adicionar_link.html', context)
 
+# ============================
+# ADICIONAR LINK SOLTO (SEM DEFINIÇÃO)
+# ============================
 
 @login_required
 def adicionar_link_page(request):
@@ -316,10 +329,7 @@ def adicionar_link_page(request):
         url = request.POST.get('url')
 
         if nome_do_jogo and url:
-            Link.objects.create(
-                nome_do_jogo=nome_do_jogo,
-                url=url,
-            )
+            Link.objects.create(nome_do_jogo=nome_do_jogo, url=url)
             messages.success(request, f"Link de {nome_do_jogo} cadastrado com sucesso!")
             return redirect('core:lista_links')
         else:
@@ -329,6 +339,9 @@ def adicionar_link_page(request):
     context.update(get_partidas_context(request))
     return render(request, 'midia/adicionar_link_page.html', context)
 
+# ============================
+# LISTA DE LINKS
+# ============================
 
 @login_required
 def lista_links(request):
