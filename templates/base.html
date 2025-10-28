@@ -10,32 +10,54 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     display: flex;
     height: 100vh;
+    transition: margin-left 0.3s ease;
 }
 
 /* Cabeçalho */
 .header {
     position: fixed;
     top: 0;
-    left: 200px;
-    width: calc(100% - 200px);
-    background-color: #0056b3; /* tom mais escuro do azul */
+    left: 200px; /* Posição inicial (com sidebar) */
+    width: calc(100% - 200px); /* Largura inicial */
+    background-color: #0056b3; 
     color: #ffffff;
     padding: 15px;
     text-align: center;
     z-index: 10;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* sombra leve */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); 
+    transition: left 0.3s ease, width 0.3s ease;
+}
+
+/* Estilo para o ícone "hambúrguer" */
+.menu-toggle {
+    position: absolute; 
+    left: 15px;
+    top: 10px; 
+    font-size: 28px; 
+    color: white;
+    cursor: pointer;
+    z-index: 11; 
+    padding: 5px;
+    line-height: 1;
+}
+
+.menu-toggle:hover {
+    color: #ddd;
 }
 
 /* Sidebar */
 .sidebar {
     width: 200px;
-    background: linear-gradient(to bottom, #007bff, #3399ff); /* gradiente azul */
+    background: linear-gradient(to bottom, #007bff, #3399ff); 
     color: #ffffff;
     padding-top: 20px;
     position: fixed;
     top: 0;
     bottom: 0;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2); /* sombra lateral */
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2); 
+    transform: translateX(0); /* Começa visível */
+    transition: transform 0.3s ease;
+    z-index: 20; 
 }
 
 .sidebar p {
@@ -66,21 +88,45 @@ body {
     border: none;
     cursor: pointer;
     font-size: 15px;
-    transition: color 0.3s ease, background-color 0.3s ease; /* transição suave */
+    transition: color 0.3s ease, background-color 0.3s ease; 
 }
 
 .sidebar ul li:hover {
-    background-color: #66b3ff; /* azul mais claro no hover */
+    background-color: #66b3ff; 
 }
 
 /* Conteúdo principal */
 .content {
-    margin-left: 200px;
+    margin-left: 200px; /* Margem inicial */
     padding: 80px 20px 20px;
     width: calc(100% - 200px);
+    transition: margin-left 0.3s ease;
 }
 
-/* Modal popup */
+/* ======================================= */
+/* ESTADOS DE MENU ESCONDIDO (TOGGLE) */
+/* ======================================= */
+
+/* Quando o 'body' tiver a classe '.sidebar-hidden' */
+
+body.sidebar-hidden .sidebar {
+    /* Move a sidebar para fora da tela */
+    transform: translateX(-100%); 
+}
+
+body.sidebar-hidden .header {
+    /* Expande o header para ocupar 100% da tela */
+    left: 0;
+    width: 100%;
+}
+
+body.sidebar-hidden .content {
+    /* Expande o conteúdo para ocupar 100% da tela */
+    margin-left: 0;
+    width: 100%; 
+}
+
+/* ... (restante do seu CSS do modal e card) ... */
 .modal {
     display: none;
     position: fixed;
@@ -135,14 +181,15 @@ body {
     cursor: pointer;
 }
     </style>
+    {% block extra_head %}{% endblock %}
 </head>
-<body>
-    <div class="header">
+
+<body class="sidebar-hidden">
+<div class="header">
+        <span class="menu-toggle" id="menuToggle">&#9776;</span>
         <h1>Only Football Fans</h1>
     </div>
     
-    <!--- MENU -->
-
     <div class="sidebar">
         <p><strong>Menu</strong></p>
         <ul>
@@ -167,7 +214,18 @@ body {
         {% endblock %}
     </div>
 
-    <!-- Pop-Up -->
-{% include 'partidas/popup_avaliar_partida.html' %}
+    {% include 'partidas/popup_avaliar_partida.html' %}
 
+<script>
+    var menuToggleButton = document.getElementById('menuToggle');
+    var bodyElement = document.body;
 
+    menuToggleButton.addEventListener('click', function() {
+        bodyElement.classList.toggle('sidebar-hidden');
+    });
+
+    // (Seu script de modal 'abrirModal()' deve vir aqui ou ser importado)
+</script>
+
+</body>
+</html>

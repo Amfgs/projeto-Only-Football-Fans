@@ -9,33 +9,41 @@
 
 {% block content %}
 <main class="form-container">
-    <h2 class="form-title">Registrar Partida</h2>
-
+    
     <form method="post" class="form-card">
         {% csrf_token %}
+        
+        <h2 class="form-title">Registrar Partida</h2>
+        
+        <div id="form-error-container"></div>
 
-        <div class="form-group">
-            <label for="time_casa" class="form-label">Time da Casa:</label>
-            <input list="times_casa" name="time_casa" id="time_casa" class="form-input" placeholder="Digite ou selecione o nome do time" required>
-            <datalist id="times_casa">
-                {% for time in times %}
-                <option value="{{ time.nome }}">
-                {% endfor %}
-            </datalist>
+        <div class="form-group-matchup">
+            
+            <div class="matchup-side">
+                <label for="time_casa" class="form-label label-casa">Time da Casa 🏠</label>
+                <input list="times_casa" name="time_casa" id="time_casa" class="form-input" placeholder="Nome do time" required>
+                <datalist id="times_casa">
+                    {% for time in times %}
+                    <option value="{{ time.nome }}">
+                    {% endfor %}
+                </datalist>
+            </div>
+            
+            <span class="vs-divider">VS</span>
+            
+            <div class="matchup-side">
+                <label for="time_visitante" class="form-label label-visitante">Visitante ✈️</label>
+                <input list="times_visitante" name="time_visitante" id="time_visitante" class="form-input" placeholder="Nome do time" required>
+                <datalist id="times_visitante">
+                    {% for time in times %}
+                    <option value="{{ time.nome }}">
+                    {% endfor %}
+                </datalist>
+            </div>
         </div>
 
         <div class="form-group">
-            <label for="time_visitante" class="form-label">Time Visitante:</label>
-            <input list="times_visitante" name="time_visitante" id="time_visitante" class="form-input" placeholder="Digite ou selecione o nome do time" required>
-            <datalist id="times_visitante">
-                {% for time in times %}
-                <option value="{{ time.nome }}">
-                {% endfor %}
-            </datalist>
-        </div>
-
-        <div class="form-group">
-            <label for="data" class="form-label">Data e Hora:</label>
+            <label for="data" class="form-label">Data e Hora 📅</label>
             <input type="datetime-local" name="data" id="data" class="form-input" required>
         </div>
 
@@ -44,7 +52,7 @@
 </main>
 
 <style>
-    /* --- Variáveis de Estilo (Consistente com a Galeria) --- */
+    /* --- Variáveis de Estilo --- */
     :root {
         --primary-bg: #f4f7f9;
         --card-bg: #ffffff;
@@ -55,34 +63,99 @@
         --border-color: #e1e8ed;
         --border-focus-color: #00adb5;
         --shadow-color: rgba(0, 0, 0, 0.08);
+        --error-color: #e74c3c;
+    }
+
+    /* --- Animação de Entrada --- */
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* --- Container Principal --- */
     .form-container {
-        max-width: 600px;
+        max-width: 700px; /* Um pouco mais largo para o "VS" */
         margin: 2rem auto;
         padding: 1rem;
         font-family: 'Poppins', sans-serif;
-    }
-
-    .form-title {
-        text-align: center;
-        color: var(--text-primary);
-        margin-bottom: 2rem;
-        font-size: 2.25rem;
     }
 
     /* --- Card do Formulário --- */
     .form-card {
         background-color: var(--card-bg);
         border-radius: 12px;
-        padding: 2rem;
+        padding: 2.5rem;
         box-shadow: 0 4px 15px var(--shadow-color);
         border: 1px solid var(--border-color);
         display: flex;
         flex-direction: column;
-        gap: 1.5rem; /* Aumenta o espaçamento entre os campos */
+        gap: 1.5rem; 
+        overflow: hidden; /* Importante para as animações */
     }
+
+    /* --- Animação em cascata --- */
+    /* Cada elemento principal do form entra um após o outro */
+    .form-title, .form-group-matchup, .form-group, .btn-submit, #form-error-container {
+        animation: slideInUp 0.5s ease-out forwards;
+        opacity: 0; /* Começa invisível */
+    }
+
+    .form-title { animation-delay: 0.1s; }
+    .form-group-matchup { animation-delay: 0.2s; }
+    .form-group { animation-delay: 0.3s; }
+    .btn-submit { animation-delay: 0.4s; }
+
+
+    .form-title {
+        text-align: center;
+        color: var(--text-primary);
+        margin: 0 0 1rem 0; /* Ajuste de margem */
+        font-size: 2.25rem;
+    }
+    
+    /* NOVO: Estilo para o container de erro JS */
+    #form-error-container {
+        animation-delay: 0.15s;
+    }
+    .form-error-message {
+        background-color: var(--error-color);
+        color: white;
+        padding: 0.8rem 1.2rem;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    /* NOVO: Layout "VS" */
+    .form-group-matchup {
+        display: flex;
+        align-items: center; /* Alinha verticalmente */
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .matchup-side {
+        flex: 1; /* Faz os lados ocuparem espaço igual */
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .vs-divider {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--button-green);
+        padding: 0 0.5rem;
+    }
+    /* Fim do layout "VS" */
+
 
     .form-group {
         display: flex;
@@ -94,31 +167,46 @@
         font-weight: 500;
         color: var(--text-primary);
         font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem; 
     }
 
+    /* Estilo de Input Moderno (linha inferior) */
     .form-input {
         width: 100%;
-        padding: 0.8rem 1rem;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
+        padding: 0.8rem 0.5rem; /* Menos padding lateral */
+        
+        /* Remove bordas padrão */
+        border: none;
+        border-bottom: 2px solid var(--border-color);
+        
+        background-color: var(--primary-bg); /* Fundo sutil */
+        border-radius: 4px 4px 0 0; /* Leve arredondamento no topo */
+        
         font-family: 'Poppins', sans-serif;
         font-size: 1rem;
         color: var(--text-primary);
-        background-color: #fdfdfd;
         box-sizing: border-box;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        transition: border-color 0.3s ease, background-color 0.3s ease;
     }
 
     .form-input::placeholder {
         color: #a0b0b8;
     }
 
-    /* Efeito de foco para melhor UX */
+    /* Efeito de foco moderno */
     .form-input:focus {
         outline: none;
-        border-color: var(--border-focus-color);
-        box-shadow: 0 0 0 3px rgba(0, 173, 181, 0.15);
+        border-bottom-color: var(--border-focus-color);
+        background-color: var(--card-bg);
     }
+    
+    /* Corrige a cor do texto do input de data */
+    input[type="datetime-local"] { color: var(--text-primary); }
+    input[type="datetime-local"]:invalid { color: #a0b0b8; }
+    input[type="datetime-local"]:valid { color: var(--text-primary); }
+
 
     /* --- Botão de Envio --- */
     .btn-submit {
@@ -132,6 +220,7 @@
         font-weight: 500;
         font-size: 1rem;
         margin-top: 1rem;
+        width: 100%; /* Botão com largura total */
         transition: all 0.3s ease;
     }
 
@@ -141,4 +230,60 @@
         box-shadow: 0 4px 10px rgba(0, 173, 181, 0.3);
     }
 </style>
+<script>
+    // Executa o script quando o conteúdo da página estiver pronto
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // --- MELHORIA 1: Preencher data e hora atuais ---
+        
+        const dataInput = document.getElementById('data');
+        if (dataInput) {
+            const now = new Date();
+            
+            // Formata a data para o padrão do input (YYYY-MM-DDTHH:mm)
+            const year = now.getFullYear();
+            // getMonth() é 0-indexado (0=Jan), por isso +1
+            const month = (now.getMonth() + 1).toString().padStart(2, '0'); 
+            const day = now.getDate().toString().padStart(2, '0');
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            
+            // Monta a string no formato local
+            const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+            
+            // Define o valor do input
+            dataInput.value = localDateTime;
+        }
+
+        // --- MELHORIA 2: Validar times iguais ---
+        
+        const form = document.querySelector('.form-card');
+        const timeCasaInput = document.getElementById('time_casa');
+        const timeVisitanteInput = document.getElementById('time_visitante');
+        const errorContainer = document.getElementById('form-error-container');
+
+        form.addEventListener('submit', function(event) {
+            // Limpa erros anteriores
+            errorContainer.innerHTML = ''; 
+
+            const casa = timeCasaInput.value.trim();
+            const visitante = timeVisitanteInput.value.trim();
+
+            // Verifica se os valores são iguais e não estão vazios
+            if (casa === visitante && casa !== '') {
+                // 1. Impede o envio do formulário
+                event.preventDefault(); 
+                
+                // 2. Cria e exibe a mensagem de erro
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'form-error-message';
+                errorMessage.textContent = 'Erro: O time da casa e o visitante não podem ser o mesmo!';
+                errorContainer.appendChild(errorMessage);
+                
+                // 3. Foca no primeiro campo com erro
+                timeCasaInput.focus();
+            }
+        });
+    });
+</script>
 {% endblock %}
