@@ -1,41 +1,265 @@
 {% extends "base.html" %} 
 {% load static %}
 
+{% block extra_head %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-    <div class="container-fluid" style="padding-top: 40px;">
-        <h1 class="mt-4">{{ page_title }}</h1>
-        <p class="mb-4">Preencha os campos para salvar um novo link no seu diário.</p>
-        
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+<main class="form-container">
+    
+    <h2 class="form-title fade-in-item">{{ page_title }}</h2>
+    <p class="form-subtitle fade-in-item">Preencha os campos para salvar um novo link no seu diário.</p>
 
-        <div class="card p-4">
-            <form method="post" action="{% url 'core:adicionar_link_page' %}">
-                {% csrf_token %}
-                
-                <div class="form-group mb-3" style="margin-bottom: 10px;">
-                    <label for="id_nome_do_jogo">Nome do Jogo ou Evento:</label>
-                    <input type="text" id="id_nome_do_jogo" name="nome_do_jogo" class="form-control" required>
-                </div>
-                
-                <div class="form-group mb-3" style="margin-bottom: 10px;">
-                    <label for="id_url">Links Relacionados:</label>
-                    <input type="url" id="id_url" name="url" class="form-control" placeholder="Ex: https://www.youtube.com/watch?v=..." required>
-                </div>
-                
-                <button type="submit" class="btn btn-success mt-3 ">Salvar Link</button>
-
-            </form>
-        </div>
-    <a href="{% url 'core:lista_links' %}" 
-           class="btn btn-secondary"
-           style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-            <button type="submit" class="btn btn-success mt-3 ">Voltar</button>
-        </a>
+    {% if messages %}
+    <div class="messages-container fade-in-item">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
     </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'core:adicionar_link_page' %}" class="form-card fade-in-item">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="id_nome_do_jogo" class="form-label">Nome do Jogo ou Evento 🏷️</label>
+            <input type="text" id="id_nome_do_jogo" name="nome_do_jogo" class="form-input" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="id_url" class="form-label">
+                Link Relacionado 🔗
+                <span id="url-status-icon"></span> 
+            </label>
+            <input type="url" id="id_url" name="url" class="form-input" placeholder="Ex: https://www.youtube.com/watch?v=..." required>
+        </div>
+        
+        <div class="form-buttons">
+            <a href="{% url 'core:lista_links' %}" class="btn-cancel">Voltar</a>
+            <button type="submit" class="btn-submit">Salvar Link</button>
+        </div>
+
+    </form>
+</main>
+
+
+<style>
+    /* --- Variáveis de Estilo (Herdadas do base.html) --- */
+    :root {
+        /* As variáveis --card-bg, --text-primary, --button-green, etc.
+           já estão disponíveis globalmente pelo base.html */
+    }
+
+    /* --- JS 1: Animação em Cascata --- */
+    @keyframes slideInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-item {
+        opacity: 0;
+        animation: slideInUp 0.5s ease-out forwards;
+    }
+    /* Atraso em cascata */
+    .form-title { animation-delay: 0.1s; }
+    .form-subtitle { animation-delay: 0.2s; }
+    .messages-container { animation-delay: 0.2s; }
+    .form-card { animation-delay: 0.3s; }
+
+
+    /* --- Layout Principal --- */
+    .form-container {
+        max-width: 700px;
+        margin: 2rem auto;
+        padding: 1rem;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .form-title {
+        text-align: center;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+        font-size: 2.25rem;
+        font-weight: 700;
+    }
+    
+    .form-subtitle {
+        text-align: center;
+        color: var(--text-secondary, #555);
+        margin-top: 0;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+
+    /* --- Mensagens do Django --- */
+    .messages-container { margin-bottom: 1.5rem; }
+    .message {
+        padding: 10px 15px; border-radius: 6px; margin-bottom: 8px; font-weight: 500;
+    }
+    .message.success { background-color: #d4edda; color: #155724; }
+    .message.error { background-color: #f8d7da; color: #721c24; }
+
+    /* --- Card do Formulário --- */
+    .form-card {
+        background-color: var(--card-bg, #fff);
+        border-radius: 12px;
+        padding: 2.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--border-color-light, #e1e8ed);
+        display: flex;
+        flex-direction: column;
+        gap: 1.8rem; /* Espaço entre os campos */
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: var(--text-dark);
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Estilo de Input Moderno (Underline) */
+    .form-input {
+        width: 100%;
+        padding: 0.8rem 0.5rem;
+        border: none;
+        border-bottom: 2px solid var(--border-color-light, #ddd);
+        background-color: var(--content-bg, #f4f7f9);
+        border-radius: 4px 4px 0 0;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        color: var(--text-dark);
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+    .form-input::placeholder {
+        color: #a0b0b8;
+    }
+    .form-input:focus {
+        outline: none;
+        border-bottom-color: var(--accent-blue, #007bff);
+        background-color: #fff;
+    }
+    
+    /* --- JS 2: Validação Visual de URL --- */
+    #url-status-icon {
+        margin-left: 8px;
+        font-size: 0.9rem;
+    }
+    .form-input.is-valid {
+        border-bottom-color: #28a745; /* Verde Sucesso */
+    }
+    .form-input.is-invalid {
+        border-bottom-color: #e74c3c; /* Vermelho Erro */
+    }
+    /* --- Fim da Validação --- */
+
+
+    /* --- Botões de Ação --- */
+    .form-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    
+    /* Botão Genérico (base para submit e cancel) */
+    .btn-submit, .btn-cancel {
+        flex: 1; /* Ocupam espaço igual */
+        padding: 0.9rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 1rem;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    /* Botão Salvar (Verde) */
+    .btn-submit {
+        background-color: var(--button-green, #00adb5);
+        color: white;
+    }
+    .btn-submit:hover {
+        background-color: var(--button-green-hover, #00939a);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 173, 181, 0.3);
+    }
+    
+    /* Botão Voltar (Cinza) */
+    .btn-cancel {
+        background-color: #6c757d;
+        color: white;
+    }
+    .btn-cancel:hover {
+        background-color: #5a6268;
+    }
+</style>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* ================================
+    JS 1: ANIMAÇÃO EM CASCATA
+    ================================
+    */
+    const animatedItems = document.querySelectorAll('.fade-in-item');
+    animatedItems.forEach((item, index) => {
+        // Atraso de 100ms + 100ms por item
+        setTimeout(() => {
+            item.classList.add('is-visible');
+        }, index * 100 + 100);
+    });
+
+
+    /* ================================
+    JS 2: VALIDADOR DE URL EM TEMPO REAL
+    ================================
+    */
+    const urlInput = document.getElementById('id_url');
+    const urlStatusIcon = document.getElementById('url-status-icon');
+    
+    // Regex simples para verificar se começa com http:// ou https://
+    // e tem algum conteúdo depois.
+    const urlRegex = /^(https?:\/\/)[^\s$.?#].[^\s]*$/i;
+
+    if (urlInput && urlStatusIcon) {
+        urlInput.addEventListener('input', () => {
+            const url = urlInput.value.trim();
+
+            if (url === "") {
+                // Limpa o status se o campo estiver vazio
+                urlInput.classList.remove('is-valid', 'is-invalid');
+                urlStatusIcon.textContent = '';
+            } else if (urlRegex.test(url)) {
+                // Válido
+                urlInput.classList.add('is-valid');
+                urlInput.classList.remove('is-invalid');
+                urlStatusIcon.textContent = '✅';
+            } else {
+                // Inválido
+                urlInput.classList.add('is-invalid');
+                urlInput.classList.remove('is-valid');
+                urlStatusIcon.textContent = '❌';
+            }
+        });
+    }
+
+}); // Fim do DOMContentLoaded
+</script>
+
 {% endblock content %}

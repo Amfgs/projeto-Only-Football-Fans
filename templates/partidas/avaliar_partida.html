@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block extra_head %}
-    {# Inclui a fonte Poppins para consistência visual com o design base #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
@@ -9,211 +8,294 @@
 
 {% block content %}
 <main class="form-container">
-    <h2 class="form-title">Avaliar Partida: {{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
+    
+    <h2 class="form-title fade-in-item">Avaliar Partida:<br>{{ partida.time_casa }} x {{ partida.time_visitante }}</h2>
 
     {% if messages %}
-        {% for message in messages %}
-            {# Reutiliza a classe 'alert' mas com novo estilo #}
-            <div class="alert">{{ message }}</div>
-        {% endfor %}
+        <div class="messages-container fade-in-item">
+            {% for message in messages %}
+                <div class="message alert">{{ message }}</div>
+            {% endfor %}
+        </div>
     {% endif %}
 
-    <form method="post" class="form-card form-avaliacao">
+    <form method="post" class="form-card fade-in-item">
         {% csrf_token %}
 
-        <div class="form-group">
-            <label for="nota" class="form-label">Nota da partida (0 a 5):</label>
-            {# Adiciona a classe de input do novo design #}
-            <input type="number" id="nota" name="nota" min="0" max="5" class="form-input" required>
+        <div class="form-group star-rating-section">
+            <label class="form-label">⭐ Sua Nota para o Jogo:</label>
+            <div class="star-rating-group" dir="rtl">
+                {% for i in "54321" %} {# De "543210" para "54321" #}
+                    <input type="radio" id="nota_{{ i }}" name="nota" value="{{ i }}" required />
+                    <label for="nota_{{ i }}" title="{{ i }} Estrela{{ i|pluralize:'s' }}"></label>
+                {% endfor %}
+                </div>
         </div>
 
         <div class="form-group">
-            <label for="melhor_jogador" class="form-label">Melhor jogador:</label>
-            <input type="text" id="melhor_jogador" name="melhor_jogador" placeholder="Digite o nome do melhor jogador" class="form-input">
+            <input type="text" id="melhor_jogador" name="melhor_jogador" class="form-input" placeholder=" "> {# placeholder=" " é crucial #}
+            <label for="melhor_jogador" class="form-label">🏆 Melhor jogador:</label>
         </div>
 
         <div class="form-group">
-            <label for="pior_jogador" class="form-label">Pior jogador:</label>
-            <input type="text" id="pior_jogador" name="pior_jogador" placeholder="Digite o nome do pior jogador" class="form-input">
+            <input type="text" id="pior_jogador" name="pior_jogador" class="form-input" placeholder=" "> {# placeholder=" " é crucial #}
+            <label for="pior_jogador" class="form-label">👎 Pior jogador:</label>
         </div>
 
         <div class="form-group">
-            <label for="comentario_avaliacao" class="form-label">Comentário:</label>
-            {# Adiciona a classe de input do novo design e o atributo 'rows' original #}
-            <textarea id="comentario_avaliacao" name="comentario_avaliacao" rows="4" placeholder="Escreva seu comentário" class="form-input"></textarea>
+             <textarea id="comentario_avaliacao" name="comentario_avaliacao" rows="4" class="form-input" placeholder=" "></textarea> {# placeholder=" " é crucial #}
+            <label for="comentario_avaliacao" class="form-label">📝 Seu Comentário:</label>
         </div>
 
-        {# Usa a classe form-buttons para manter a estrutura original #}
         <div class="form-buttons">
-            {# Reutiliza a classe btn-submit #}
-            <button type="submit" class="btn-submit">Enviar Avaliação</button>
-            {# Usa a classe btn-cancel para o botão secundário, estilizaremos no CSS #}
             <a href="{% url 'core:lista_partidas' %}" class="btn-cancel">Voltar</a>
+            <button type="submit" class="btn-submit">Enviar Avaliação</button>
         </div>
     </form>
 
-    <div class="form-buttons">
-        {# Reutiliza a classe btn-submit. Estilizaremos com uma cor diferente no CSS. #}
-        <a href="{% url 'core:avaliar_torcida' partida.id %}" class="btn-submit btn-secondary">
-            Avaliar Torcida
+    <div class="secondary-action fade-in-item">
+        <a href="{% url 'core:avaliar_torcida' partida.id %}" class="btn-secondary-action">
+            📣 Avaliar Torcida
         </a>
     </div>
 </main>
 
 <style>
-    /* --- Variáveis de Estilo (Baseado no design de referência) --- */
+    /* --- Herança de Variáveis (do base.html) --- */
     :root {
-        --primary-bg: #f4f7f9;
-        --card-bg: #ffffff;
-        --text-primary: #1d2d35;
-        --text-secondary: #657786;
-        --button-green: #00adb5;
-        --button-green-hover: #00939a;
-        --button-cancel: #657786; /* Cinza para botão de Voltar/Cancelar */
-        --button-cancel-hover: #4e5d6a;
-        --button-extra: #28a745; /* Cor para o botão 'Avaliar Torcida' (Verde original) */
-        --button-extra-hover: #1e7e34;
-        --border-color: #e1e8ed;
-        --border-focus-color: #00adb5;
-        --shadow-color: rgba(0, 0, 0, 0.08);
-        --alert-bg: #fff3cd; /* Cor de fundo de alerta amarelada */
+        /* --card-bg, --text-primary, --text-secondary, --accent-blue, --button-green, etc. */
+        --star-color-empty: #ccc;
+        --star-color-filled: #ffc107; /* Amarelo/Dourado */
+        --button-extra-green: #28a745; /* Verde para Avaliar Torcida */
+        --button-extra-green-hover: #1e7e34;
+        --alert-bg: #fff3cd; 
         --alert-border: #ffeeba;
         --alert-text: #856404;
     }
 
-    /* --- Container Principal (Adaptado do design de referência) --- */
+    /* --- Animação --- */
+    @keyframes slideInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-item {
+        opacity: 0;
+        animation: slideInUp 0.5s ease-out forwards;
+    }
+    .form-title { animation-delay: 0.1s; }
+    .messages-container { animation-delay: 0.15s; }
+    .form-card { animation-delay: 0.2s; }
+    .secondary-action { animation-delay: 0.3s; }
+
+
+    /* --- Layout Principal --- */
     .form-container {
-        max-width: 700px; /* Mantém o max-width original */
+        max-width: 700px;
         margin: 2rem auto;
         padding: 1rem;
         font-family: 'Poppins', sans-serif;
     }
-
     .form-title {
         text-align: center;
-        color: var(--text-primary);
+        color: var(--text-dark);
         margin-bottom: 2rem;
-        font-size: 2rem; /* Levemente menor para acomodar a string da partida */
+        font-size: 2rem;
+        line-height: 1.3; /* Para quebra de linha */
     }
 
-    /* --- Card do Formulário (Reutiliza as classes do design de referência) --- */
-    .form-card {
-        background-color: var(--card-bg);
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 15px var(--shadow-color);
-        border: 1px solid var(--border-color);
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .form-label {
-        font-weight: 500;
-        color: var(--text-primary);
-        font-size: 0.95rem;
-    }
-
-    /* --- Inputs e Textarea (Reutiliza as classes do design de referência) --- */
-    .form-input {
-        width: 100%;
-        padding: 0.8rem 1rem;
-        border: 1px solid var(--border-color);
+    /* --- Mensagens --- */
+    .messages-container { margin-bottom: 1.5rem; }
+    .message.alert {
+        background-color: var(--alert-bg);
+        border-left: 5px solid var(--star-color-filled);
+        color: var(--alert-text);
+        padding: 15px;
         border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+
+    /* --- Card --- */
+    .form-card {
+        background-color: var(--card-bg, #fff);
+        border-radius: 12px;
+        padding: 2rem 2.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--border-color-light, #e1e8ed);
+        display: flex;
+        flex-direction: column;
+        gap: 2rem; /* Mais espaço entre os grupos */
+    }
+
+    /* --- Sistema de Estrelas --- */
+    .star-rating-section .form-label {
+        font-weight: 600; /* Destaque */
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+        display: block; /* Garante que fique acima */
+    }
+    .star-rating-group {
+        display: flex;
+        unicode-bidi: bidi-override;
+        direction: rtl; /* Direita para esquerda */
+        justify-content: flex-start; /* Alinha à esquerda no container */
+    }
+    .star-rating-group > input {
+        display: none; /* Esconde os radios */
+    }
+    .star-rating-group > label {
+        display: inline-block;
+        padding: 0 4px;
+        font-size: 2.5rem; /* Estrelas maiores */
+        color: var(--star-color-empty);
+        cursor: pointer;
+        transition: color 0.2s ease-out;
+    }
+    .star-rating-group > label:before {
+        content: "\2605"; /* Unicode da estrela */
+    }
+    /* Efeito Hover */
+    .star-rating-group > label:hover,
+    .star-rating-group > label:hover ~ label {
+        color: var(--star-color-filled);
+    }
+    /* Efeito Selecionado */
+    .star-rating-group > input:checked ~ label {
+        color: var(--star-color-filled);
+    }
+    /* Manter hover após seleção (reset) */
+    .star-rating-group:not(:hover) > input:checked ~ label {
+        color: var(--star-color-filled);
+    }
+
+    /* --- Float Label --- */
+    .form-group {
+        position: relative;
+    }
+    .form-input { /* Aplica-se a input e textarea */
+        width: 100%;
+        padding: 10px 5px;
+        background-color: transparent;
+        border: none;
+        border-bottom: 2px solid var(--border-color-light, #ddd);
         font-family: 'Poppins', sans-serif;
-        font-size: 1rem;
-        color: var(--text-primary);
-        background-color: #fdfdfd;
+        font-size: 1.1rem;
+        color: var(--text-dark);
         box-sizing: border-box;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        transition: border-color 0.3s ease;
+        resize: vertical; /* Permite redimensionar textarea verticalmente */
     }
-
-    .form-input::placeholder {
-        color: #a0b0b8;
+    .form-label {
+        position: absolute;
+        top: 10px;
+        left: 5px;
+        color: var(--text-secondary, #657786);
+        font-size: 1.1rem;
+        pointer-events: none;
+        transition: all 0.2s ease-out;
+        display: flex; /* Para alinhar o ícone */
+        align-items: center;
+        gap: 0.4rem;
     }
-
+    /* Efeito Float */
+    .form-input:focus + .form-label,
+    .form-input:not(:placeholder-shown) + .form-label {
+        top: -16px;
+        left: 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--accent-blue, #007bff);
+    }
     .form-input:focus {
         outline: none;
-        border-color: var(--border-focus-color);
-        box-shadow: 0 0 0 3px rgba(0, 173, 181, 0.15);
+        border-bottom-color: var(--accent-blue, #007bff);
+    }
+    
+    /* Input type number (Nota - embora agora seja estrelas, deixamos um fallback) */
+    input[type="number"].form-input {
+        padding: 0.8rem 1rem;
+        border: 1px solid var(--border-color-light, #ddd);
+        border-radius: 8px;
+        background-color: #fdfdfd;
+    }
+    input[type="number"].form-input:focus {
+         border-color: var(--accent-blue, #007bff);
+         box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+         border-bottom-color: var(--accent-blue, #007bff); /* Mantem consistencia */
     }
 
-    /* --- Botões (Adaptado) --- */
+
+    /* --- Botões --- */
     .form-buttons {
         display: flex;
-        gap: 10px;
-        margin-top: 1rem;
+        gap: 1rem;
+        margin-top: 1rem; /* Espaço acima dos botões do form */
     }
-
-    /* Estilo para Botões Principais (Enviar e Avaliar Torcida) */
-    .btn-submit {
-        background-color: var(--button-green);
-        color: white;
-        border: none;
+    .btn-submit, .btn-cancel {
+        flex: 1;
         padding: 0.9rem 1.5rem;
+        border: none;
         border-radius: 8px;
         cursor: pointer;
         font-family: 'Poppins', sans-serif;
         font-weight: 500;
         font-size: 1rem;
-        flex-grow: 1; /* Faz os botões ocuparem espaço igual, se estiverem juntos */
         text-align: center;
         text-decoration: none;
         transition: all 0.3s ease;
     }
-
+    /* Botão Enviar (Verde Padrão do Projeto) */
+    .btn-submit {
+        background-color: var(--button-green, #00adb5);
+        color: white;
+    }
     .btn-submit:hover {
-        background-color: var(--button-green-hover);
+        background-color: var(--button-green-hover, #00939a);
         transform: translateY(-2px);
         box-shadow: 0 4px 10px rgba(0, 173, 181, 0.3);
     }
-
-    /* Estilo específico para o botão "Avaliar Torcida" (mantém a cor verde original) */
-    .btn-secondary {
-        background-color: var(--button-extra);
-    }
-
-    .btn-secondary:hover {
-        background-color: var(--button-extra-hover);
-        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-    }
-
-    /* Estilo para Botão Cancelar/Voltar */
+    /* Botão Voltar (Cinza) */
     .btn-cancel {
-        background-color: var(--button-cancel);
+        background-color: #6c757d;
         color: white;
-        padding: 0.9rem 1.5rem;
+    }
+    .btn-cancel:hover {
+        background-color: #5a6268;
+    }
+
+    /* --- Botão Ação Secundária (Avaliar Torcida) --- */
+    .secondary-action {
+        margin-top: 1.5rem; /* Espaço acima */
+        text-align: center;
+    }
+    .btn-secondary-action {
+        display: inline-block; /* Não ocupa largura total */
+        background-color: var(--button-extra-green, #28a745);
+        color: white;
+        padding: 0.9rem 2rem;
         border-radius: 8px;
         text-decoration: none;
-        cursor: pointer;
-        font-family: 'Poppins', sans-serif;
         font-weight: 500;
         font-size: 1rem;
-        flex-grow: 1;
-        text-align: center;
-        transition: background-color 0.3s ease;
+        transition: all 0.3s ease;
     }
-
-    .btn-cancel:hover {
-        background-color: var(--button-cancel-hover);
-    }
-
-    /* --- Estilo para Mensagens de Alerta (Novo design) --- */
-    .alert {
-        background-color: var(--alert-bg);
-        border-left: 5px solid #ffc107; /* Amarelo/Laranja de alerta */
-        color: var(--alert-text);
-        padding: 15px;
-        margin-bottom: 1.5rem; /* Aumenta o espaçamento */
-        border-radius: 8px;
-        font-size: 0.95rem;
-        font-weight: 500;
+    .btn-secondary-action:hover {
+        background-color: var(--button-extra-green-hover, #1e7e34);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
     }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    /* Animação em Cascata */
+    const animatedItems = document.querySelectorAll('.fade-in-item');
+    animatedItems.forEach((item, index) => {
+        setTimeout(() => {
+            item.classList.add('is-visible');
+        }, index * 100 + 100); 
+    });
+});
+</script>
+
 {% endblock %}
