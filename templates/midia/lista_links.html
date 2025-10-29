@@ -1,45 +1,331 @@
 {% extends "base.html" %} 
 {% load static %}
 
-{% block content %}
-    <div class="container-fluid" style="padding-top: 40px;">
-        <h1 class="mt-4">{{ page_title }}</h1>
-        
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+{% block extra_head %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% endblock %}
 
-        <div class="mb-4">
-            <a href="{% url 'core:adicionar_link_page' %}" class="btn btn-primary btn-lg">
-                Adicionar Novo Link 
-            </a>
-        </div>
-        
-        <h2 class="mt-4 mb-3">Seus Links Cadastrados</h2>
-        <div class="list-group">
-        {% for link in links %}
-                <div class="card mb-3">
-        <div class="card-body d-flex justify-content-between align-items-center">
-            <div>
-                <h5 style="margin-bottom: 2px; margin-top: 0;  text-transform: uppercase;">
-                    {{ link.nome_do_jogo|default:link.titulo }}
-                </h5>
-                <small class="text-muted">Adicionado em: {{ link.criado_em|date:"d/m/Y" }}</small>
-            </div>
-            <small><a href="{{ link.url }}" target="_blank" class="badge bg-secondary rounded-pill" style="text-decoration:none;">
-                Ver link salvo
-            </a></small>
-        </div>
-    </div>
-        {% empty %}
-            <div class="alert alert-info">
-                Você ainda não adicionou nenhum link. Clique no botão "Adicionar Novo Link de Jogo" para começar!
+{% block content %}
+<main class="links-container">
+    
+    <h2 class="form-title fade-in-item">{{ page_title }}</h2>
+    
+    {% if messages %}
+    <div class="messages-container fade-in-item">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
             </div>
         {% endfor %}
-        </div>
     </div>
+    {% endif %}
+
+    <div class="header-actions fade-in-item">
+        <a href="{% url 'core:adicionar_link_page' %}" class="btn-add-link">
+            🔗 Adicionar Novo Link 
+        </a>
+    </div>
+    
+    <div class="search-bar-wrapper fade-in-item">
+        <input type="search" id="search-links" class="form-input-search" placeholder="🔍 Buscar links por nome...">
+    </div>
+    
+    <h3 class="grid-title fade-in-item">Seus Links Cadastrados</h3>
+    <div class="links-grid">
+    {% for link in links %}
+        <div class="link-card fade-in-item">
+            <div class="link-header">
+                <h5>{{ link.nome_do_jogo|default:link.titulo }}</h5>
+            </div>
+            <div class="link-meta">
+                <small>Adicionado em: {{ link.criado_em|date:"d/m/Y" }}</small>
+            </div>
+            <div class="link-action">
+                <a href="{{ link.url }}" target="_blank" class="btn-view-link">
+                    Assistir / Ver Link
+                </a>
+            </div>
+        </div>
+    {% empty %}
+        <div class="empty-state fade-in-item">
+            <div class="empty-icon">📎</div>
+            <h4>Nenhum link encontrado</h4>
+            <p>Você ainda não adicionou nenhum link. Clique no botão "Adicionar Novo Link" para começar!</p>
+        </div>
+    {% endfor %}
+
+    <div id="no-results-message" class="empty-state hidden">
+        <div class="empty-icon">🧐</div>
+        <h4>Nenhum link encontrado</h4>
+        <p>Sua busca não retornou resultados. Tente um termo diferente.</p>
+    </div>
+    </div> </main>
+
+
+<style>
+    /* --- Variáveis de Estilo (Consistentes) --- */
+    :root {
+        --card-bg: #ffffff;
+        --text-primary: #1d2d35;
+        --text-secondary: #657786;
+        --border-color: #e1e8ed;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+        --destaque-color: #007bff; /* Azul do sidebar */
+        --destaque-hover: #0056b3;
+        --button-green: #00adb5; /* Verde do 'registrar' */
+        --button-green-hover: #00939a;
+        --success-bg: #d4edda;
+        --success-text: #155724;
+        --info-bg: #d1ecf1;
+        --info-text: #0c5460;
+    }
+
+    /* --- JS 1: Animação em Cascata --- */
+    .fade-in-item {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+    .fade-in-item.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    /* --- JS 3: Classe de Ocultar para Busca --- */
+    .hidden {
+        display: none !important;
+    }
+
+    /* --- Container Principal --- */
+    .links-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1rem;
+        font-family: 'Poppins', sans-serif;
+    }
+    .form-title {
+        text-align: center;
+        color: var(--text-primary);
+        margin: 1rem 0 2rem 0;
+        font-size: 2.25rem;
+        font-weight: 700;
+    }
+    .grid-title {
+        color: var(--text-primary);
+        margin: 2rem 0 1rem 0;
+        font-weight: 600;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 0.5rem;
+    }
+
+    /* --- Mensagens do Django (Customizadas) --- */
+    .messages-container { margin-bottom: 1.5rem; }
+    .message {
+        padding: 10px 15px; border-radius: 6px; margin-bottom: 8px; font-weight: 500;
+    }
+    .message.success { background-color: var(--success-bg); color: var(--success-text); }
+    .message.info { background-color: var(--info-bg); color: var(--info-text); }
+    .message.warning { background-color: #fff3cd; color: #856404; }
+    .message.error { background-color: #f8d7da; color: #721c24; }
+
+    /* --- Botão de Adicionar --- */
+    .header-actions {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .btn-add-link {
+        background-color: var(--destaque-color);
+        color: white;
+        text-decoration: none;
+        padding: 0.8rem 1.8rem;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+    .btn-add-link:hover {
+        background-color: var(--destaque-hover);
+        box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        transform: translateY(-2px);
+    }
+
+    /* --- JS 3: Barra de Busca --- */
+    .search-bar-wrapper {
+        margin-bottom: 1.5rem;
+    }
+    .form-input-search {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        color: var(--text-primary);
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-input-search:focus {
+        outline: none;
+        border-color: var(--destaque-color);
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+    }
+
+    /* --- Grid de Cards --- */
+    .links-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        /* Perspective removido */
+    }
+
+    /* --- Card Individual (Sem 3D) --- */
+    .link-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.5rem; /* Padding aplicado diretamente no card */
+        
+        /* Transição simples de hover */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .link-card:hover {
+        transform: translateY(-5px); /* Efeito "lift" no hover */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .link-header { flex-grow: 1; }
+    .link-header h5 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        text-transform: uppercase;
+    }
+
+    .link-meta {
+        margin-bottom: 1.5rem;
+    }
+    .link-meta small {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .link-action a.btn-view-link {
+        display: block;
+        text-align: center;
+        background-color: var(--button-green);
+        color: white;
+        text-decoration: none;
+        padding: 0.7rem 1rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    .link-action a.btn-view-link:hover {
+        background-color: var(--button-green-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 173, 181, 0.3);
+    }
+
+    /* --- Estado de Vazio --- */
+    .empty-state {
+        grid-column: 1 / -1; /* Ocupa a linha inteira do grid */
+        text-align: center;
+        padding: 3rem 2rem;
+        background-color: #f9fafb;
+        border-radius: 12px;
+        border: 2px dashed var(--border-color);
+    }
+    .empty-icon {
+        font-size: 3rem;
+        line-height: 1;
+        margin-bottom: 1rem;
+    }
+    .empty-state h4 {
+        color: var(--text-primary);
+        font-size: 1.3rem;
+        margin: 0 0 0.5rem 0;
+    }
+    .empty-state p {
+        color: var(--text-secondary);
+        margin: 0;
+    }
+</style>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* ================================
+    JS 1: ANIMAÇÃO EM CASCATA
+    ================================
+    */
+    const animatedItems = document.querySelectorAll('.fade-in-item');
+    animatedItems.forEach((item, index) => {
+        setTimeout(() => {
+            item.classList.add('is-visible');
+        }, index * 100); // Atraso mais rápido para listas
+    });
+
+
+    /* ================================
+    JS 2: EFEITO TILT 3D (REMOVIDO)
+    ================================
+    */
+    // O código do TILT foi removido daqui.
+
+
+    /* ================================
+    JS 3: FILTRO/BUSCA EM TEMPO REAL
+    ================================
+    */
+    const searchInput = document.getElementById('search-links');
+    const allLinks = document.querySelectorAll('.link-card');
+    const noResultsMessage = document.getElementById('no-results-message');
+    // Seleciona a mensagem original de "lista vazia", se ela existir
+    const originalEmptyMessage = document.querySelector('.links-grid .empty-state');
+
+    // Só ativa a busca se houver uma barra de busca e links na página
+    if (searchInput && allLinks.length > 0) {
+        
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            allLinks.forEach(link => {
+                const titleElement = link.querySelector('h5');
+                const title = titleElement ? titleElement.textContent.toLowerCase() : '';
+                
+                if (title.includes(query)) {
+                    link.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    link.classList.add('hidden');
+                }
+            });
+
+            // Gerencia a mensagem de "nenhum resultado"
+            if (visibleCount === 0 && query !== '') {
+                noResultsMessage.classList.remove('hidden');
+            } else {
+                noResultsMessage.classList.add('hidden');
+            }
+            
+            // Se a busca estiver vazia, esconde a msg de "sem resultados"
+            // e deixa a msg original (se existir) tomar conta
+            if (query === '' && originalEmptyMessage) {
+                 noResultsMessage.classList.add('hidden');
+            }
+            
+        });
+    }
+
+}); // Fim do DOMContentLoaded
+</script>
+
 {% endblock content %}

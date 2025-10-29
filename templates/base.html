@@ -28,6 +28,23 @@ body {
     transition: left 0.3s ease, width 0.3s ease;
 }
 
+/* ======================= */
+/* NOVO CSS ADICIONADO     */
+/* ======================= */
+/* Estiliza o link dentro do H1 */
+.header h1 a {
+    color: inherit; /* Herda a cor branca do .header */
+    text-decoration: none; /* Remove o sublinhado */
+    transition: color 0.3s ease;
+}
+.header h1 a:hover {
+    color: #ddd; /* Um hover sutil */
+}
+/* ======================= */
+/* FIM DO NOVO CSS         */
+/* ======================= */
+
+
 /* Estilo para o ícone "hambúrguer" */
 .menu-toggle {
     position: absolute; 
@@ -185,15 +202,19 @@ body.sidebar-hidden .content {
 </head>
 
 <body class="sidebar-hidden">
-<div class="header">
+
+    <div class="header">
         <span class="menu-toggle" id="menuToggle">&#9776;</span>
-        <h1>Only Football Fans</h1>
-    </div>
+        
+        <h1>
+            <a href="{% url 'core:home' %}">Only Football Fans</a>
+        </h1>
+        </div>
     
     <div class="sidebar">
         <p><strong>Menu</strong></p>
         <ul>
-            <li><a href="{% url 'core:avaliacao_inicio' %}">Avaliar estádio</a></li>
+            <li><a href="{% url 'core:avaliacao_inicio' %}">Avaliar Estádio</a></li>
             <li><a href="#" onclick="abrirModal()">Avaliar Partida</a></li>
             <li><a href="{% url 'core:lista_partidas' %}">Histórico</a></li>
             <li><a href="{% url 'core:galeria' %}">Galeria</a></li>
