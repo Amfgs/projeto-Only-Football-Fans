@@ -19,8 +19,8 @@
         
         <div class="ticket-stub">
             <div class="stub-header">
-                <span class="stub-icon">🏟️</span>
-                <span class="stub-title">O.F.F.</span>
+                <span class="stub-icon"></span>
+                <span class="stub-title">PRESENÇA</span>
             </div>
             
             <div class="form-group-date">
@@ -39,7 +39,7 @@
 
             <div class="form-group">
                 <input list="times_casa" name="time_casa" id="time_casa" class="form-input" placeholder=" " required>
-                <label for="time_casa" class="form-label">Time da Casa 🏠</label>
+                <label for="time_casa" class="form-label">Time da Casa </label>
                 <datalist id="times_casa">
                     {% for time in times %}
                     <option value="{{ time.nome }}">
@@ -49,7 +49,7 @@
             
             <div class="form-group">
                 <input list="times_visitante" name="time_visitante" id="time_visitante" class="form-input" placeholder=" " required>
-                <label for="time_visitante" class="form-label">Visitante ✈️</label>
+                <label for="time_visitante" class="form-label">Visitante </label>
                 <datalist id="times_visitante">
                     {% for time in times %}
                     <option value="{{ time.nome }}">

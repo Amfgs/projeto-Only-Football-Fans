@@ -23,7 +23,7 @@
         {% csrf_token %}
 
         <div class="form-group star-rating-section">
-            <label class="form-label">⭐ Sua Nota para o Jogo:</label>
+            <label class="form-label"> Sua Nota para o Jogo:</label>
             <div class="star-rating-group" dir="rtl">
                 {% for i in "54321" %} {# De "543210" para "54321" #}
                     <input type="radio" id="nota_{{ i }}" name="nota" value="{{ i }}" required />
