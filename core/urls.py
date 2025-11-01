@@ -17,7 +17,7 @@ urlpatterns = [
     # =========================
     # Partidas
     # =========================
-    path('partidas/avaliar_torcida/<int:partida_id>/', views.avaliar_torcida, name='avaliar_torcida'),
+    path('partida/avaliar_torcida/<int:partida_id>/', views.avaliar_torcida, name='avaliar_torcida'),
     path('partidas/avaliar_torcida/<int:partida_id>/2/', 
          lambda r, partida_id: views.avaliar_torcida(r, partida_id, time_index=2), 
          name='avaliar_torcida_segundo'),
