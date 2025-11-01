@@ -218,6 +218,11 @@ class Time(models.Model):
 
 
 class AvaliacaoTorcida(models.Model):
+    # === CAMPOS NOVOS E ESSENCIAIS ===
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="avaliacoes_torcida", null=True)
+    partida = models.ForeignKey(Partida, on_delete=models.CASCADE, related_name="avaliacoes_torcida", null=True)
+    # ================================
+
     time = models.CharField(max_length=100)
     comentario_torcida = models.TextField(blank=True, null=True)
     emocao = models.PositiveSmallIntegerField(choices=[(i, str(i)) for i in range(1, 6)])
@@ -225,7 +230,9 @@ class AvaliacaoTorcida(models.Model):
     data_criacao = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Avaliação de {self.time} - Emoção: {self.emocao}, Presença: {self.presenca}"
+        # String de representação melhorada
+        user_nome = self.usuario.username if self.usuario else "Anônimo"
+        return f"Avaliação de {self.time} (Partida {self.partida_id}) por {user_nome}"
 
 
 # =======================

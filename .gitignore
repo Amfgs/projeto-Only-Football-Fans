@@ -17,6 +17,8 @@ env*/
 *$py.class
 
 # Distribution / packaging
+db.sqlite3
+*.db
 .Python
 build/
 develop-eggs/

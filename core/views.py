@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.db.models import Q
 
+
 from .models import (
     AvaliacaoTorcida, AvaliacaoEstadio, Time, Partida, Imagem, Video, Audio,
     Definicao, Gol, AvaliacaoPartida, Jogador, Link
@@ -19,7 +20,6 @@ Usuario = get_user_model()
 # ----------------------------
 
 def get_partidas_context(request):
-<<<<<<< HEAD
     """
     Retorna o contexto de partidas e partidas avaliadas pelo usuário logado.
     Se o usuário não estiver logado, retorna listas vazias.
@@ -30,15 +30,8 @@ def get_partidas_context(request):
     partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
     avaliacoes = AvaliacaoPartida.objects.filter(usuario=request.user)
     partidas_avaliadas = {a.partida_id for a in avaliacoes}
-    
-    return {"partidas": partidas, "partidas_avaliadas": partidas_avaliadas}
-=======
-    if not request.user.is_authenticated:
-        return {'partidas': Partida.objects.none()}  # lista vazia, sem erro
 
-    partidas = Partida.objects.filter(usuario=request.user).order_by("-data")
-    return {'partidas': partidas}
->>>>>>> 7f474583b0fb50050fab49e08d20cef759d526fc
+    return {"partidas": partidas, "partidas_avaliadas": partidas_avaliadas}
 
 
 # ----------------------------
@@ -100,10 +93,25 @@ def user_logout(request):
 # PÁGINA INICIAL
 # ----------------------------
 
+@login_required(login_url='/login/') # Adiciona o decorator para simplificar
 def home(request):
-    if not request.user.is_authenticated:
-        return redirect('core:login')
-    return render(request, 'base.html')
+    
+    # Busca algumas estatísticas rápidas para o usuário
+    partidas_registradas = Partida.objects.filter(usuario=request.user).count()
+    estadios_avaliados = AvaliacaoEstadio.objects.filter(usuario=request.user).count()
+    
+    # Busca o time favorito (se cadastrado)
+    time_favorito = request.user.time_favorito
+    
+    context = {
+        'partidas_registradas': partidas_registradas,
+        'estadios_avaliados': estadios_avaliados,
+        'time_favorito': time_favorito,
+        # 'user': request.user já é passado automaticamente
+    }
+    
+    # Renderiza o NOVO template de home
+    return render(request, 'home.html', context)
 
 
 # ----------------------------
@@ -120,23 +128,30 @@ def avaliar_torcida(request, partida_id, time_index=1):
             time=request.POST.get('time'),
             comentario_torcida=request.POST.get('comentario'),
             emocao=request.POST.get('emocao'),
-            presenca=request.POST.get('presenca')
+            presenca=request.POST.get('presenca'),
+            
+            # --- CAMPOS ADICIONADOS ---
+            usuario=request.user,
+            partida=partida
+            # --------------------------
         )
 
         if time_index == 1:
+            # Continua o fluxo para avaliar o segundo time (Time Visitante)
+            # (Certifique-se que você tenha uma URL com name='avaliar_torcida_segundo' 
+            #  apontando para esta view com time_index=2)
             return redirect('core:avaliar_torcida_segundo', partida_id=partida_id)
         else:
-            return redirect('core:lista_partidas')
+            # --- MUDANÇA NO REDIRECT ---
+            # Após avaliar o segundo time, volta para a tela de 'ver_avaliacao'
+            messages.success(request, "Avaliações das torcidas registradas com sucesso!")
+            return redirect('core:ver_avaliacao', partida_id=partida.id) 
 
     context = {'time': time, 'partida': partida}
     context.update(get_partidas_context(request))
     return render(request, 'emocao/avaliar_torcida.html', context)
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 7f474583b0fb50050fab49e08d20cef759d526fc
 @login_required(login_url='/login/')
 def avaliacao_inicio(request):
     context = {}
@@ -144,20 +159,14 @@ def avaliacao_inicio(request):
     return render(request, 'emocao/avaliacao_inicio.html', context)
 
 
-<<<<<<< HEAD
 @login_required(login_url='/login/')
-=======
->>>>>>> 7f474583b0fb50050fab49e08d20cef759d526fc
 def nova_avaliacao(request):
     if request.method == "POST":
         estadio_nome = request.POST.get("estadio")
         avaliacao_raw = request.POST.get("avaliacao")
         comentario = request.POST.get("comentario")
 
-<<<<<<< HEAD
         # Validação mínima
-=======
->>>>>>> 7f474583b0fb50050fab49e08d20cef759d526fc
         if not estadio_nome or not avaliacao_raw:
             return render(request, "emocao/nova_avaliacao.html", {
                 "erro": "Preencha todos os campos obrigatórios."
@@ -170,12 +179,7 @@ def nova_avaliacao(request):
                 "erro": "A avaliação deve ser um número entre 1 e 5."
             })
 
-<<<<<<< HEAD
         # Cria avaliação associada ao usuário logado
-=======
-        usuario = request.user if request.user.is_authenticated else None
-
->>>>>>> 7f474583b0fb50050fab49e08d20cef759d526fc
         AvaliacaoEstadio.objects.create(
             estadio=estadio_nome,
             avaliacao_experiencia=avaliacao,
@@ -190,10 +194,7 @@ def nova_avaliacao(request):
     return render(request, "emocao/nova_avaliacao.html", context)
 
 
-<<<<<<< HEAD
 @login_required(login_url='/login/')
-=======
->>>>>>> 7f474583b0fb50050fab49e08d20cef759d526fc
 def avaliacoes_anteriores(request):
     page_number = request.GET.get('page', 1)
     avaliacoes = AvaliacaoEstadio.objects.filter(usuario=request.user).order_by('-data_avaliacao')
@@ -237,6 +238,29 @@ def resultado_avaliacoes(request):
     context.update(get_partidas_context(request))
     return render(request, "emocao/resultado.html", context)
 
+@login_required(login_url='/login/')
+def ver_avaliacao_torcida(request, partida_id):
+    partida = get_object_or_404(Partida, id=partida_id)
+    
+    # Pega as avaliações (espera-se 2) desta partida por este usuário
+    avaliacoes = AvaliacaoTorcida.objects.filter(
+        partida=partida, 
+        usuario=request.user
+    ).order_by('time') # Ordena pelo nome do time
+
+    if not avaliacoes.exists():
+        messages.error(request, "Você ainda não avaliou as torcidas desta partida.")
+        # Volta para a tela anterior
+        return redirect('core:ver_avaliacao', partida_id=partida.id)
+
+    context = {
+        "partida": partida,
+        "avaliacoes": avaliacoes
+    }
+    context.update(get_partidas_context(request))
+    # Renderiza o novo template que você pediu
+    return render(request, "emocao/ver_ava_torcida.html", context)
+
 
 # ----------------------------
 # MÍDIA
@@ -251,9 +275,13 @@ def galeria(request):
     context.update(get_partidas_context(request))
     return render(request, "midia/galeria.html", context)
 
+# ============================
+# ADICIONAR MÍDIA (IMAGEM/VIDEO/AUDIO)
+# ============================
 
+@login_required
 def adicionar_midia(request, partida_id):
-    partida = get_object_or_404(Partida, id=partida_id)
+    partida = get_object_or_404(Partida, id=partida_id, usuario=request.user)
     definicao, _ = Definicao.objects.get_or_create(
         jogo=str(partida),
         usuario=request.user,
@@ -267,12 +295,16 @@ def adicionar_midia(request, partida_id):
             Video.objects.create(definicao=definicao, arquivo=request.FILES["video"])
         if "audio" in request.FILES:
             Audio.objects.create(definicao=definicao, arquivo=request.FILES["audio"])
+        messages.success(request, "Mídia adicionada com sucesso!")
         return redirect("core:galeria")
 
     context = {"partida": partida, "definicao": definicao}
     context.update(get_partidas_context(request))
     return render(request, "midia/adicionar_midia.html", context)
 
+# ============================
+# ADICIONAR LINK ASSOCIADO À DEFINIÇÃO
+# ============================
 
 @login_required
 def adicionar_link(request, definicao_id):
@@ -283,13 +315,14 @@ def adicionar_link(request, definicao_id):
         url = request.POST.get('url')
 
         if titulo and url:
-            Link.objects.create(
-                definicao=definicao,
-                titulo=titulo,
-                url=url
-            )
+            Link.objects.create(definicao=definicao, titulo=titulo, url=url)
             messages.success(request, f"Link '{titulo}' adicionado com sucesso!")
-            return redirect('core:adicionar_midia', partida_id=definicao.id)
+            # Pegando a partida correta para redirect
+            partida = Partida.objects.filter(usuario=request.user, jogo=definicao.jogo).first()
+            if partida:
+                return redirect('core:adicionar_midia', partida_id=partida.id)
+            else:
+                return redirect('core:galeria')
         else:
             messages.error(request, "Título e URL são obrigatórios para adicionar o link.")
 
@@ -300,6 +333,9 @@ def adicionar_link(request, definicao_id):
     context.update(get_partidas_context(request))
     return render(request, 'midia/adicionar_link.html', context)
 
+# ============================
+# ADICIONAR LINK SOLTO (SEM DEFINIÇÃO)
+# ============================
 
 @login_required
 def adicionar_link_page(request):
@@ -308,10 +344,7 @@ def adicionar_link_page(request):
         url = request.POST.get('url')
 
         if nome_do_jogo and url:
-            Link.objects.create(
-                nome_do_jogo=nome_do_jogo,
-                url=url,
-            )
+            Link.objects.create(nome_do_jogo=nome_do_jogo, url=url)
             messages.success(request, f"Link de {nome_do_jogo} cadastrado com sucesso!")
             return redirect('core:lista_links')
         else:
@@ -321,6 +354,9 @@ def adicionar_link_page(request):
     context.update(get_partidas_context(request))
     return render(request, 'midia/adicionar_link_page.html', context)
 
+# ============================
+# LISTA DE LINKS
+# ============================
 
 @login_required
 def lista_links(request):
@@ -348,6 +384,7 @@ def lista_partidas(request):
         "partidas_avaliadas": partidas_avaliadas
     })
 
+
 @login_required(login_url='/login/')
 def registrar_partida(request):
     times = Time.objects.all()
@@ -370,6 +407,7 @@ def registrar_partida(request):
     context = {"times": times}
     context.update(get_partidas_context(request))
     return render(request, "partidas/registrar_partida.html", context)
+
 
 @login_required(login_url='/login/')
 def avaliar_partida(request, partida_id):
@@ -415,7 +453,23 @@ def ver_avaliacao(request, partida_id):
         messages.error(request, "Você ainda não avaliou esta partida.")
         return redirect("core:lista_partidas")
 
-    context = {"avaliacao": avaliacao, "partida": partida}
+    # --- NOVA LÓGICA ---
+    # A sua view 'avaliar_torcida' tem lógica para time_index=1 e time_index=2.
+    # Vamos assumir que "avaliado" significa que existem 2 registros (um para cada time).
+    avaliacoes_torcida_count = AvaliacaoTorcida.objects.filter(
+        partida=partida, 
+        usuario=request.user
+    ).count()
+
+    # Se a contagem for 2 ou mais, consideramos que a avaliação foi feita.
+    torcida_ja_avaliada = avaliacoes_torcida_count >= 2
+    # ---------------------
+
+    context = {
+        "avaliacao": avaliacao, 
+        "partida": partida,
+        "torcida_ja_avaliada": torcida_ja_avaliada  # <-- Passa a variável para o template
+    }
     context.update(get_partidas_context(request))
     return render(request, "partidas/ver_avaliacao.html", context)
 
@@ -437,8 +491,9 @@ def registrar_gols(request, partida_id):
     context.update(get_partidas_context(request))
     return render(request, "registrar_gols.html", context)
 
+
 # ----------------------------
-# HOME PAGE
+# PERFIL
 # ----------------------------
 
 @login_required

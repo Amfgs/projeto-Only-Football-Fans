@@ -1,120 +1,318 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<div class="content-container">
-    <h2>Lista de Partidas</h2>
+{% block extra_head %}
+    {% endblock %}
 
-    <!-- MESSAGES -->
+{% block content %}
+<main class="partidas-container">
+
+    <h2 class="form-title fade-in-item">Histórico de Partidas</h2>
+
     {% if messages %}
-    <div class="messages-container">
+    <div class="messages-container fade-in-item">
         {% for message in messages %}
             <div class="message {{ message.tags }}">{{ message }}</div>
         {% endfor %}
     </div>
     {% endif %}
 
+    <div class="search-bar-wrapper fade-in-item">
+        <input type="search" id="search-partidas" class="form-input-search" placeholder="🔍 Buscar por time...">
+    </div>
+
     {% if partidas %}
         <div class="partidas-grid">
         {% for partida in partidas %}
-            <div class="partida-card">
-                <div class="partida-info">
-                    <h3>{{ partida.time_casa }} x {{ partida.time_visitante }}</h3>
-                    <p>{{ partida.data }}</p>
+            <div class="partida-card fade-in-item" data-search="{{ partida.time_casa }} {{ partida.time_visitante }}">
+                
+                <div class="partida-info-scoreboard">
+                    <span class="time time-casa">{{ partida.time_casa|default:"Time A" }}</span>
+                    <span class="vs">X</span>
+                    <span class="time time-visitante">{{ partida.time_visitante|default:"Time B" }}</span>
                 </div>
-                {% if partida.id in partidas_avaliadas %}
-                    <a href="{% url 'core:ver_avaliacao' partida.id %}" class="btn-avaliar btn-secondary">Ver avaliação</a>
-                {% else %}
-                    <a href="{% url 'core:avaliar_partida' partida.id %}" class="btn-avaliar">Avaliar</a>
-                {% endif %}
+
+                <div class="partida-data">
+                    📅 {{ partida.data|date:"d/m/y" }} às {{ partida.data|time:"H:i" }}
+                </div>
+                
+                <div class="partida-action">
+                    {% if partida.id in partidas_avaliadas %}
+                        <a href="{% url 'core:ver_avaliacao' partida.id %}" class="btn-avaliar btn-secondary">Ver Avaliação</a>
+                    {% else %}
+                        <a href="{% url 'core:avaliar_partida' partida.id %}" class="btn-avaliar btn-primary">Avaliar Partida</a>
+                    {% endif %}
+                </div>
             </div>
         {% endfor %}
         </div>
     {% else %}
-        <p>Não há partidas registradas.</p>
+        <div class="empty-state fade-in-item">
+            <div class="empty-icon">🏟️</div>
+            <h4>Nenhuma partida registrada</h4>
+            <p>Você ainda não registrou nenhuma partida. <a href="{% url 'core:registrar_partida' %}">Clique aqui</a> para adicionar a primeira!</p>
+        </div>
     {% endif %}
-</div>
+
+    <div id="no-results-message" class="empty-state hidden">
+        <div class="empty-icon">🧐</div>
+        <h4>Nenhuma partida encontrada</h4>
+        <p>Sua busca não retornou resultados. Tente um termo diferente.</p>
+    </div>
+
+</main>
 
 <style>
-/* Container principal */
-.content-container {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
+    /* --- Variáveis (do base.html) --- */
+    :root {
+        /* --card-bg, --text-primary, --text-secondary, --accent-blue,
+           --content-bg, --button-green, --border-color-light, etc. */
+    }
 
-/* Mensagens do Django */
-.messages-container {
-    margin-bottom: 15px;
-}
-.message {
-    padding: 10px 15px;
-    border-radius: 6px;
-    margin-bottom: 8px;
-    font-weight: 500;
-}
-.message.success { background-color: #d4edda; color: #155724; }
-.message.warning { background-color: #fff3cd; color: #856404; }
+    /* --- JS: Animação e Utilitários --- */
+    .fade-in-item {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+    .fade-in-item.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .hidden {
+        display: none !important;
+    }
 
-/* Grid de partidas */
-.partidas-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-}
+    /* --- Container Principal --- */
+    .partidas-container {
+        max-width: 1200px; /* Mais largo para o grid */
+        margin: 0 auto;
+        padding: 1rem;
+        font-family: 'Poppins', sans-serif;
+    }
 
-/* Card de partida */
-.partida-card {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
-}
+    .form-title {
+        text-align: center;
+        color: var(--text-dark);
+        margin: 1rem 0 2rem 0;
+        font-size: 2.25rem;
+        font-weight: 700;
+    }
 
-.partida-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
-}
+    /* --- Mensagens do Django --- */
+    .messages-container {
+        margin-bottom: 1.5rem;
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .message {
+        padding: 10px 15px;
+        border-radius: 6px;
+        margin-bottom: 8px;
+        font-weight: 500;
+        background-color: #fff3cd; /* Cor padrão */
+        color: #856404;
+    }
+    .message.success { background-color: #d4edda; color: #155724; }
+    .message.warning { background-color: #fff3cd; color: #856404; }
+    .message.error { background-color: #f8d7da; color: #721c24; }
 
-.partida-info h3 {
-    margin: 0 0 5px 0;
-    font-size: 1.1em;
-}
+    /* --- JS: Barra de Busca --- */
+    .search-bar-wrapper {
+        margin: 0 auto 2rem auto;
+        max-width: 700px;
+    }
+    .form-input-search {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid var(--border-color-light, #e1e8ed);
+        border-radius: 8px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        color: var(--text-dark);
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-input-search:focus {
+        outline: none;
+        border-color: var(--accent-blue, #007bff);
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+    }
 
-.partida-info p {
-    margin: 0;
-    color: #555;
-    font-size: 0.9em;
-}
 
-/* Botão de avaliar */
-.btn-avaliar {
-    margin-top: 10px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 0.95em;
-    text-align: center;
-}
+    /* --- Grid de Partidas --- */
+    .partidas-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
 
-.btn-avaliar:hover {
-    background-color: #0056b3;
-}
+    /* --- Card de Partida (Novo Estilo) --- */
+    .partida-card {
+        background-color: var(--card-bg, #fff);
+        padding: 20px;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border: 1px solid var(--border-color-light, #e1e8ed);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-/* Botão secundário (já avaliado) */
-.btn-secondary {
-    background-color: #6c757d;
-}
+    .partida-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
 
-.btn-secondary:hover {
-    background-color: #5a6268;
-}
+    /* --- "Toque de Futebol": Placar --- */
+    .partida-info-scoreboard {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px dashed var(--border-color-light, #ddd);
+    }
+    .partida-info-scoreboard .time {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        flex: 1; /* Ocupa espaço */
+    }
+    .partida-info-scoreboard .time-casa {
+        text-align: left;
+    }
+    .partida-info-scoreboard .time-visitante {
+        text-align: right;
+    }
+    .partida-info-scoreboard .vs {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--accent-blue, #007bff);
+        padding: 0 10px;
+    }
+
+    /* --- "Toque de Futebol": Tag de Data --- */
+    .partida-data {
+        margin: 15px 0;
+        padding: 5px 10px;
+        background-color: var(--content-bg, #f4f7f9);
+        border-radius: 6px;
+        text-align: center;
+        color: var(--text-secondary, #555);
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    /* --- Botões de Ação --- */
+    .partida-action {
+        margin-top: 10px;
+    }
+    .btn-avaliar {
+        display: block; /* Ocupa a largura toda */
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    /* Botão Primário (Avaliar) - Verde */
+    .btn-primary {
+        background-color: var(--button-green, #00adb5);
+        color: white;
+    }
+    .btn-primary:hover {
+        background-color: var(--button-green-hover, #00939a);
+        box-shadow: 0 4px 10px rgba(0, 173, 181, 0.3);
+        transform: translateY(-2px);
+    }
+
+    /* Botão Secundário (Ver) - Cinza */
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+    
+    /* --- Estado de Vazio --- */
+    .empty-state {
+        grid-column: 1 / -1; 
+        text-align: center;
+        padding: 3rem 2rem;
+        background-color: var(--card-bg, #fff);
+        border-radius: 12px;
+        border: 2px dashed var(--border-color-light, #e1e8ed);
+    }
+    .empty-icon { font-size: 3rem; line-height: 1; margin-bottom: 1rem; }
+    .empty-state h4 { color: var(--text-dark); font-size: 1.3rem; margin: 0 0 0.5rem 0; }
+    .empty-state p { color: var(--text-secondary, #555); margin: 0; }
+    .empty-state p a { color: var(--accent-blue, #007bff); font-weight: 500; }
+
 </style>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* ================================
+    JS 1: ANIMAÇÃO EM CASCATA
+    ================================
+    */
+    const animatedItems = document.querySelectorAll('.fade-in-item');
+    animatedItems.forEach((item, index) => {
+        // Atraso de 100ms + 50ms por card (rápido)
+        setTimeout(() => {
+            item.classList.add('is-visible');
+        }, 100 + index * 50); 
+    });
+
+
+    /* ================================
+    JS 2: FILTRO/BUSCA EM TEMPO REAL
+    ================================
+    */
+    const searchInput = document.getElementById('search-partidas');
+    const allPartidas = document.querySelectorAll('.partida-card');
+    const noResultsMessage = document.getElementById('no-results-message');
+    const originalEmptyMessage = document.querySelector('.partidas-grid .empty-state');
+
+    if (searchInput && allPartidas.length > 0) {
+        
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            allPartidas.forEach(card => {
+                // Busca no atributo 'data-search' que criamos
+                const searchText = card.dataset.search.toLowerCase();
+                
+                if (searchText.includes(query)) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Gerencia a mensagem de "nenhum resultado"
+            if (visibleCount === 0 && query !== '') {
+                noResultsMessage.classList.remove('hidden');
+            } else {
+                noResultsMessage.classList.add('hidden');
+            }
+            
+            if (query === '' && originalEmptyMessage) {
+                 noResultsMessage.classList.add('hidden');
+            }
+        });
+    }
+
+}); // Fim do DOMContentLoaded
+</script>
+
 {% endblock %}

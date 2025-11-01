@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="form-container" style="max-width: 800px;">
+    <h2 class="form-title">Review das Torcidas</h2>
+    
+    <div class="form-card">
+        <div class="info-linha">
+            <h3>{{ partida.time_casa }} x {{ partida.time_visitante }}</h3>
+            <p class="data">{{ partida.data|date:"d/m/Y H:i" }}</p>
+        </div>
+
+        {% if avaliacoes %}
+            <div class="avaliacoes-container">
+            {% for avaliacao in avaliacoes %}
+                <div class="avaliacao-individual">
+                    <h4>Torcida: {{ avaliacao.time }}</h4>
+                    <p><strong>🔥 Emoção:</strong> {{ avaliacao.emocao }} / 5</p>
+                    <p><strong>📣 Presença:</strong> {{ avaliacao.presenca }} / 5</p>
+                    {% if avaliacao.comentario_torcida %}
+                        <p><strong>Comentário:</strong></p>
+                        <div class="comentario">{{ avaliacao.comentario_torcida }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            </div>
+        {% else %}
+            <p>Nenhuma avaliação de torcida encontrada para esta partida.</p>
+        {% endif %}
+
+        <div class="form-buttons" style="margin-top: 2rem;">
+            <a href="{% url 'core:ver_avaliacao' partida.id %}" class="btn-cancel">Voltar</a>
+        </div>
+    </div>
+</main>
+
+<style>
+    :root {
+        --card-bg: #ffffff;
+        --text-primary: #1d2d35;
+        --text-secondary: #657786;
+        --button-cancel: #657786;
+        --button-cancel-hover: #4e5d6a;
+        --border-color: #e1e8ed;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+    }
+    .form-container { max-width: 700px; margin: 2rem auto; padding: 1rem; font-family: 'Poppins', sans-serif; }
+    .form-title { text-align: center; color: var(--text-primary); margin-bottom: 2rem; font-size: 2rem; }
+    .form-card { background-color: var(--card-bg); border-radius: 12px; padding: 2rem; box-shadow: 0 4px 15px var(--shadow-color); border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 1.5rem; }
+    .info-linha { display: flex; justify-content: space-between; align-items: center; }
+    .info-linha h3 { font-size: 1.3rem; color: var(--text-primary); margin: 0; }
+    .data { color: var(--text-secondary); font-size: 0.9rem; }
+    
+    .avaliacoes-container { display: flex; flex-direction: column; gap: 1.5rem; }
+    .avaliacao-individual { border-top: 1px solid var(--border-color); padding-top: 1.5rem; }
+    .avaliacao-individual h4 { margin: 0 0 0.5rem 0; font-size: 1.1rem; color: var(--text-primary); }
+    .avaliacao-individual p { margin: 0.3rem 0; }
+    .comentario { background-color: #f8f9fa; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); color: var(--text-secondary); line-height: 1.5; margin-top: 0.5rem; }
+
+    .form-buttons { display: flex; gap: 10px; margin-top: 1rem; }
+    .btn-cancel { background-color: var(--button-cancel); color: white; padding: 0.9rem 1.5rem; border-radius: 8px; text-decoration: none; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 1rem; flex-grow: 1; text-align: center; transition: background-color 0.3s ease; }
+    .btn-cancel:hover { background-color: var(--button-cancel-hover); }
+</style>
+{% endblock %}

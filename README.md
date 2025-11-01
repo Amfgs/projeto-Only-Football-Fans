@@ -7,8 +7,8 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 ---
 
 ## 📑 Funcionalidades  
-- ⚽ **Agendamento de Jogos**: planeje sua ida a futuras partidas.  
-- 📖 **Histórico de Jogos**: registre todos os jogos que já assistiu.  
+- ⚽ **Registro de Jogos**: registre jogos na sua agenda.  
+- 📖 **Histórico de Jogos**: visualize uma lista de todos os jogos que já assistiu.  
 - ⭐ **Avaliações Personalizadas**: avalie torcidas, estádios e experiências.  
 - 🖼️ **Galeria de Mídia**: adicione fotos e comentários pessoais.  
 - 🎥 **Links de Replay**: acesse os melhores momentos dos jogos.  
@@ -100,6 +100,12 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
 
   Screencast dos Testes
   https://youtu.be/c-wovCPDYfY?si=dTk3_qhHd_bDsY7F
+
+  Screencast do CI/CD
+  https://youtu.be/XMa_inb8q7g?si=d223A3XJ7rpS5TtO
+
+  Screencast do Deployment das Novas Histórias
+  https://youtu.be/3ujceBWA1Cs?si=PcHjT4azrKEH4oLb
 
   Programação em Dupla / Relato 2
   [Print da Sessão de Programação em Dupla](images/programacao_dupla2.png)

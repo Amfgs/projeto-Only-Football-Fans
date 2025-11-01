@@ -3,158 +3,316 @@
 <head> 
     <meta charset="UTF-8">
     <title>OFF</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    {% block extra_head %}{% endblock %}
+
     <style>
-        /* Reset básico */
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    display: flex;
-    height: 100vh;
-}
+        /* ===========================
+         * VARIÁVEIS DE DESIGN
+         * ===========================
+        */
+        :root {
+            --sidebar-width: 240px;
+            
+            /* --- MUDANÇA AQUI --- */
+            --sidebar-bg: #004a99; /* De #1d2d35 para Azul Escuro */
+            /* --- FIM DA MUDANÇA --- */
 
-/* Cabeçalho */
-.header {
-    position: fixed;
-    top: 0;
-    left: 200px;
-    width: calc(100% - 200px);
-    background-color: #0056b3; /* tom mais escuro do azul */
-    color: #ffffff;
-    padding: 15px;
-    text-align: center;
-    z-index: 10;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* sombra leve */
-}
+            --header-bg: var(--accent-blue); 
+            --content-bg: #f4f7f9; 
+            --text-light: #f1f1f1;
+            --text-dark: #1d2d35;
+            --accent-blue: #007bff; 
+            --accent-blue-hover: #0069d9;
+            --border-color-light: #e1e8ed;
+        }
 
-/* Sidebar */
-.sidebar {
-    width: 200px;
-    background: linear-gradient(to bottom, #007bff, #3399ff); /* gradiente azul */
-    color: #ffffff;
-    padding-top: 20px;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2); /* sombra lateral */
-}
+        /* ===========================
+         * RESET BÁSICO E BODY
+         * ===========================
+        */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif; 
+            display: flex;
+            height: 100vh;
+            background-color: var(--content-bg); 
+            color: var(--text-dark);
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-.sidebar p {
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #ffffff;
-}
+        /* ===========================
+         * HEADER (BARRA SUPERIOR)
+         * ===========================
+        */
+        .header {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width); 
+            width: calc(100% - var(--sidebar-width)); 
+            background-color: var(--header-bg); 
+            color: var(--text-light); 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            padding: 15px 25px;
+            z-index: 10;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 34px; 
+        }
+        
+        .header h1 {
+           display: none; 
+        }
 
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
+        /* Ícone "Hambúrguer" */
+        .menu-toggle {
+            position: static; 
+            font-size: 24px; 
+            color: var(--text-light); 
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .menu-toggle:hover {
+            color: #ffffff; 
+        }
+        
+        /* ÍCONE DE PERFIL/CONFIGURAÇÕES */
+        .header-user-icon {
+            font-size: 1.5rem;
+            text-decoration: none;
+            color: var(--text-light); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            border-radius: 50%; 
+            transition: color 0.2s ease, background-color 0.2s ease;
+        }
+        .header-user-icon:hover {
+            color: #ffffff; 
+            background-color: var(--accent-blue-hover); 
+        }
 
-.sidebar ul li {
-    padding: 10px 15px;
-    transition: background-color 0.3s ease;
-}
+        /* ===========================
+         * SIDEBAR (MENU LATERAL)
+         * ===========================
+        */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            color: var(--text-light);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+            
+            transform: translateX(0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 20;
+            
+            display: flex;
+            flex-direction: column;
+            padding: 0; 
+        }
+        
+        .sidebar-header {
+            padding: 20px 25px;
+            text-align: center;
+            /* Linha divisória sutil para o novo azul */
+            border-bottom: 1px solid #0060c4; 
+        }
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .sidebar-header h2 a {
+            color: var(--text-light);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
 
-.sidebar ul li a,
-.sidebar ul li form button {
-    text-decoration: none;
-    color: #ffffff;
-    display: block;
-    width: 100%;
-    text-align: left;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 15px;
-    transition: color 0.3s ease, background-color 0.3s ease; /* transição suave */
-}
+        .sidebar ul {
+            list-style: none;
+            padding: 15px;
+            margin: 0;
+            flex-grow: 1; 
+            overflow-y: auto; 
+        }
 
-.sidebar ul li:hover {
-    background-color: #66b3ff; /* azul mais claro no hover */
-}
+        .sidebar ul li {
+            padding: 4px 0; 
+        }
 
-/* Conteúdo principal */
-.content {
-    margin-left: 200px;
-    padding: 80px 20px 20px;
-    width: calc(100% - 200px);
-}
+        .sidebar-link {
+            text-decoration: none;
+            color: var(--text-light);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem; 
+            font-weight: 500;
+            
+            display: flex;
+            align-items: center;
+            gap: 12px; 
+            
+            width: 100%;
+            text-align: left;
+            padding: 12px 15px;
+            border-radius: 8px; 
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
 
-/* Modal popup */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 100;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.7);
-}
+        .sidebar-link:hover {
+            /* O hover agora é o azul MÉDIO, que se destaca no azul ESCURO */
+            background-color: var(--accent-blue); 
+            color: #ffffff;
+        }
+        
+        .sidebar-link .icon {
+            font-size: 1.2rem;
+            width: 20px; 
+            text-align: center;
+        }
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 800px;
-}
+        .sidebar ul li form {
+            margin: 0;
+        }
+        
+        /* Divisória (hr) */
+        .sidebar hr {
+             border: 0; 
+             border-top: 1px solid #0060c4; /* Mesmo tom da borda do header */
+             margin: 10px 0;
+        }
 
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
+        /* ===========================
+         * CONTEÚDO PRINCIPAL
+         * ===========================
+        */
+        .content {
+            margin-left: var(--sidebar-width);
+            padding: 100px 40px 40px; 
+            width: calc(100% - var(--sidebar-width) - 80px); 
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: var(--content-bg);
+            box-sizing: border-box; 
+        }
 
-.close {
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
+        /* ===========================
+         * ESTADO DE MENU ESCONDIDO
+         * ===========================
+        */
+        body.sidebar-hidden .sidebar {
+            transform: translateX(-100%); 
+        }
 
-.close:hover {
-    color: #000;
-}
+        body.sidebar-hidden .header {
+            left: 0;
+            width: 100%;
+            box-sizing: border-box; 
+        }
 
-.card {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        body.sidebar-hidden .content {
+            margin-left: 0;
+            width: 100%;
+        }
 
-.card button {
-    padding: 5px 10px;
-    cursor: pointer;
-}
+        /* ===========================
+         * MODAL POPUP (Seu CSS original)
+         * ===========================
+        */
+        .modal {
+            display: none; position: fixed; z-index: 100;
+            left: 0; top: 0; width: 100%; height: 100%;
+            overflow: auto; background-color: rgba(0,0,0,0.7);
+        }
+        .modal-content {
+            background-color: #fefefe; margin: 5% auto; padding: 20px;
+            border-radius: 8px; width: 80%; max-width: 800px;
+        }
+        .modal-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 10px;
+        }
+        .close {
+            color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer;
+        }
+        .close:hover { color: #000; }
+        .card {
+            border: 1px solid #ccc; border-radius: 5px; padding: 15px;
+            margin-bottom: 10px; display: flex; justify-content: space-between;
+            align-items: center;
+        }
+        .card button { padding: 5px 10px; cursor: pointer; }
     </style>
 </head>
-<body>
-    <div class="header">
-        <h1>Only Football Fans</h1>
-    </div>
 
+<body class="sidebar-hidden">
+
+    <div class="header">
+        <span class="menu-toggle" id="menuToggle">&#9776;</span>
+
+        <a href="{% url 'core:home' %}" title="Home">
+            Only Football Fans
+        </a>
+        
+        <a href="{% url 'core:perfil' %}" class="header-user-icon" title="Configurações e Perfil">
+            👤
+        </a>
+
+        </div>
+    
     <div class="sidebar">
-        <p><strong>Menu</strong></p>
+        <div class="sidebar-header">
+            <h2><a href="{% url 'core:home' %}">O . F . F .</a></h2>
+        </div>
+
         <ul>
-            <li><a href="{% url 'core:avaliacao_inicio' %}">Avaliar estádio</a></li>
-            <li><a href="#" onclick="abrirModal()">Avaliar Partida</a></li>
-            <li><a href="{% url 'core:lista_partidas' %}">Histórico</a></li>
-            <li><a href="{% url 'core:galeria' %}">Galeria</a></li>
-            <li><a href="{% url 'core:registrar_partida' %}">Registrar Partidas</a></li>
-            <li><a href="{% url 'core:lista_links' %}">Assistir jogos</a></li>
-            <li><a href="{% url 'core:perfil' %}">Configurações</a></li>
+            <li><a href="{% url 'core:home' %}" class="sidebar-link">
+                <span class="icon">🏠</span>Página Inicial
+            </a></li>
+            <li><a href="{% url 'core:registrar_partida' %}" class="sidebar-link">
+                <span class="icon">➕</span>Registrar Partida
+            </a></li>
+            <li><a href="{% url 'core:lista_partidas' %}" class="sidebar-link">
+                <span class="icon">📊</span>Histórico
+            </a></li>
+            <li><a href="{% url 'core:avaliacao_inicio' %}" class="sidebar-link">
+                <span class="icon">⭐</span>Avaliar Estádio
+            </a></li>
+            <li><a href="{% url 'core:galeria' %}" class="sidebar-link">
+                <span class="icon">📸</span>Galeria
+            </a></li>
+            <li><a href="{% url 'core:lista_links' %}" class="sidebar-link">
+                <span class="icon">🔗</span>Assistir Jogos
+            </a></li>
+            
+            <li><a href="#" onclick="abrirModal()" class="sidebar-link">
+                <span class="icon">🏟️</span>Avaliar Partida
+            </a></li>
+            
+            <hr>
+
+            <li><a href="{% url 'core:perfil' %}" class="sidebar-link">
+                <span class="icon">⚙️</span>Configurações
+            </a></li>
             <li>
                 <form action="{% url 'core:logout' %}" method="post">
                     {% csrf_token %}
-                    <button type="submit">Sair</button>
+                    <button type"submit" class="sidebar-link">
+                        <span class="icon">🚪</span>Sair
+                    </button>
                 </form>
             </li>
         </ul>
@@ -165,7 +323,18 @@ body {
         {% endblock %}
     </div>
 
-    <!-- Pop-Up -->
-{% include 'partidas/popup_avaliar_partida.html' %}
+    {% include 'partidas/popup_avaliar_partida.html' %}
 
+<script>
+    var menuToggleButton = document.getElementById('menuToggle');
+    var bodyElement = document.body;
 
+    menuToggleButton.addEventListener('click', function() {
+        bodyElement.classList.toggle('sidebar-hidden');
+    });
+
+    // (Seu script de modal 'abrirModal()' deve vir aqui ou ser importado)
+</script>
+
+</body>
+</html>

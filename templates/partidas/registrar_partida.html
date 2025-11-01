@@ -1,125 +1,243 @@
 {% extends 'base.html' %}
 
 {% block extra_head %}
-    {# Link para a fonte do Google Fonts para manter a consistência visual #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
 <main class="form-container">
-    <h2 class="form-title">Registrar Partida</h2>
+    
+    <h2 class="form-title fade-in-item">Registrar Nova Partida</h2>
+    
+    <div id="form-error-container" class="fade-in-item"></div>
 
-    <form method="post" class="form-card">
+    <form method="post" class="form-card ticket-card fade-in-item">
         {% csrf_token %}
-
-        <div class="form-group">
-            <label for="time_casa" class="form-label">Time da Casa:</label>
-            <input list="times_casa" name="time_casa" id="time_casa" class="form-input" placeholder="Digite ou selecione o nome do time" required>
-            <datalist id="times_casa">
-                {% for time in times %}
-                <option value="{{ time.nome }}">
-                {% endfor %}
-            </datalist>
+        
+        <div class="ticket-stub">
+            <div class="stub-header">
+                <span class="stub-icon"></span>
+                <span class="stub-title">PRESENÇA</span>
+            </div>
+            
+            <div class="form-group-date">
+                <label for="data" class="form-label-date">Data e Hora</label>
+                <input type="datetime-local" name="data" id="data" class="form-input-date" required>
+            </div>
+            
+            <div class="stub-footer">
+                ONLY FOOTBALL FANS
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="time_visitante" class="form-label">Time Visitante:</label>
-            <input list="times_visitante" name="time_visitante" id="time_visitante" class="form-input" placeholder="Digite ou selecione o nome do time" required>
-            <datalist id="times_visitante">
-                {% for time in times %}
-                <option value="{{ time.nome }}">
-                {% endfor %}
-            </datalist>
+        <div class="ticket-main">
+            
+            <h3 class="ticket-title">Detalhes da Partida</h3>
+
+            <div class="form-group">
+                <input list="times_casa" name="time_casa" id="time_casa" class="form-input" placeholder=" " required>
+                <label for="time_casa" class="form-label">Time da Casa </label>
+                <datalist id="times_casa">
+                    {% for time in times %}
+                    <option value="{{ time.nome }}">
+                    {% endfor %}
+                </datalist>
+            </div>
+            
+            <div class="form-group">
+                <input list="times_visitante" name="time_visitante" id="time_visitante" class="form-input" placeholder=" " required>
+                <label for="time_visitante" class="form-label">Visitante </label>
+                <datalist id="times_visitante">
+                    {% for time in times %}
+                    <option value="{{ time.nome }}">
+                    {% endfor %}
+                </datalist>
+            </div>
+
+            <button type="submit" class="btn-submit">Registrar Ingresso</button>
         </div>
 
-        <div class="form-group">
-            <label for="data" class="form-label">Data e Hora:</label>
-            <input type="datetime-local" name="data" id="data" class="form-input" required>
-        </div>
-
-        <button type="submit" class="btn-submit">Registrar</button>
     </form>
 </main>
 
 <style>
-    /* --- Variáveis de Estilo (Consistente com a Galeria) --- */
+    /* --- Herança de Variáveis (do base.html) --- */
     :root {
-        --primary-bg: #f4f7f9;
-        --card-bg: #ffffff;
-        --text-primary: #1d2d35;
-        --text-secondary: #657786;
-        --button-green: #00adb5;
+        /* --sidebar-bg, --accent-blue, --text-light, --text-dark, --content-bg, etc */
+        --button-green: #00adb5; /* Cor do seu design anterior */
         --button-green-hover: #00939a;
-        --border-color: #e1e8ed;
-        --border-focus-color: #00adb5;
-        --shadow-color: rgba(0, 0, 0, 0.08);
+        --error-color: #e74c3c;
     }
+
+    /* --- Animação de Entrada --- */
+    @keyframes slideInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-item {
+        opacity: 0;
+        animation: slideInUp 0.5s ease-out 0.1s forwards;
+    }
+    #form-error-container.fade-in-item { animation-delay: 0.2s; }
+    .ticket-card.fade-in-item { animation-delay: 0.3s; }
 
     /* --- Container Principal --- */
     .form-container {
-        max-width: 600px;
+        max-width: 800px; /* Mais largo para o ingresso */
         margin: 2rem auto;
         padding: 1rem;
         font-family: 'Poppins', sans-serif;
     }
-
     .form-title {
         text-align: center;
-        color: var(--text-primary);
-        margin-bottom: 2rem;
+        color: var(--text-dark);
+        margin: 0 0 2rem 0;
         font-size: 2.25rem;
+        font-weight: 700;
     }
-
-    /* --- Card do Formulário --- */
-    .form-card {
-        background-color: var(--card-bg);
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 15px var(--shadow-color);
-        border: 1px solid var(--border-color);
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem; /* Aumenta o espaçamento entre os campos */
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .form-label {
+    
+    /* Mensagem de Erro JS */
+    .form-error-message {
+        background-color: var(--error-color);
+        color: white;
+        padding: 0.8rem 1.2rem;
+        border-radius: 8px;
+        text-align: center;
         font-weight: 500;
-        color: var(--text-primary);
-        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
     }
 
+    /* ===========================
+     * CSS DO "INGRESSO"
+     * ===========================
+    */
+    .ticket-card {
+        background-color: var(--card-bg, #fff);
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        display: flex; /* <-- A mágica começa aqui */
+        min-height: 350px;
+        overflow: hidden; /* Garante o B-radius */
+    }
+
+    /* --- 1. Canhoto (Stub) --- */
+    .ticket-stub {
+        width: 220px;
+        background-color: var(--sidebar-bg, #004a99); /* Cor do seu sidebar */
+        color: var(--text-light, #f1f1f1);
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-family: 'Share Tech Mono', monospace; /* Fonte "digital" */
+    }
+    .stub-header {
+        text-align: center;
+        border-bottom: 1px dashed rgba(255,255,255,0.5);
+        padding-bottom: 1rem;
+    }
+    .stub-icon { font-size: 2rem; }
+    .stub-title { font-size: 1.5rem; display: block; letter-spacing: 2px; }
+    
+    .form-group-date {
+        margin: 1.5rem 0;
+    }
+    .form-label-date {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.8);
+    }
+    .form-input-date {
+        width: 100%;
+        background: none;
+        border: 1px solid rgba(255,255,255,0.5);
+        color: var(--text-light);
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 1rem;
+        padding: 8px;
+        border-radius: 4px;
+        margin-top: 5px;
+        box-sizing: border-box;
+        color-scheme: dark; /* Garante que o picker fique escuro */
+    }
+
+    .stub-footer {
+        text-align: center;
+        border-top: 1px dashed rgba(255,255,255,0.5);
+        padding-top: 1rem;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+
+    /* --- 2. Parte Principal (Main) --- */
+    .ticket-main {
+        flex-grow: 1; /* Ocupa o resto do espaço */
+        padding: 2rem 2.5rem;
+        background-color: var(--card-bg, #fff);
+        
+        /* A borda "perfurada" */
+        border-left: 3px dashed var(--content-bg, #f4f7f9);
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .ticket-title {
+        color: var(--text-dark);
+        margin: 0 0 2rem 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    /* ===========================
+     * CSS DO "FLOAT LABEL"
+     * ===========================
+    */
+    .form-group {
+        position: relative;
+        margin-bottom: 2rem;
+    }
     .form-input {
         width: 100%;
-        padding: 0.8rem 1rem;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
+        padding: 10px 5px; /* Padding para a linha inferior */
+        background-color: transparent;
+        border: none;
+        border-bottom: 2px solid var(--border-color-light, #ddd);
         font-family: 'Poppins', sans-serif;
-        font-size: 1rem;
-        color: var(--text-primary);
-        background-color: #fdfdfd;
+        font-size: 1.1rem;
+        color: var(--text-dark);
         box-sizing: border-box;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        transition: border-color 0.3s ease;
+    }
+    /* Importante: O label DEVE vir DEPOIS do input no HTML */
+    .form-label {
+        position: absolute;
+        top: 10px; /* Posição inicial (dentro) */
+        left: 5px;
+        color: var(--text-secondary, #657786);
+        font-size: 1.1rem;
+        pointer-events: none; /* Permite clicar "através" do label */
+        transition: all 0.2s ease-out;
     }
 
-    .form-input::placeholder {
-        color: #a0b0b8;
+    /* A mágica do Float Label (Puro CSS) */
+    .form-input:focus + .form-label,
+    .form-input:not(:placeholder-shown) + .form-label {
+        top: -16px; /* Posição final (flutuando) */
+        left: 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--accent-blue, #007bff);
     }
-
-    /* Efeito de foco para melhor UX */
     .form-input:focus {
         outline: none;
-        border-color: var(--border-focus-color);
-        box-shadow: 0 0 0 3px rgba(0, 173, 181, 0.15);
+        border-bottom-color: var(--accent-blue, #007bff);
     }
-
+    
     /* --- Botão de Envio --- */
     .btn-submit {
         background-color: var(--button-green);
@@ -130,15 +248,55 @@
         cursor: pointer;
         font-family: 'Poppins', sans-serif;
         font-weight: 500;
-        font-size: 1rem;
-        margin-top: 1rem;
+        font-size: 1.1rem;
+        margin-top: 1.5rem;
+        width: 100%;
         transition: all 0.3s ease;
     }
-
     .btn-submit:hover {
         background-color: var(--button-green-hover);
         transform: translateY(-2px);
         box-shadow: 0 4px 10px rgba(0, 173, 181, 0.3);
     }
 </style>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // --- MELHORIA 1: Preencher data e hora atuais ---
+        const dataInput = document.getElementById('data');
+        if (dataInput) {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0'); 
+            const day = now.getDate().toString().padStart(2, '0');
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+            dataInput.value = localDateTime;
+        }
+
+        // --- MELHORIA 2: Validar times iguais ---
+        const form = document.querySelector('.form-card');
+        const timeCasaInput = document.getElementById('time_casa');
+        const timeVisitanteInput = document.getElementById('time_visitante');
+        const errorContainer = document.getElementById('form-error-container');
+
+        form.addEventListener('submit', function(event) {
+            errorContainer.innerHTML = ''; 
+            const casa = timeCasaInput.value.trim();
+            const visitante = timeVisitanteInput.value.trim();
+
+            if (casa === visitante && casa !== '') {
+                event.preventDefault(); 
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'form-error-message';
+                errorMessage.textContent = 'Erro: O time da casa e o visitante não podem ser o mesmo!';
+                errorContainer.appendChild(errorMessage);
+                timeCasaInput.focus();
+            }
+        });
+    });
+</script>
 {% endblock %}

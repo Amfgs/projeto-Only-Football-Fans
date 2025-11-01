@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block extra_head %}
-    <!-- Fonte Poppins (mesma usada nos outros templates) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
@@ -10,6 +9,14 @@
 {% block content %}
 <main class="form-container">
     <h2 class="form-title">Avaliação da Partida</h2>
+
+       {% if messages %}
+    <div class="messages-container" style="margin-bottom: 1.5rem;">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     {% if avaliacao %}
     <div class="form-card">
@@ -40,8 +47,18 @@
 
         <div class="form-buttons">
             <a href="{% url 'core:lista_partidas' %}" class="btn-cancel">Voltar para Lista</a>
-            <a href="{% url 'core:avaliar_torcida' avaliacao.partida.id %}" class="btn-submit btn-secondary">Avaliar Torcida</a>
-        </div>
+            
+            {% if torcida_ja_avaliada %}
+                <a href="{% url 'core:ver_avaliacao_torcida' avaliacao.partida.id %}" class="btn-submit btn-secondary">
+                    Ver Avaliação da Torcida
+                </a>
+            {% else %}
+                <a href="{% url 'core:avaliar_torcida' avaliacao.partida.id %}" class="btn-submit btn-secondary">
+                    Avaliar Torcida
+                </a>
+            {% endif %}
+
+            </div>
     </div>
     {% else %}
         <p>Essa avaliação não foi encontrada.</p>
@@ -59,11 +76,26 @@
         --button-green-hover: #00939a;
         --button-cancel: #657786;
         --button-cancel-hover: #4e5d6a;
-        --button-extra: #28a745;
+        --button-extra: #28a745; /* Verde usado no botão 'Avaliar Torcida' */
         --button-extra-hover: #1e7e34;
         --border-color: #e1e8ed;
         --shadow-color: rgba(0, 0, 0, 0.08);
+        
+        /* Estilos das Mensagens (copiado de lista_partidas.html para consistência) */
+        --success-bg: #d4edda;
+        --success-text: #155724;
     }
+    
+    /* Estilo das Mensagens (copiado) */
+    .message {
+        padding: 10px 15px;
+        border-radius: 6px;
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-family: 'Poppins', sans-serif;
+    }
+    .message.success { background-color: var(--success-bg); color: var(--success-text); }
+
 
     .form-container {
         max-width: 700px;
@@ -151,6 +183,7 @@
         box-shadow: 0 4px 10px rgba(0, 173, 181, 0.3);
     }
 
+    /* Botão 'Avaliar Torcida' (Verde) */
     .btn-secondary {
         background-color: var(--button-extra);
     }
