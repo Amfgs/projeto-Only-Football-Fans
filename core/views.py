@@ -96,7 +96,6 @@ def user_logout(request):
 def home(request):
     """Página inicial - redireciona para landing ou sistema"""
     if request.user.is_authenticated:
-        # ⬇️⬇️⬇️ MANTÉM TODO O CÓDIGO ORIGINAL AQUI ⬇️⬇️⬇️
         partidas_registradas = Partida.objects.filter(usuario=request.user).count()
         estadios_avaliados = AvaliacaoEstadio.objects.filter(usuario=request.user).count()
         time_favorito = request.user.time_favorito
@@ -107,7 +106,6 @@ def home(request):
             'time_favorito': time_favorito,
         }
         return render(request, 'home.html', context)
-        # ⬆️⬆️⬆️ FIM DO CÓDIGO ORIGINAL ⬆️⬆️⬆️
     else:
         # Se NÃO estiver logado, mostra a landing page
         return render(request, 'main.html')
