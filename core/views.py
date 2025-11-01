@@ -106,11 +106,11 @@ def home(request):
             'estadios_avaliados': estadios_avaliados,
             'time_favorito': time_favorito,
         }
-        return render(request, 'core/home.html', context)
+        return render(request, 'home.html', context)
         # ⬆️⬆️⬆️ FIM DO CÓDIGO ORIGINAL ⬆️⬆️⬆️
     else:
         # Se NÃO estiver logado, mostra a landing page
-        return render(request, 'core/main.html')
+        return render(request, 'main.html')
 
 
 # ----------------------------
