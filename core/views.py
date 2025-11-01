@@ -93,25 +93,24 @@ def user_logout(request):
 # PÁGINA INICIAL
 # ----------------------------
 
-@login_required(login_url='/login/') # Adiciona o decorator para simplificar
 def home(request):
-    
-    # Busca algumas estatísticas rápidas para o usuário
-    partidas_registradas = Partida.objects.filter(usuario=request.user).count()
-    estadios_avaliados = AvaliacaoEstadio.objects.filter(usuario=request.user).count()
-    
-    # Busca o time favorito (se cadastrado)
-    time_favorito = request.user.time_favorito
-    
-    context = {
-        'partidas_registradas': partidas_registradas,
-        'estadios_avaliados': estadios_avaliados,
-        'time_favorito': time_favorito,
-        # 'user': request.user já é passado automaticamente
-    }
-    
-    # Renderiza o NOVO template de home
-    return render(request, 'home.html', context)
+    """Página inicial - redireciona para landing ou sistema"""
+    if request.user.is_authenticated:
+        # ⬇️⬇️⬇️ MANTÉM TODO O CÓDIGO ORIGINAL AQUI ⬇️⬇️⬇️
+        partidas_registradas = Partida.objects.filter(usuario=request.user).count()
+        estadios_avaliados = AvaliacaoEstadio.objects.filter(usuario=request.user).count()
+        time_favorito = request.user.time_favorito
+        
+        context = {
+            'partidas_registradas': partidas_registradas,
+            'estadios_avaliados': estadios_avaliados,
+            'time_favorito': time_favorito,
+        }
+        return render(request, 'core/home.html', context)
+        # ⬆️⬆️⬆️ FIM DO CÓDIGO ORIGINAL ⬆️⬆️⬆️
+    else:
+        # Se NÃO estiver logado, mostra a landing page
+        return render(request, 'core/main.html')
 
 
 # ----------------------------

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Only Football Fans</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Tarja azul superior */
+        .top-bar {
+            background: #007bff;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #0056b3;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid white;
+            background: white;
+        }
+
+        .site-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .auth-btn {
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+        }
+
+        .login-btn {
+            background: transparent;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: white;
+            color: #007bff;
+            transform: translateY(-2px);
+        }
+
+        .register-btn {
+            background: white;
+            color: #007bff;
+        }
+
+        .register-btn:hover {
+            background: #0056b3;
+            color: white;
+            border-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Conteúdo principal */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+            background: white;
+            position: relative;
+        }
+
+        .hero-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .emoji {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .slogan {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #007bff;
+            margin-bottom: 30px;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 123, 255, 0.1);
+        }
+
+        .sub-slogan {
+            font-size: 1.3rem;
+            color: #0056b3;
+            margin-bottom: 50px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* Cards de destaque */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+            max-width: 1000px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f8fbff 0%, #e3f2fd 100%);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 3px solid #007bff;
+            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 123, 255, 0.25);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        .feature-description {
+            color: #0056b3;
+            line-height: 1.5;
+            font-size: 1rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 968px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                max-width: 500px;
+            }
+
+            .slogan {
+                font-size: 2.5rem;
+            }
+
+            .sub-slogan {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 12px 25px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .site-title {
+                font-size: 1.5rem;
+            }
+
+            .main-content {
+                padding: 30px 25px;
+            }
+
+            .slogan {
+                font-size: 2.2rem;
+            }
+
+            .emoji {
+                font-size: 3.5rem;
+            }
+
+            .auth-btn {
+                padding: 10px 25px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-bar {
+                padding: 10px 20px;
+            }
+
+            .site-title {
+                font-size: 1.3rem;
+            }
+
+            .slogan {
+                font-size: 1.8rem;
+            }
+
+            .sub-slogan {
+                font-size: 1.1rem;
+            }
+
+            .emoji {
+                font-size: 3rem;
+            }
+
+            .feature-card {
+                padding: 30px 20px;
+            }
+
+            .feature-icon {
+                font-size: 2.5rem;
+            }
+
+            .auth-buttons {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .auth-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Tarja azul superior -->
+    <div class="top-bar">
+        <div class="logo-section">
+            <img src="/images/logo.jpg" alt="Only Football Fans" class="logo">
+            <div class="site-title">Only Football Fans</div>
+        </div>
+        
+        <div class="auth-buttons">
+            <a href="{% url 'core:login' %}" class="auth-btn login-btn">Entrar</a>
+            <a href="{% url 'core:register' %}" class="auth-btn register-btn">Cadastrar-se</a>
+        </div>
+    </div>
+
+    <!-- Conteúdo principal -->
+    <div class="main-content">
+        <div class="hero-section">
+            <span class="emoji">⚽🔥</span>
+            <h1 class="slogan">Sua paixão pelo futebol tem um novo lar</h1>
+            <p class="sub-slogan">Seu diário do futebol com um toque especial</p>
+
+            <!-- Cards de destaque -->
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🏟️</span>
+                    <h3 class="feature-title">Avalie Estádios</h3>
+                    <p class="feature-description">Compartilhe suas experiências e revisite os seus sonhos quando quiser</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📱</span>
+                    <h3 class="feature-title">Comunidade Ativa</h3>
+                    <p class="feature-description">Conecte-se com torcedores de todo o Brasil e compartilhe a paixão pelo futebol</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">⭐</span>
+                    <h3 class="feature-title">Experiências Únicas</h3>
+                    <p class="feature-description">Registre momentos especiais e crie memórias que vão durar para sempre</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
