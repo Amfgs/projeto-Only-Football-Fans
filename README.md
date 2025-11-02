@@ -111,6 +111,7 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   [Print da Sessão de Programação em Dupla](images/programacao_dupla2.png)
   
 </details>
+<details>
   <summary>- ⏳ Semana 4 </summary>
 
   BackLog Jira Atualizado
