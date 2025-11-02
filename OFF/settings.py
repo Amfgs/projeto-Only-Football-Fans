@@ -138,19 +138,19 @@ if NOT_PROD:
     # Ambiente local: salvar e servir da pasta /midia/
     MEDIA_URL = '/midia/'
     MEDIA_ROOT = BASE_DIR / 'midia'
-else:
-    # Ambiente de produção (Azure)
-    MEDIA_URL = '/media/'  # será substituído pelo Azure Blob URL automaticamente
 
-    # Configuração Azure Blob Storage
+else:
+    # Ambiente de produção (Azure Blob Storage)
     AZURE_ACCOUNT_NAME = os.getenv('AZURE_ACCOUNT_NAME')
     AZURE_ACCOUNT_KEY = os.getenv('AZURE_ACCOUNT_KEY')
     AZURE_CONTAINER = os.getenv('AZURE_CONTAINER', 'media')
 
-    # django-storages backend
     DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
     AZURE_URL_EXPIRATION_SECS = None  # URLs fixas (sem expiração)
 
+    # URL base dos arquivos armazenados no Azure Blob
+    MEDIA_URL = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_CONTAINER}/'
+ 
 # ======================
 # AUTENTICAÇÃO
 # ======================
