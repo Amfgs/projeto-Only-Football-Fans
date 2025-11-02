@@ -111,6 +111,30 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   [Print da Sessão de Programação em Dupla](images/programacao_dupla2.png)
   
 </details>
-- ⏳ **Semana 4**  
+- ⏳ **Semana 4**
 
----
+  BackLog Jira Atualizado
+  [Print do BackLog Jira da Semana 4](pendente)
+  
+  Quadro Jira
+  [Quadro jira da Semana 4](Pendente)
+
+  Issue/ Bug Tracker 
+  
+  [Open](Pendente)
+  
+  [Closed](Pendente)
+
+  Screencast dos Testes
+  Em andamento
+
+  Screencast do CI/CD
+  Em andamento
+
+  Screencast do Deployment das Novas Histórias
+  Em andamento
+
+  Programação em Dupla / Relato 3
+  [Print da Sessão de Programação em Dupla](Pendente)
+  
+</details>
