@@ -16,18 +16,28 @@
         */
         :root {
             --sidebar-width: 240px;
-            
-            /* --- MUDANÇA AQUI --- */
-            --sidebar-bg: #004a99; /* De #1d2d35 para Azul Escuro */
-            /* --- FIM DA MUDANÇA --- */
-
-            --header-bg: var(--accent-blue); 
-            --content-bg: #f4f7f9; 
+            --sidebar-bg: #004a99;
+            --header-bg: var(--accent-blue);
+            --content-bg: #f4f7f9;
             --text-light: #f1f1f1;
             --text-dark: #1d2d35;
-            --accent-blue: #007bff; 
+            --accent-blue: #007bff;
             --accent-blue-hover: #0069d9;
             --border-color-light: #e1e8ed;
+        }
+
+        /* DARK MODE AUTOMÁTICO */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --sidebar-bg: #0d1117;
+                --header-bg: #161b22;
+                --content-bg: #0d1117;
+                --text-light: #c9d1d9;
+                --text-dark: #f0f6fc;
+                --accent-blue: #58a6ff;
+                --accent-blue-hover: #1f6feb;
+                --border-color-light: #30363d;
+            }
         }
 
         /* ===========================
@@ -71,7 +81,6 @@
            display: none; 
         }
 
-        /* Ícone "Hambúrguer" */
         .menu-toggle {
             position: static; 
             font-size: 24px; 
@@ -79,11 +88,8 @@
             cursor: pointer;
             transition: color 0.2s ease;
         }
-        .menu-toggle:hover {
-            color: #ffffff; 
-        }
-        
-        /* ÍCONE DE PERFIL/CONFIGURAÇÕES */
+        .menu-toggle:hover { color: #ffffff; }
+
         .header-user-icon {
             font-size: 1.5rem;
             text-decoration: none;
@@ -125,7 +131,6 @@
         .sidebar-header {
             padding: 20px 25px;
             text-align: center;
-            /* Linha divisória sutil para o novo azul */
             border-bottom: 1px solid #0060c4; 
         }
         .sidebar-header h2 {
@@ -147,9 +152,7 @@
             overflow-y: auto; 
         }
 
-        .sidebar ul li {
-            padding: 4px 0; 
-        }
+        .sidebar ul li { padding: 4px 0; }
 
         .sidebar-link {
             text-decoration: none;
@@ -173,7 +176,6 @@
         }
 
         .sidebar-link:hover {
-            /* O hover agora é o azul MÉDIO, que se destaca no azul ESCURO */
             background-color: var(--accent-blue); 
             color: #ffffff;
         }
@@ -184,14 +186,11 @@
             text-align: center;
         }
 
-        .sidebar ul li form {
-            margin: 0;
-        }
-        
-        /* Divisória (hr) */
+        .sidebar ul li form { margin: 0; }
+
         .sidebar hr {
              border: 0; 
-             border-top: 1px solid #0060c4; /* Mesmo tom da borda do header */
+             border-top: 1px solid #0060c4; 
              margin: 10px 0;
         }
 
@@ -209,52 +208,44 @@
             box-sizing: border-box; 
         }
 
-        /* ===========================
-         * ESTADO DE MENU ESCONDIDO
-         * ===========================
-        */
-        body.sidebar-hidden .sidebar {
-            transform: translateX(-100%); 
-        }
-
-        body.sidebar-hidden .header {
-            left: 0;
-            width: 100%;
-            box-sizing: border-box; 
-        }
-
-        body.sidebar-hidden .content {
-            margin-left: 0;
-            width: 100%;
-        }
+        body.sidebar-hidden .sidebar { transform: translateX(-100%); }
+        body.sidebar-hidden .header { left: 0; width: 100%; box-sizing: border-box; }
+        body.sidebar-hidden .content { margin-left: 0; width: 100%; }
 
         /* ===========================
-         * MODAL POPUP (Seu CSS original)
+         * MODAL POPUP
          * ===========================
         */
-        .modal {
-            display: none; position: fixed; z-index: 100;
+        .modal { display: none; position: fixed; z-index: 100;
             left: 0; top: 0; width: 100%; height: 100%;
             overflow: auto; background-color: rgba(0,0,0,0.7);
         }
-        .modal-content {
-            background-color: #fefefe; margin: 5% auto; padding: 20px;
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 20px;
             border-radius: 8px; width: 80%; max-width: 800px;
         }
-        .modal-header {
-            display: flex; justify-content: space-between;
+        .modal-header { display: flex; justify-content: space-between;
             align-items: center; margin-bottom: 10px;
         }
-        .close {
-            color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer;
-        }
+        .close { color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
         .close:hover { color: #000; }
-        .card {
-            border: 1px solid #ccc; border-radius: 5px; padding: 15px;
+        .card { border: 1px solid #ccc; border-radius: 5px; padding: 15px;
             margin-bottom: 10px; display: flex; justify-content: space-between;
             align-items: center;
         }
         .card button { padding: 5px 10px; cursor: pointer; }
+
+        /* ===========================
+         * NOVO: ÁREA DE HOVER LATERAL
+         * ===========================
+        */
+        #sidebar-hover-area {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 10px;
+            height: 100%;
+            z-index: 30;
+        }
     </style>
 </head>
 
@@ -270,8 +261,7 @@
         <a href="{% url 'core:perfil' %}" class="header-user-icon" title="Configurações e Perfil">
             👤
         </a>
-
-        </div>
+    </div>
     
     <div class="sidebar">
         <div class="sidebar-header">
@@ -279,61 +269,51 @@
         </div>
 
         <ul>
-            <li><a href="{% url 'core:home' %}" class="sidebar-link">
-                <span class="icon">🏠</span>Página Inicial
-            </a></li>
-            <li><a href="{% url 'core:registrar_partida' %}" class="sidebar-link">
-                <span class="icon">➕</span>Registrar Partida
-            </a></li>
-            <li><a href="{% url 'core:lista_partidas' %}" class="sidebar-link">
-                <span class="icon">📊</span>Histórico
-            </a></li>
-            <li><a href="{% url 'core:avaliacao_inicio' %}" class="sidebar-link">
-                <span class="icon">⭐</span>Avaliar Estádio
-            </a></li>
-            <li><a href="{% url 'core:galeria' %}" class="sidebar-link">
-                <span class="icon">📸</span>Galeria
-            </a></li>
-            <li><a href="{% url 'core:lista_links' %}" class="sidebar-link">
-                <span class="icon">🔗</span>Assistir Jogos
-            </a></li>
-            
-            <li><a href="#" onclick="abrirModal()" class="sidebar-link">
-                <span class="icon">🏟️</span>Avaliar Partida
-            </a></li>
-            
+            <li><a href="{% url 'core:home' %}" class="sidebar-link"><span class="icon">🏠</span>Página Inicial</a></li>
+            <li><a href="{% url 'core:registrar_partida' %}" class="sidebar-link"><span class="icon">➕</span>Registrar Partida</a></li>
+            <li><a href="{% url 'core:lista_partidas' %}" class="sidebar-link"><span class="icon">📊</span>Histórico</a></li>
+            <li><a href="{% url 'core:avaliacao_inicio' %}" class="sidebar-link"><span class="icon">⭐</span>Avaliar Estádio</a></li>
+            <li><a href="{% url 'core:galeria' %}" class="sidebar-link"><span class="icon">📸</span>Galeria</a></li>
+            <li><a href="{% url 'core:lista_links' %}" class="sidebar-link"><span class="icon">🔗</span>Assistir Jogos</a></li>
+            <li><a href="#" onclick="abrirModal()" class="sidebar-link"><span class="icon">🏟️</span>Avaliar Partida</a></li>
             <hr>
-
-            <li><a href="{% url 'core:perfil' %}" class="sidebar-link">
-                <span class="icon">⚙️</span>Configurações
-            </a></li>
+            <li><a href="{% url 'core:perfil' %}" class="sidebar-link"><span class="icon">⚙️</span>Configurações</a></li>
             <li>
                 <form action="{% url 'core:logout' %}" method="post">
                     {% csrf_token %}
-                    <button type"submit" class="sidebar-link">
-                        <span class="icon">🚪</span>Sair
-                    </button>
+                    <button type"submit" class="sidebar-link"><span class="icon">🚪</span>Sair</button>
                 </form>
             </li>
         </ul>
     </div>
 
+    <div id="sidebar-hover-area"></div>
+
     <div class="content">
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </div>
 
     {% include 'partidas/popup_avaliar_partida.html' %}
 
 <script>
-    var menuToggleButton = document.getElementById('menuToggle');
-    var bodyElement = document.body;
+var menuToggleButton = document.getElementById('menuToggle');
+var bodyElement = document.body;
+var sidebar = document.querySelector('.sidebar');
+var hoverArea = document.getElementById('sidebar-hover-area');
 
-    menuToggleButton.addEventListener('click', function() {
-        bodyElement.classList.toggle('sidebar-hidden');
-    });
+menuToggleButton.addEventListener('click', function() {
+    bodyElement.classList.toggle('sidebar-hidden');
+});
 
-    // (Seu script de modal 'abrirModal()' deve vir aqui ou ser importado)
+// Abre sidebar ao passar o mouse na lateral
+hoverArea.addEventListener('mouseenter', function() {
+    bodyElement.classList.remove('sidebar-hidden');
+});
+
+// Fecha sidebar quando o mouse sai dela
+sidebar.addEventListener('mouseleave', function() {
+    bodyElement.classList.add('sidebar-hidden');
+});
 </script>
 
 </body>
