@@ -72,10 +72,11 @@ describe('Fluxo E2E Completo do Usuário', () => {
         // Etapa 1 da Avaliação da Torcida
         cy.url().should('include', '/partida/avaliar_torcida/');
         
-        // Clica na 4ª estrela para a primeira seleção
-        cy.get('input[name="nota_performance"][value="4"]').click({ force: true });
-        // Clica na 3ª estrela para a segunda seleção
-        cy.get('input[name="nota_respeito"][value="3"]').click({ force: true });
+        // Clica na 4ª estrela para a primeira seleção (clicando no LABEL)
+        cy.get('label[for="performance_4"]').click();
+        
+        // Clica na 3ª estrela para a segunda seleção (clicando no LABEL)
+        cy.get('label[for="respeito_3"]').click();
         cy.get('textarea[name="comentario"]').type('Review da performance da torcida.');
         cy.contains('button', 'Enviar Review').click();
 
