@@ -1,8 +1,12 @@
 # 🏆 OnlyFootballFans
 
 ## 📌 Visão Geral  
-O **OnlyFootballFans** é um aplicativo web desenvolvido em **Django**, projetado para ser o diário digital das experiências futebolísticas dos torcedores.  
-Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assistiram, criando um **histórico único de memórias em estádios e partidas**.
+
+O **OnlyFootballFans** é um aplicativo web desenvolvido em **Django** que funciona como um diário digital das experiências de cada torcedor.  
+
+Aqui, o usuário pode **registrar partidas**, **avaliar estádios** e **guardar suas impressões e emoções** sobre cada jogo, construindo um **histórico pessoal de memórias futebolísticas**.  
+A proposta é transformar cada ida ao estádio em um registro organizado, fácil de consultar e compartilhar, para que nenhum momento marcante fique só na lembrança.
+
 
 ---
 
