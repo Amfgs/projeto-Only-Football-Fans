@@ -1,15 +1,19 @@
 # 🏆 OnlyFootballFans
 
 ## 📌 Visão Geral  
-O **OnlyFootballFans** é um aplicativo web desenvolvido em **Django**, projetado para ser o diário digital das experiências futebolísticas dos torcedores.  
-Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assistiram, criando um **histórico único de memórias em estádios e partidas**.
+
+O **OnlyFootballFans** é um aplicativo web desenvolvido em **Django** que funciona como um diário digital das experiências de cada torcedor.  
+
+Aqui, o usuário pode **registrar partidas**, **avaliar estádios** e **guardar suas impressões e emoções** sobre cada jogo, construindo um **histórico pessoal de memórias futebolísticas**.  
+A proposta é transformar cada ida ao estádio em um registro organizado, fácil de consultar e compartilhar, para que nenhum momento marcante fique só na lembrança.
+
 
 ---
 
 ## 📑 Funcionalidades  
 - ⚽ **Registro de Jogos**: registre jogos na sua agenda.  
 - 📖 **Histórico de Jogos**: visualize uma lista de todos os jogos que já assistiu.  
-- ⭐ **Avaliações Personalizadas**: avalie torcidas, estádios e experiências.  
+- ⭐ **Avaliações Personalizadas**: avalie torcidas, estádios, jogadores e experiências.  
 - 🖼️ **Galeria de Mídia**: adicione fotos e comentários pessoais.  
 - 🎥 **Links de Replay**: acesse os melhores momentos dos jogos.  
 
@@ -111,6 +115,31 @@ Com ele, os usuários podem **registrar, organizar e reviver** os jogos que assi
   [Print da Sessão de Programação em Dupla](images/programacao_dupla2.png)
   
 </details>
-- ⏳ **Semana 4**  
+<details>
+  <summary>- ⏳ Semana 4 </summary>
 
----
+  BackLog Jira Atualizado
+  [Print do BackLog Jira da Semana 4](pendente)
+  
+  Quadro Jira
+  [Quadro jira da Semana 4](Pendente)
+
+  Issue/ Bug Tracker 
+  
+  [Open](Pendente)
+  
+  [Closed](Pendente)
+
+  Screencast dos Testes
+  Em andamento
+
+  Screencast do CI/CD
+  Em andamento
+
+  Screencast do Deployment das Novas Histórias
+  Em andamento
+
+  Programação em Dupla / Relato 3
+  [Print da Sessão de Programação em Dupla](Pendente)
+  
+</details>

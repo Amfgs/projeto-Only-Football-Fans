@@ -3,112 +3,404 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - OFF</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* ===========================
+         * VARIÁVEIS DE DESIGN
+         * ===========================
+        */
+        :root {
+            --sidebar-bg: #004a99; 
+            --header-bg: #007bff; 
+            --content-bg: #f4f7f9; 
+            --text-light: #f1f1f1;
+            --text-dark: #1d2d35;
+            --accent-blue: #007bff; 
+            --accent-blue-hover: #0056b3;
+            --border-color-light: #e1e8ed;
+            --error-bg: #f8d7da;
+            --error-text: #721c24;
+            --error-border: #f5c6cb;
+        }
+
+        /* ===========================
+         * ANIMAÇÕES (CSS & JS)
+         * ===========================
+        */
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes formShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .form-shake {
+            animation: formShake 0.5s ease-in-out;
+        }
+        /* JS 3: Animação para o rotador de frases */
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        .quote-fade {
+            animation: fadeInOut 5s ease-in-out forwards;
+        }
+
+
+        /* ===========================
+         * NOVO LAYOUT: SPLIT-SCREEN
+         * ===========================
+        */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            overflow: hidden; 
+        }
+
+        .login-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* --- PAINEL ESQUERDO (VISUAL) --- */
+        .login-panel-left {
+            flex: 1;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--sidebar-bg) 100%);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+            text-align: center;
+            position: relative;
+            
+            /* Animação de entrada */
+            opacity: 0;
+            animation: slideInLeft 0.7s ease-out 0.1s forwards;
+        }
+        
+        .welcome-content h1 {
+            font-size: 3rem;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .welcome-content p {
+            font-size: 1.25rem;
+            margin: 0;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+        
+        /* JS 3: Rotador de Frases */
+        .quote-rotator {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            right: 40px;
+        }
+        .quote-rotator h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--accent-blue-hover);
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        #quote-display {
+            font-size: 0.95rem;
+            font-style: italic;
+            opacity: 0; /* Inicia invisível, JS controla */
+            height: 40px; /* Altura fixa para não "pular" */
+        }
+
+        /* --- PAINEL DIREITO (FORMULÁRIO) --- */
+        .login-panel-right {
+            flex: 1;
+            background-color: var(--content-bg);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
         }
 
         .login-card {
             background-color: #fff;
             padding: 30px 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 400px;
+            box-sizing: border-box; 
+            
+            /* Animação de entrada */
+            opacity: 0;
+            animation: slideInRight 0.7s ease-out 0.2s forwards;
+        }
+
+        .login-card h1 { /* Logo O.F.F. */
+            color: var(--sidebar-bg);
+            margin: 0 0 10px 0;
             text-align: center;
+            font-weight: 700;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+        }
+        .login-card h2 { /* Título "Login" */
+            color: var(--text-dark);
+            margin: 0 0 24px 0;
+            text-align: center;
+            font-weight: 500;
+            font-size: 1.5rem;
         }
 
-        .login-card h1 {
-            color: #007bff;
-            margin-bottom: 24px;
+        /* ===========================
+         * ESTILO DO FORMULÁRIO (Float Label)
+         * ===========================
+        */
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
         }
-
-        .login-card input[type="text"],
-        .login-card input[type="password"],
-        .login-card input[type="email"] {
+        .form-input {
             width: 100%;
-            padding: 10px 12px;
-            margin-bottom: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 10px 5px;
+            background-color: transparent;
+            border: none;
+            border-bottom: 2px solid var(--border-color-light);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: var(--text-dark);
             box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        .form-label {
+            position: absolute;
+            top: 10px;
+            left: 5px;
+            color: #999;
+            font-size: 1rem;
+            pointer-events: none;
+            transition: all 0.2s ease-out;
+        }
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label {
+            top: -14px;
+            left: 0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent-blue);
+        }
+        .form-input:focus {
+            outline: none;
+            border-bottom-color: var(--accent-blue);
         }
 
-        .login-card button {
+        /* --- JS 1: Toggle de Senha --- */
+        .password-wrapper { position: relative; }
+        .password-wrapper .form-input { padding-right: 35px; }
+        #toggle-password {
+            position: absolute;
+            right: 5px;
+            top: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #999;
+            transition: color 0.2s ease;
+        }
+        #toggle-password:hover { color: var(--accent-blue); }
+
+        /* --- Botão --- */
+        .botao-login {
             width: 100%;
-            padding: 10px 12px;
-            background-color: #007bff;
+            padding: 12px;
+            background-color: var(--accent-blue);
             color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1rem;
             margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        .botao-login:hover {
+            background-color: var(--accent-blue-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
         }
 
-        .login-card button:hover {
-            background-color: #0056b3;
+        /* --- Link de Cadastro --- */
+        .register-link {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
         }
-
-        .login-card p {
-            margin-top: 16px;
-        }
-
-        .login-card a {
-            color: #007bff;
+        .register-link a {
+            color: var(--accent-blue);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
         }
+        .register-link a:hover { text-decoration: underline; }
 
-        .login-card a:hover {
-            text-decoration: underline;
-        }
-
-        .login-card ul {
+        /* --- Mensagens de Erro --- */
+        .error-messages {
             list-style: none;
-            padding: 0;
-            margin-top: 10px;
-            color: red;
+            padding: 10px 15px;
+            margin: 20px 0 0 0;
+            background-color: var(--error-bg);
+            border: 1px solid var(--error-border);
+            color: var(--error-text);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <h1>Login</h1>
-        <form method="post" action="{% url 'core:login' %}" class="login-form">
-            {% csrf_token %}
 
-            <label for="username">Usuário:</label>
-            <input type="text" id="username" name="username" required>
+    <div class="login-container">
+        
+        <div class="login-panel-left">
+            <div class="welcome-content">
+                <h1>Bem-vindo ao O.F.F.</h1>
+                <p>Seu diário de torcedor.</p>
+            </div>
+            
+            <div class="quote-rotator">
+                <h3>Frases de Craques</h3>
+                <p id="quote-display">"A bola não entra por acaso." - Didi</p>
+            </div>
+        </div>
 
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" required>
+        <div class="login-panel-right">
+            <div class="login-card" id="login-card">
+                <h1>O.F.F.</h1>
+                <h2>Login</h2>
+                
+                <form method="post" action="{% url 'core:login' %}" class="login-form" id="login-form">
+                    {% csrf_token %}
 
-            <input type="hidden" name="next" value="{{ next }}">
+                    <div class="form-group">
+                        <input type="text" id="username" name="username" class="form-input" placeholder=" " required autocomplete="off">
+                        <label for="username" class="form-label">Usuário</label>
+                    </div>
 
-            <button type="submit" class="botao-login">Entrar</button>
-        </form>
+                    <div class="form-group password-wrapper">
+                        <input type="password" id="password" name="password" class="form-input" placeholder=" " required autocomplete="off">
+                        <label for="password" class="form-label">Senha</label>
+                        <span id="toggle-password">👁️</span>
+                    </div>
 
+                    <input type="hidden" name="next" value="{{ next }}">
 
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+                    <button type="submit" class="botao-login">Entrar</button>
+                </form>
 
-        <p>Ainda não tem uma conta? 
-            <a href="{% url 'core:register' %}">Cadastre-se aqui</a>
-        </p>
+                {% if messages %}
+                    <ul class="error-messages">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <p class="register-link">
+                    Ainda não tem uma conta? 
+                    <a href="{% url 'core:register' %}">Cadastre-se aqui</a>
+                </p>
+            </div>
+        </div>
+
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- JS 1: Toggle de Senha ---
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.getElementById('toggle-password');
+
+            if (toggleButton && passwordInput) {
+                toggleButton.addEventListener('click', () => {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    toggleButton.textContent = type === 'password' ? '👁️' : '🙈';
+                });
+            }
+
+            // --- JS 2: Validação "Shake" ---
+            const loginForm = document.getElementById('login-form');
+            const loginCard = document.getElementById('login-card');
+            const usernameInput = document.getElementById('username');
+            
+            if (loginForm && loginCard && usernameInput && passwordInput) {
+                loginForm.addEventListener('submit', (event) => {
+                    const isUsernameEmpty = usernameInput.value.trim() === '';
+                    const isPasswordEmpty = passwordInput.value.trim() === '';
+                    
+                    if (isUsernameEmpty || isPasswordEmpty) {
+                        event.preventDefault(); 
+                        loginCard.classList.add('form-shake');
+                        setTimeout(() => {
+                            loginCard.classList.remove('form-shake');
+                        }, 500);
+                    }
+                });
+            }
+
+            // --- JS 3: Rotador de Frases ---
+            const quotes = [
+                '"A bola não entra por acaso." - Didi',
+                '"Se eu tivesse que nascer de novo, eu seria jogador de futebol." - Pelé',
+                '"O futebol é o ópio do povo." - (Adaptação de Karl Marx)',
+                '"Corro atrás da bola porque é ela que me dá o pão." - Obdulio Varela',
+                '""Rei tem dois, três, quatro, cinco. Mas Deus, agora eles sabem quem é. Eu sou Romário, eu sou Deus, eles sabem disso, tem que me respeitar"." - Romário'
+            ];
+            const quoteDisplay = document.getElementById('quote-display');
+            let currentQuoteIndex = 0;
+
+            if (quoteDisplay) {
+                setInterval(() => {
+                    currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+                    
+                    // 1. Aplica o fade-out
+                    quoteDisplay.classList.add('quote-fade');
+                    
+                    // 2. Espera o fade-out (metade da animação) e troca o texto
+                    setTimeout(() => {
+                        quoteDisplay.textContent = quotes[currentQuoteIndex];
+                        // 3. Remove a classe para permitir o fade-in (a animação recomeça)
+                        quoteDisplay.classList.remove('quote-fade');
+                        // Força o reinício da animação (reflow)
+                        void quoteDisplay.offsetWidth; 
+                        quoteDisplay.classList.add('quote-fade');
+                    }, 500); // 500ms para o fade-out
+                    
+                }, 5000); // Troca a cada 5 segundos
+                
+                // Inicia a primeira animação
+                quoteDisplay.classList.add('quote-fade');
+            }
+
+        });
+    </script>
 </body>
 </html>
-
