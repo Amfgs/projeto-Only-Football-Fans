@@ -112,11 +112,10 @@ describe('Fluxo E2E Completo do Usuário', () => {
         cy.contains('a', 'Nova Avaliação').click();
         
         // Preenche o formulário de avaliação do estádio
-        cy.get('input[name="estadio_nome"]').type('Estádio Maracanã Teste'); // <-- CORRIGIDO
-        cy.get('input[name="nota"][value="5"]').click({ force: true }); // 5 estrelas (Estava correto)
-        cy.get('textarea[name="comentario_avaliacao"]').type('Comentário sobre o estádio.'); // <-- CORRIGIDO
+        cy.get('input[name="estadio"]').type('Estádio Maracanã Teste'); // <-- CORRIGIDO
+        cy.get('input[name="avaliacao"][value="5"]').click({ force: true }); // <-- CORRIGIDO
+        cy.get('textarea[name="comentario"]').type('Comentário sobre o estádio.'); // <-- CORRIGIDO
         cy.contains('button', 'Enviar Avaliação').click();
-
         // --- PASSO 7: Galeria de Mídia ---
         cy.get('.header-title a').click(); // Clica em "Only Football Fans" no header
         cy.url().should('eq', 'http://127.0.0.1:8000/');
