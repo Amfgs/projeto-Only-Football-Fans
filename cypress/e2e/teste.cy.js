@@ -63,33 +63,32 @@ describe('Fluxo E2E Completo do Usuário', () => {
         // --- PASSO 5: Avaliar a Torcida (Fluxo de 2 etapas) ---
         cy.url().should('include', '/partidas/'); // Volta para a lista
         
-        // Agora o botão deve ser "Ver Avaliação"
-        cy.contains('a.btn-avaliar', 'Ver Avaliação').first().click();
-        
-        // Na página "ver_avaliacao.html", clica em "Avaliar Torcida"
+      // Na página "ver_avaliacao.html", clica em "Avaliar Torcida"
         cy.contains('a', 'Avaliar Torcida').click();
 
-        // Etapa 1 da Avaliação da Torcida
+        // --- Etapa 1 da Avaliação da Torcida (Página 1: /avaliar_torcida/X/) ---
         cy.url().should('include', '/partida/avaliar_torcida/');
         
-        // Clica na 4ª estrela para a primeira seleção (clicando no LABEL)
-        cy.get('label[for="performance_4"]').click();
+        // Clica no 4º input (escondido) de "performance"
+        cy.get('#performance_4').click({ force: true });
         
-        // Clica na 3ª estrela para a segunda seleção (clicando no LABEL)
-        cy.get('label[for="respeito_3"]').click();
+        // Clica no 3º input (escondido) de "respeito"
+        cy.get('#respeito_3').click({ force: true });
+
         cy.get('textarea[name="comentario"]').type('Review da performance da torcida.');
         cy.contains('button', 'Enviar Review').click();
 
-        // Etapa 2 da Avaliação da Torcida (Página /.../2/)
+        // --- Etapa 2 da Avaliação da Torcida (Página 2: /.../2/) ---
         cy.url().should('include', '/2/'); // Verifica se foi para a segunda etapa
         
-        // Clica na 5ª estrela
-        cy.get('input[name="nota_visual"][value="5"]').click({ force: true });
-        // Clica na 4ª estrela
-        cy.get('input[name="nota_interacao"][value="4"]').click({ force: true });
+        // Clica no 5º input (escondido) de "visual"
+        cy.get('#visual_5').click({ force: true });
+
+        // Clica no 4º input (escondido) de "interacao"
+        cy.get('#interacao_4').click({ force: true });
+
         cy.get('textarea[name="comentario"]').type('Segundo review, sobre o visual.');
         cy.contains('button', 'Enviar Review').click();
-
         // --- PASSO 6: Avaliar Estádio ---
         // (Após o último review, o app deve redirecionar. Vamos garantir clicando em Home)
         cy.get('.header-title a').click(); // Clica em "Only Football Fans" no header
