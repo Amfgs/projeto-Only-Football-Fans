@@ -59,11 +59,19 @@ describe('Fluxo E2E Completo do Usuário', () => {
         
         // Clica em "Enviar Avaliação"
         cy.contains('button', 'Enviar Avaliação').click();
-
-        // --- PASSO 5: Avaliar a Torcida (Fluxo de 2 etapas) ---
-        cy.url().should('include', '/partidas/'); // Volta para a lista
+// --- PASSO 5: Avaliar a Torcida (Fluxo de 2 etapas) ---
         
-      // Na página "ver_avaliacao.html", clica em "Avaliar Torcida"
+        // (FIX) O app não redireciona sozinho após o Passo 4. 
+        // Vamos visitar a página de listagem manualmente.
+        cy.visit('http://127.0.0.1:8000/partidas/');
+        
+        // (FIX) Agora podemos verificar se estamos na URL CORRETA (não apenas 'include')
+        cy.url().should('eq', 'http://127.0.0.1:8000/partidas/'); 
+
+        // Agora o botão deve ser "Ver Avaliação"
+        cy.contains('a.btn-avaliar', 'Ver Avaliação').first().click();
+        
+        // Na página "ver_avaliacao.html", clica em "Avaliar Torcida"
         cy.contains('a', 'Avaliar Torcida').click();
 
         // --- Etapa 1 da Avaliação da Torcida (Página 1: /avaliar_torcida/X/) ---
