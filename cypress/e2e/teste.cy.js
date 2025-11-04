@@ -98,9 +98,10 @@ describe('Fluxo E2E Completo do Usuário', () => {
 
         cy.get('textarea[name="comentario"]').type('Segundo review, sobre o visual.');
         cy.contains('button', 'Enviar Review').click();
-        // --- PASSO 6: Avaliar Estádio ---
-        // (Após o último review, o app deve redirecionar. Vamos garantir clicando em Home)
-        cy.get('.header-title a').click(); // Clica em "Only Football Fans" no header
+     // --- PASSO 6: Avaliar Estádio ---
+        // (FIX) Após o review da torcida, o app redireciona para /partidas/ver/X/.
+        // Vamos forçar a ida para a home page.
+        cy.visit('http://127.0.0.1:8000/');
         
         cy.url().should('eq', 'http://127.0.0.1:8000/');
         
