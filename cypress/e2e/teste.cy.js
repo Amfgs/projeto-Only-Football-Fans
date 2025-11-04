@@ -108,12 +108,13 @@ describe('Fluxo E2E Completo do Usuário', () => {
         cy.contains('a.action-card', 'Avaliar Estádio').click();
         
         // Clica em "Nova Avaliação"
+     // Na página /avaliacao/inicio/, clica em "Nova Avaliação"
         cy.contains('a', 'Nova Avaliação').click();
         
         // Preenche o formulário de avaliação do estádio
-        cy.get('input[name="nome_estadio"]').type('Estádio Maracanã Teste');
-        cy.get('input[name="nota"][value="5"]').click({ force: true }); // 5 estrelas
-        cy.get('textarea[name="comentario"]').type('Comentário sobre o estádio.');
+        cy.get('input[name="estadio_nome"]').type('Estádio Maracanã Teste'); // <-- CORRIGIDO
+        cy.get('input[name="nota"][value="5"]').click({ force: true }); // 5 estrelas (Estava correto)
+        cy.get('textarea[name="comentario_avaliacao"]').type('Comentário sobre o estádio.'); // <-- CORRIGIDO
         cy.contains('button', 'Enviar Avaliação').click();
 
         // --- PASSO 7: Galeria de Mídia ---
