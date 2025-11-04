@@ -74,14 +74,14 @@ describe('Fluxo E2E Completo do Usuário', () => {
         // Na página "ver_avaliacao.html", clica em "Avaliar Torcida"
         cy.contains('a', 'Avaliar Torcida').click();
 
-       // --- Etapa 1 da Avaliação da Torcida (Página 1: /avaliar_torcida/X/) ---
+     // --- Etapa 1 da Avaliação da Torcida (Página 1: /avaliar_torcida/X/) ---
         cy.url().should('include', '/partida/avaliar_torcida/');
         
-        // Tenta clicar no 4º input (value="4") dentro do PRIMEIRO grupo .star-rating
-        cy.get('.star-rating').eq(0).find('input[value="4"]').click({ force: true });
+        // Tenta clicar no 4º input (value="4") dentro do PRIMEIRO grupo .star-rating-container
+        cy.get('.star-rating-container').eq(0).find('input[value="4"]').click({ force: true });
         
-        // Tenta clicar no 3º input (value="3") dentro do SEGUNDO grupo .star-rating
-        cy.get('.star-rating').eq(1).find('input[value="3"]').click({ force: true });
+        // Tenta clicar no 3º input (value="3") dentro do SEGUNDO grupo .star-rating-container
+        cy.get('.star-rating-container').eq(1).find('input[value="3"]').click({ force: true });
 
         cy.get('textarea[name="comentario"]').type('Review da performance da torcida.');
         cy.contains('button', 'Enviar Review').click();
@@ -89,11 +89,11 @@ describe('Fluxo E2E Completo do Usuário', () => {
         // --- Etapa 2 da Avaliação da Torcida (Página 2: /.../2/) ---
         cy.url().should('include', '/2/'); // Verifica se foi para a segunda etapa
         
-        // Tenta clicar no 5º input (value="5") dentro do PRIMEIRO grupo .star-rating
-        cy.get('.star-rating').eq(0).find('input[value="5"]').click({ force: true });
+        // Tenta clicar no 5º input (value="5") dentro do PRIMEIRO grupo .star-rating-container
+        cy.get('.star-rating-container').eq(0).find('input[value="5"]').click({ force: true });
 
-        // Tenta clicar no 4º input (value="4") dentro do SEGUNDO grupo .star-rating
-        cy.get('.star-rating').eq(1).find('input[value="4"]').click({ force: true });
+        // Tenta clicar no 4º input (value="4") dentro do SEGUNDO grupo .star-rating-container
+        cy.get('.star-rating-container').eq(1).find('input[value="4"]').click({ force: true });
 
         cy.get('textarea[name="comentario"]').type('Segundo review, sobre o visual.');
         cy.contains('button', 'Enviar Review').click();
