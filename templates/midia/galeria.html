@@ -21,21 +21,26 @@
                         <p class="partida-card__description">Resumo ou destaque da partida.</p>
                     </div>
 
-                    {# --- INÍCIO DA CORREÇÃO --- #}
+                    {# --- INÍCIO DA CORREÇÃO FINAL (A QUE FUNCIONA) --- #}
                     
-                    {# Primeiro, pegamos o primeiro objeto de mídia associado a esta partida #}
-                    {% with midia_item=partida.midia_set.first %}
-                        {% if midia_item and midia_item.imagem %}
-                            {# Se encontramos um item de mídia E ele tem uma imagem, usamos a URL dela #}
-                            <img class="partida-card__image" src="{{ midia_item.imagem.url }}" alt="Imagem do jogo {{ partida }}">
+                    {# 1. Pegamos a primeira 'definicao' ligada a esta 'partida' #}
+                    {% with definicao_item=partida.definicoes.first %}
                         
-                        {% else %}
-                            {# Se não, podemos mostrar uma imagem padrão (crie uma imagem placeholder) #}
-                            <img class="partida-card__image" src="{% static 'images/placeholder.jpg' %}" alt="Sem imagem para {{ partida }}">
+                        {# 2. Dessa 'definicao', pegamos a primeira 'imagem' #}
+                        {% with imagem_item=definicao_item.imagens.first %}
                         
-                        {% endif %}
+                            {% if imagem_item and imagem_item.arquivo %}
+                                {# 3. Se acharmos, usamos o campo 'arquivo' (como no models.py) #}
+                                <img class="partida-card__image" src="{{ imagem_item.arquivo.url }}" alt="Imagem do jogo {{ partida }}">
+                            
+                            {% else %}
+                                {# 4. Se não, mostramos o placeholder #}
+                                <img class="partida-card__image" src="{% static 'images/placeholder.jpg' %}" alt="Sem imagem para {{ partida }}">
+                            
+                            {% endif %}
+                        {% endwith %}
                     {% endwith %}
-                    {# --- FIM DA CORREÇÃO --- #}
+                    {# --- FIM DA CORREÇÃO FINAL --- #}
 
                     <div class="partida-card__actions">
                         <div class="partida-card__game-buttons">
