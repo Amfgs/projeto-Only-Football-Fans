@@ -1,160 +1,111 @@
 describe('Fluxo E2E Completo do Usuário', () => {
 
     // Gera um nome de usuário e email únicos para cada execução do teste
-    // Isso evita conflitos de "usuário já existe" no registro
     const uniqueId = new Date().getTime();
-    const testUsername = `usuario_${uniqueId}`;
-    const testEmail = `usuario_${uniqueId}@teste.com`;
-    const testPassword = 'senha_segura_123';
+    const username = `usuario_${uniqueId}`;
+    const email = `${username}@teste.com`;
 
     it('Deve registrar um novo usuário e testar todas as funcionalidades principais', () => {
         
-        // --- PASSO 1: Visitar a página principal e clicar em Cadastrar ---
+        // --- PASSO 1: Registro ---
         cy.visit('http://127.0.0.1:8000/');
         cy.contains('a.auth-btn.register-btn', 'Cadastrar-se').click();
-
-        // --- PASSO 2: Preencher o formulário de registro ---
+        
         cy.url().should('include', '/register/');
-        
-        // Preenche os campos do formulário
-        cy.get('input[name="username"]').type(testUsername);
-        cy.get('input[name="email"]').type(testEmail); // O seu HTML de registro pede um e-mail
-        cy.get('input[name="password"]').type(testPassword);
-        cy.get('input[name="confirm_password"]').type(testPassword);
+        cy.get('input[name="username"]').type(username);
+        cy.get('input[name="email"]').type(email);
+        cy.get('input[name="password"]').type('senha_segura_123');
+        cy.get('input[name="confirm_password"]').type('senha_segura_123');
         cy.get('input[name="time_favorito"]').type('Meu Time Favorito FC');
-        
-        // Clica no botão Registrar
         cy.contains('button', 'Registrar').click();
 
-        // --- PASSO 3: Registrar Nova Partida ---
-        cy.url().should('eq', 'http://127.0.0.1:8000/'); // Verifica se voltou para a home
-        
-        // Clica no card "Registrar Nova Partida" do dashboard (home.html)
+        // --- PASSO 2: Registrar Partida ---
+        cy.url().should('eq', 'http://127.0.0.1:8000/');
         cy.contains('a.action-card', 'Registrar Nova Partida').click();
-        
+
         cy.url().should('include', '/partidas/registrar/');
-        
-        // Preenche os times
         cy.get('input[name="time_casa"]').type('Time da Casa Cypress');
         cy.get('input[name="time_visitante"]').type('Visitante Cypress');
-        
-        // Clica no botão "Registrar Ingresso"
         cy.contains('button', 'Registrar Ingresso').click();
 
-        // --- PASSO 4: Avaliar a Partida ---
-        cy.url().should('include', '/partidas/'); // Deve ser redirecionado para a lista
-        
-        // Clica no primeiro botão "Avaliar Partida" que encontrar
+        // --- PASSO 3: Avaliar Partida ---
+        cy.url().should('include', '/partidas/');
         cy.contains('a.btn-avaliar', 'Avaliar Partida').first().click();
-        
-        cy.url().should('include', '/partidas/avaliar/'); // URL deve conter /avaliar/ID/
-        
-        // Seleciona 4 estrelas (clicando no label da quarta estrela)
-        cy.get('label[for="nota_4"]').click();
-        
-        // Preenche os campos de texto
+
+        cy.url().should('include', '/partidas/avaliar/');
+        cy.get('label[for="nota_4"]').click(); // Clica na 4ª estrela
         cy.get('input[name="melhor_jogador"]').type('Jogador Teste');
         cy.get('input[name="pior_jogador"]').type('Pior Jogador Teste');
         cy.get('textarea[name="comentario_avaliacao"]').type('Comentário de teste para a partida.');
-        
-        // Clica em "Enviar Avaliação"
         cy.contains('button', 'Enviar Avaliação').click();
-// --- PASSO 5: Avaliar a Torcida (Fluxo de 2 etapas) ---
-        
-        // (FIX) O app não redireciona sozinho após o Passo 4. 
-        // Vamos visitar a página de listagem manualmente.
-        cy.visit('http://127.0.0.1:8000/partidas/');
-        
-        // (FIX) Agora podemos verificar se estamos na URL CORRETA (não apenas 'include')
-        cy.url().should('eq', 'http://127.0.0.1:8000/partidas/'); 
 
-        // Agora o botão deve ser "Ver Avaliação"
+        // --- PASSO 4: Navegar para Avaliar Torcida ---
+        cy.visit('http://127.0.0.1:8000/partidas/'); // Força a navegação
         cy.contains('a.btn-avaliar', 'Ver Avaliação').first().click();
-        
-        // Na página "ver_avaliacao.html", clica em "Avaliar Torcida"
+        cy.url().should('include', '/partidas/ver/');
         cy.contains('a', 'Avaliar Torcida').click();
 
-     // --- Etapa 1 da Avaliação da Torcida (Página 1: /avaliar_torcida/X/) ---
+        // --- PASSO 5: Avaliar a Torcida (Etapas 1 e 2) ---
         cy.url().should('include', '/partida/avaliar_torcida/');
-        
-        // Tenta clicar no 4º input (value="4") dentro do PRIMEIRO grupo .star-rating-group
         cy.get('.star-rating-group').eq(0).find('input[value="4"]').click({ force: true });
-        
-        // Tenta clicar no 3º input (value="3") dentro do SEGUNDO grupo .star-rating-group
         cy.get('.star-rating-group').eq(1).find('input[value="3"]').click({ force: true });
-
         cy.get('textarea[name="comentario"]').type('Review da performance da torcida.');
         cy.contains('button', 'Enviar Review').click();
 
-        // --- Etapa 2 da Avaliação da Torcida (Página 2: /.../2/) ---
-        // (Estou presumindo que a página 2 também usa a classe .star-rating-group)
-        cy.url().should('include', '/2/'); 
-        
-        // Tenta clicar no 5º input (value="5") dentro do PRIMEIRO grupo .star-rating-group
+        cy.url().should('include', '/2/'); // Verifica se foi para a segunda etapa
         cy.get('.star-rating-group').eq(0).find('input[value="5"]').click({ force: true });
-
-        // Tenta clicar no 4º input (value="4") dentro do SEGUNDO grupo .star-tating-group
         cy.get('.star-rating-group').eq(1).find('input[value="4"]').click({ force: true });
-
         cy.get('textarea[name="comentario"]').type('Segundo review, sobre o visual.');
         cy.contains('button', 'Enviar Review').click();
-     // --- PASSO 6: Avaliar Estádio ---
-        // (FIX) Após o review da torcida, o app redireciona para /partidas/ver/X/.
-        // Vamos forçar a ida para a home page.
-        cy.visit('http://127.0.0.1:8000/');
-        
-        cy.url().should('eq', 'http://127.0.0.1:8000/');
-        
+
+        // --- PASSO 6: Avaliar Estádio ---
+        cy.visit('http://127.0.0.1:8000/'); // Força a navegação
         cy.contains('a.action-card', 'Avaliar Estádio').click();
-        
-        // Clica em "Nova Avaliação"
-     // Na página /avaliacao/inicio/, clica em "Nova Avaliação"
         cy.contains('a', 'Nova Avaliação').click();
-        
-        // Preenche o formulário de avaliação do estádio
-        cy.get('input[name="estadio"]').type('Estádio Maracanã Teste'); // <-- CORRIGIDO
-        cy.get('input[name="avaliacao"][value="5"]').click({ force: true }); // <-- CORRIGIDO
-        cy.get('textarea[name="comentario"]').type('Comentário sobre o estádio.'); // <-- CORRIGIDO
+        cy.url().should('include', '/emocao/nova-avaliacao/');
+        cy.get('input[name="estadio"]').type('Estádio Maracanã Teste');
+        cy.get('input[name="avaliacao"][value="5"]').click({ force: true });
+        cy.get('textarea[name="comentario"]').type('Comentário sobre o estádio.');
         cy.contains('button', 'Enviar Avaliação').click();
-// --- PASSO 7: Galeria de Mídia ---
-        // (FIX) Após a avaliação do estádio, o app redireciona estranhamente.
-        // Vamos forçar a ida para a home page.
-        cy.visit('http://127.0.0.1:8000/');
-        cy.url().should('eq', 'http://127.0.0.1:8000/');
+
+        // --- PASSO 7: Galeria de Mídia (Com Upload e Verificação) ---
+        cy.visit('http://127.0.0.1:8000/'); // Força a navegação
         
         cy.contains('a.action-card', 'Galeria de Mídia').click();
         cy.url().should('include', '/galeria/');
         
-        // Clica em "Adicionar mídia"
         cy.contains('a', 'Adicionar mídia').click(); 
+        cy.url().should('include', '/adicionar/');
+
+        // --- CORREÇÃO DO UPLOAD ---
+        // 1. Anexa o arquivo 'teste.jpg' (que vamos criar) no input 'imagem'
+        cy.get('input[name="imagem"]').selectFile('cypress/fixtures/teste.jpg', { force: true });
         
-        // (Apenas clica em "Enviar" como instruído, mesmo sem anexar arquivo)
+        // 2. Agora sim clica em Enviar
         cy.contains('button', 'Enviar').click();
-        
-      // (FIX) Após enviar a mídia, o app redireciona para a galeria.
-        // Vamos forçar a ida para a home page para iniciar o Passo 8.
+
+        // --- CORREÇÃO DA VERIFICAÇÃO ---
+        // 3. Garante que fomos redirecionados para a galeria
+        cy.url().should('include', '/midia/galeria/');
+
+        // 4. Procura pela IMAGEM real que acabamos de enviar
+        // (Isso procura por uma tag <img> cujo link (src) contenha a palavra 'teste')
+        cy.get('img[src*="teste"]').should('be.visible');
+
+        // 5. AGORA SIM, após verificar, vamos para a home para o Passo 8
         cy.visit('http://127.0.0.1:8000/');
 
         // --- PASSO 8: Adicionar Link de Jogo ---
-        cy.url().should('eq', 'http://127.0.0.1:8000/');
-        
-        // Abre o menu lateral
         cy.get('.menu-toggle').click();
-        
-        // Clica em "Assistir Jogos"
         cy.get('.sidebar').contains('a', 'Assistir Jogos').click();
-        cy.url().should('include', '/links/');
-        
-        // Clica em "Adicionar Novo Link"
+        cy.url().should('include', '/midia/links/');
         cy.contains('a', 'Adicionar Novo Link').click();
-        
-        // Preenche o formulário de link
+        cy.url().should('include', '/midia/links/cadastrar/');
         cy.get('input[name="nome_do_jogo"]').type('Final da Copa de 2002');
         cy.get('input[name="url"]').type('https://www.youtube.com/watch?v=exemplo');
         cy.contains('button', 'Salvar Link').click();
-        
-     // (FIX) Após salvar o link, o app redireciona para a lista.
-        // Vamos forçar a ida para a home page para finalizar o teste.
+
+        // --- FINALIZAÇÃO ---
         cy.visit('http://127.0.0.1:8000/');
         cy.url().should('eq', 'http://127.0.0.1:8000/');
     });
