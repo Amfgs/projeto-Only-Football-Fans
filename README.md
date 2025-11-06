@@ -1,6 +1,6 @@
 # 🏆 OnlyFootballFans
 
-## 📌 Visão Geral  
+## 📌 Visão Geral
 
 O **OnlyFootballFans** é um aplicativo web desenvolvido em **Django** que funciona como um diário digital das experiências de cada torcedor.  
 
