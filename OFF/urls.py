@@ -5,9 +5,13 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls')),  
+    
+    # Esta é a única linha de 'include' que você precisa, 
+    # já que o 'core.urls' cuida de todo o resto.
+    path('', include('core.urls')), 
 ]
 
-# Servir arquivos de mídia durante o desenvolvimento
+# --- CORREÇÃO DA MÍDIA (Ainda necessária) ---
+# Isso permite que o 'runserver' encontre suas imagens locais.
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

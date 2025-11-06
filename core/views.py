@@ -276,22 +276,42 @@ def galeria(request):
 # ADICIONAR MÍDIA (IMAGEM/VIDEO/AUDIO)
 # ============================
 
+# Em core/views.py
+
 @login_required
 def adicionar_midia(request, partida_id):
+    # 1. Pega a partida (como antes)
     partida = get_object_or_404(Partida, id=partida_id, usuario=request.user)
+    
+    # --- INÍCIO DA CORREÇÃO ---
+    # 2. Agora usamos a ForeignKey 'partida' em vez do campo 'jogo'
     definicao, _ = Definicao.objects.get_or_create(
-        jogo=str(partida),
+        partida=partida,  # <-- ESTA É A CORREÇÃO REAL
         usuario=request.user,
-        defaults={"descricao": ""}
+        defaults={"jogo": str(partida), "descricao": ""} # Ainda salvamos o 'jogo' por segurança
     )
+    # --- FIM DA CORREÇÃO ---
 
     if request.method == "POST":
+        
+        # O seu código original aqui estava CORRETO.
+        # A Imagem só precisa da 'definicao'.
         if "imagem" in request.FILES:
-            Imagem.objects.create(definicao=definicao, arquivo=request.FILES["imagem"])
+            Imagem.objects.create(
+                definicao=definicao, 
+                arquivo=request.FILES["imagem"]
+            )
         if "video" in request.FILES:
-            Video.objects.create(definicao=definicao, arquivo=request.FILES["video"])
+            Video.objects.create(
+                definicao=definicao, 
+                arquivo=request.FILES["video"]
+            )
         if "audio" in request.FILES:
-            Audio.objects.create(definicao=definicao, arquivo=request.FILES["audio"])
+            Audio.objects.create(
+                definicao=definicao, 
+                arquivo=request.FILES["audio"]
+            )
+            
         messages.success(request, "Mídia adicionada com sucesso!")
         return redirect("core:galeria")
 

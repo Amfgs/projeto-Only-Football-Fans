@@ -33,8 +33,24 @@ def validar_tamanho_arquivo(arquivo):
 
 # Início de mídia
 class Definicao(models.Model):
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="definicoes")
-    jogo = models.CharField(max_length=200)
+    
+    # --- INÍCIO DA CORREÇÃO ---
+    # Adicionamos a ligação direta com a Partida.
+    # Esta é a 'ForeignKey' que estava faltando para a galeria funcionar.
+    partida = models.ForeignKey(
+        'Partida',  # Usa 'Partida' (string) porque Partida é definida *depois* neste arquivo
+        on_delete=models.CASCADE, 
+        related_name="definicoes", # Permite fazer partida.definicoes.all()
+        null=True, # Permite que definicoes antigas (sem partida) existam
+        blank=True
+    )
+    # --- FIM DA CORREÇÃO ---
+
+    # MUDANÇA NO related_name: Mudei de "definicoes" para "definicoes_usuario"
+    # para evitar um conflito/clash com o novo campo 'partida'.
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="definicoes_usuario")
+    
+    jogo = models.CharField(max_length=200) # Mantemos este campo por enquanto
     descricao = models.CharField(max_length=500, blank=True)
     criado_em = models.DateField(auto_now_add=True)
 
@@ -42,8 +58,9 @@ class Definicao(models.Model):
         return f"{self.jogo} - {self.descricao or 'Sem descrição'}"
 
 
-
 class Imagem(models.Model):
+    # ESTE MODELO JÁ ESTAVA CORRETO. NÃO MUDAMOS NADA.
+    # Ele se liga à Definicao, que agora (corretamente) se liga à Partida.
     definicao = models.ForeignKey(
         Definicao,
         on_delete=models.CASCADE,

@@ -26,20 +26,6 @@
             --border-color-light: #e1e8ed;
         }
 
-        /* DARK MODE AUTOMÁTICO */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --sidebar-bg: #0d1117;
-                --header-bg: #161b22;
-                --content-bg: #0d1117;
-                --text-light: #c9d1d9;
-                --text-dark: #f0f6fc;
-                --accent-blue: #58a6ff;
-                --accent-blue-hover: #1f6feb;
-                --border-color-light: #30363d;
-            }
-        }
-
         /* ===========================
          * RESET BÁSICO E BODY
          * ===========================
@@ -310,10 +296,6 @@ hoverArea.addEventListener('mouseenter', function() {
     bodyElement.classList.remove('sidebar-hidden');
 });
 
-// Fecha sidebar quando o mouse sai dela
-sidebar.addEventListener('mouseleave', function() {
-    bodyElement.classList.add('sidebar-hidden');
-});
 </script>
 
 </body>
