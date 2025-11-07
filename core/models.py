@@ -34,25 +34,25 @@ def validar_tamanho_arquivo(arquivo):
 # Início de mídia
 class Definicao(models.Model):
     
-    # --- INÍCIO DA CORREÇÃO ---
-    # Adicionamos a ligação direta com a Partida.
-    # Esta é a 'ForeignKey' que estava faltando para a galeria funcionar.
     partida = models.ForeignKey(
-        'Partida',  # Usa 'Partida' (string) porque Partida é definida *depois* neste arquivo
+        'Partida',  
         on_delete=models.CASCADE, 
-        related_name="definicoes", # Permite fazer partida.definicoes.all()
-        null=True, # Permite que definicoes antigas (sem partida) existam
+        related_name="definicoes", 
+        null=True, 
         blank=True
     )
-    # --- FIM DA CORREÇÃO ---
-
-    # MUDANÇA NO related_name: Mudei de "definicoes" para "definicoes_usuario"
-    # para evitar um conflito/clash com o novo campo 'partida'.
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="definicoes_usuario")
-    
-    jogo = models.CharField(max_length=200) # Mantemos este campo por enquanto
+    jogo = models.CharField(max_length=200)
     descricao = models.CharField(max_length=500, blank=True)
     criado_em = models.DateField(auto_now_add=True)
+
+    # ======================================================
+    # ADICIONE ESTE MÉTODO AQUI DENTRO DA CLASSE DEFINICAO
+    # ======================================================
+    def imagem_recente(self):
+        """Retorna a primeira imagem (a mais nova) desta definição."""
+        return self.imagens.all().order_by('-criado_em').first()
+    # ======================================================
 
     def __str__(self):
         return f"{self.jogo} - {self.descricao or 'Sem descrição'}"

@@ -21,21 +21,17 @@
                         <p class="partida-card__description">Resumo ou destaque da partida.</p>
                     </div>
 
-                    {# --- INÍCIO DA CORREÇÃO (PARA MOSTRAR A ÚLTIMA IMAGEM) --- #}
+                    {# --- INÍCIO DA CORREÇÃO --- #}
                     
-                    {# 1. Pegamos a (única) 'definicao' ligada a esta 'partida' #}
                     {% with definicao_item=partida.definicoes.first %}
                         
-                        {# 2. Dessa 'definicao', pegamos a imagem MAIS RECENTE #}
-                        {#    (ordenando por 'criado_em' descendente e pegando a primeira) #}
-                        {% with imagem_item=definicao_item.imagens.all.order_by('-criado_em').first %} 
+                        {# AQUI ESTÁ A LINHA CORRIGIDA: #}
+                        {% with imagem_item=definicao_item.imagem_recente %} 
                         
                             {% if imagem_item and imagem_item.arquivo %}
-                                {# 3. Se acharmos, usamos o campo 'arquivo' #}
                                 <img class="partida-card__image" src="{{ imagem_item.arquivo.url }}" alt="Imagem do jogo {{ partida }}">
                             
                             {% else %}
-                                {# 4. Se não, mostramos o placeholder #}
                                 <img class="partida-card__image" src="{% static 'images/placeholder.jpg' %}" alt="Sem imagem para {{ partida }}">
                             
                             {% endif %}
