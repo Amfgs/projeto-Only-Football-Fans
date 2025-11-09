@@ -1,5 +1,5 @@
 # 🏆 OnlyFootballFans ⚽️
-<p align="center"> <img src="https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge"/> <img src="https://img.shields.io/badge/Django-Web%20Framework-success?style=for-the-badge"/> <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=for-the-badge"/> <img src="https://img.shields.io/badge/Deploy-Azure-blue?style=for-the-badge"/> </p>
+<p align="center"> <img src="https://img.shields.io/badge/Python-blue?style=for-the-badge"/> <img src="https://img.shields.io/badge/Django-success?style=for-the-badge"/> <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=for-the-badge"/> <img src="https://img.shields.io/badge/Deploy-Azure-blue?style=for-the-badge"/> </p>
 
 ## 📌 Visão Geral
 
