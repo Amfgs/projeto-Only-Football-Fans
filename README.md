@@ -1,4 +1,4 @@
-# 🏆 OnlyFootballFans
+# 🏆 OnlyFootballFans ⚽️
 
 ## 📌 Visão Geral
 
