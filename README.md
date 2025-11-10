@@ -55,7 +55,7 @@ A proposta é transformar cada ida ao estádio em um registro organizado, fácil
 
 ## 📦 Entregáveis  
 <details>
-  <summary>- ✅ Semana 1 </summary>
+  <summary>- ⚽️✅ Semana 1 </summary>
   
   [Screencast](https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4)
   
@@ -69,7 +69,7 @@ A proposta é transformar cada ida ao estádio em um registro organizado, fácil
 </details>
 
 <details>
-  <summary>- ✅ Semana 2 </summary>
+  <summary>- ⚽️✅ Semana 2 </summary>
 
   Programação em Dupla / Relato
   [Print da Sessão de Programação em Dupla](images/programacao_dupla.png)
@@ -90,7 +90,7 @@ A proposta é transformar cada ida ao estádio em um registro organizado, fácil
   [Quadro jira](images/quadrojira2.png)
 </details>
 <details>
-  <summary>- ✅ Semana 3 </summary>
+  <summary>- ⚽️✅ Semana 3 </summary>
   
   BackLog Jira Atualizado
   [Print do BackLog Jira da Semana 3](images/backlog3.png)
@@ -118,7 +118,7 @@ A proposta é transformar cada ida ao estádio em um registro organizado, fácil
   
 </details>
 <details>
-  <summary>- ⏳ Semana 4 </summary>
+  <summary>- ⚽️⏳ Semana 4 </summary>
 
   BackLog Jira Atualizado
   [Print do BackLog Jira da Semana 4](pendente)
