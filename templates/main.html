@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-A">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Only Football Fans</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -88,7 +88,7 @@
         }
         
         /* ===========================
-         * MUDANÇA: LOGO EM DESTAQUE (MAIOR AINDA)
+         * LOGO EM DESTAQUE (MAIOR AINDA)
          * ===========================
         */
         .logo-section {
@@ -99,13 +99,12 @@
             animation-delay: 0.1s; 
         }
         .logo {
-            width: 240px; /* Aumentado de 200px */
-            height: 150px; /* Aumentado de 125px (proporção 1.6) */
+            width: 240px; 
+            height: 150px; 
             border-radius: 20px; 
             object-fit: cover; 
             box-shadow: 0 8px 25px rgba(0,0,0,0.3); 
         }
-        /* Fim da mudança */
 
 
         .emoji {
@@ -225,10 +224,9 @@
         }
         @media (max-width: 480px) {
             .logo-section { margin-bottom: 15px; }
-            /* MUDANÇA: Logo responsivo */
             .logo { 
-                width: 200px; /* Aumentado de 180px */
-                height: 125px; /* Aumentado de 112px */
+                width: 200px; 
+                height: 125px; 
             } 
             .slogan { font-size: 1.6rem; }
             .emoji { font-size: 2.2rem; }
@@ -242,10 +240,9 @@
             .feature-card { height: auto; padding: 25px 15px; } 
         }
         @media (max-width: 360px) {
-            /* MUDANÇA: Logo responsivo */
             .logo { 
-                width: 160px; /* Aumentado de 150px */
-                height: 100px; /* Aumentado de 94px */
+                width: 160px; 
+                height: 100px; 
             }
             .features-grid { gap: 12px; }
             .feature-icon { font-size: 1.8rem; }
@@ -263,8 +260,8 @@
         <div class="hero-section">
             
             <div class="logo-section fade-in-item">
-                <img src="{% static 'images/logo_OFF.png' %}" alt="Only Football Fans" class="logo">
-                </div>
+                <img src="{% static 'logo_OFF.png' %}" alt="Only Football Fans" class="logo">
+            </div>
 
             <span class="emoji fade-in-item">⚽🔥</span>
             <h1 class="slogan fade-in-item">Sua paixão pelo futebol tem um novo lar</h1>
@@ -331,13 +328,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    /* JS 3: CARROSSEL DE IMAGENS DE FUNDO */
+    /* ===========================
+     * MUDANÇA: Caminho das Imagens de Fundo
+     * ===========================
+    */
     const backgroundSlider = document.getElementById('background-slider');
     const backgroundImages = [
-        "{% static 'images/torcida.jpg' %}",
-        "{% static 'images/estadio3.jpg' %}",
-        "{% static 'images/messi.jpg' %}",
-        "{% static 'images/neymar.jpg' %}",
+        "{% static 'torcida.jpg' %}",
+        "{% static 'estadio3.jpg' %}",
+        "{% static 'messi.jpg' %}",
+        "{% static 'neymar.jpg' %}",
     ];
 
     let currentImageIndex = 0;
