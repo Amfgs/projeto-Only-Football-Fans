@@ -57,64 +57,48 @@ A proposta é transformar cada ida ao estádio em um registro organizado, fácil
 <details>
   <summary>- ⚽️✅ Semana 1 </summary>
   
-  [Screencast](https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4)
+  [Screencast Figma](https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4)
   
-  [Histórias](https://docs.google.com/document/d/1KJ7e-UgdJZPT6Hks4MEKToqq0ciq734pU-kY532tJzU/edit?usp=sharing )
+  [Histórias de Usuário](https://docs.google.com/document/d/1KJ7e-UgdJZPT6Hks4MEKToqq0ciq734pU-kY532tJzU/edit?usp=sharing )
   
-  BackLog Jira
-  [backLog jira](images/backlog1.png)
+  [BackLog Jira](images/backlog1.png)
   
-  Quadro Jira
-  [quadro jira](images/quadrojira1.png)
+  [Quadro Jira](images/quadrojira1.png)
 </details>
 
 <details>
   <summary>- ⚽️✅ Semana 2 </summary>
 
-  Programação em Dupla / Relato
-  [Print da Sessão de Programação em Dupla](images/programacao_dupla.png)
+  [Sessão de Programação em Dupla](images/programacao_dupla.png)
   
-  BackLog Jira Atualizado
   [Print do BackLog Jira da Semana 2](images/backlog2.png) 
   
-  Link do deploy
-  https://only-football-fans.azurewebsites.net/login/
+  [Link do primeiro Deploy] (https://only-football-fans.azurewebsites.net/login/)
   
-  Screencast do deploy
-  https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4
+  [Screencast do Deploy] (https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4)
+   
+  [Issue/Bug Tracker](images/bug_tracker1.png)
   
-  Issue/Bug Tracker
-  [Issue/Bug tracker](images/bug_tracker1.png)
-  
-  Quadro Jira
-  [Quadro jira](images/quadrojira2.png)
+  [Quadro Jira](images/quadrojira2.png)
 </details>
 <details>
   <summary>- ⚽️✅ Semana 3 </summary>
   
-  BackLog Jira Atualizado
-  [Print do BackLog Jira da Semana 3](images/backlog3.png)
+  [BackLog Jira da Semana 3](images/backlog3.png)
   
-  Quadro Jira
   [Quadro jira da Semana 3](images/quadrojira3.png)
-
-  Issue/ Bug Tracker 
   
-  [Open](images/bug_tracker2_open.png)
+  [Issue/ BugTracker - Open](images/bug_tracker2_open.png)
   
-  [Closed](images/bug_tracker2_closed.png)
+  [Issue/ Bug Tracker - Closed](images/bug_tracker2_closed.png)
 
-  Screencast dos Testes
-  https://youtu.be/c-wovCPDYfY?si=dTk3_qhHd_bDsY7F
+  [Screencast dos Testes] (https://youtu.be/c-wovCPDYfY?si=dTk3_qhHd_bDsY7F)
 
-  Screencast do CI/CD
-  https://youtu.be/XMa_inb8q7g?si=d223A3XJ7rpS5TtO
+  [Screencast do CI/CD] (https://youtu.be/XMa_inb8q7g?si=d223A3XJ7rpS5TtO)
 
-  Screencast do Deployment das Novas Histórias
-  https://youtu.be/3ujceBWA1Cs?si=PcHjT4azrKEH4oLb
+  [Screencast do Deploy] (https://youtu.be/3ujceBWA1Cs?si=PcHjT4azrKEH4oLb)
 
-  Programação em Dupla / Relato 2
-  [Print da Sessão de Programação em Dupla](images/programacao_dupla2.png)
+  [Sessão de Programação em Dupla](images/programacao_dupla2.png)
   
 </details>
 <details>
