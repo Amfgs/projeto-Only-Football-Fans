@@ -5,9 +5,20 @@
 ## 📌 Visão Geral
 
 O **OnlyFootballFans** é um aplicativo web desenvolvido em **Django** que funciona como um diário digital das experiências de cada torcedor.  
+  
+O objetivo é transformar cada ida ao estádio, cada gol, cada emoção, cada caos na arquibancada, em memórias organizadas, fáceis de buscar, comparar e reviver.
 
-Aqui, o usuário pode **registrar partidas**, **avaliar estádios** e **guardar suas impressões e emoções** sobre cada jogo, construindo um **histórico pessoal de memórias futebolísticas**.  
-A proposta é transformar cada ida ao estádio em um registro organizado, fácil de consultar e compartilhar, para que nenhum momento marcante fique só na lembrança.
+Aqui o torcedor pode:
+
+**- Registrar partidas que assistiu ao vivo**
+
+**- Avaliar estádios e torcidas**
+
+**- Acompanhar tudo em uma linha do tempo**
+
+**- Criar sua própria identidade futebolística ao longo dos jogos**
+
+_Um app que eterniza momentos que o futebol entrega e o tempo não devolve._
 
 
 ---
