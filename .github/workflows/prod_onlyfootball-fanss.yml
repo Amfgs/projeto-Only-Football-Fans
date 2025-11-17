@@ -75,7 +75,7 @@ jobs:
           slot-name: 'Production'
           
       - name: Install dependencies
-        run: pip install -r projeto-Only-Football-Fans/requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Cleaning testing files
         run: |
@@ -91,3 +91,4 @@ jobs:
           cd ..
 
           mv projeto-Only-Football-Fans/release.zip .
+
