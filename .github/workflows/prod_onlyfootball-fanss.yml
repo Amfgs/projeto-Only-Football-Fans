@@ -74,3 +74,19 @@ jobs:
           app-name: 'onlyfootball-fanss'
           slot-name: 'Production'
           
+      - name: Install dependencies
+        run: pip install -r projeto-Only-Football-Fans/requirements.txt
+
+      - name: Cleaning testing files
+        run: |
+          cd projeto-Only-Football-Fans/
+          rm db.sqlite3
+          rm .env
+          cd ..
+
+      - name: Zip artifact for deployment
+        run: |
+          cd projeto-Only-Football-Fans/
+          zip release.zip ./* -r
+          cd ..
+          mv projeto-Only-Football-Fans/release.zip .
