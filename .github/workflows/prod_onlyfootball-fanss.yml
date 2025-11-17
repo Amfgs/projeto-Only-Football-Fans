@@ -79,7 +79,6 @@ jobs:
 
       - name: Cleaning testing files
         run: |
-          cd projeto-Only-Football-Fans/
           rm db.sqlite3
           rm .env
           cd ..
@@ -91,4 +90,5 @@ jobs:
           cd ..
 
           mv projeto-Only-Football-Fans/release.zip .
+
 
