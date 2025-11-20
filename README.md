@@ -64,6 +64,127 @@ _Um app que eterniza momentos que o futebol entrega e o tempo não devolve._
 
 ---
 
+## 🤝 Como Contribuir com o projeto-Only-Football-Fans
+
+Ficamos muito felizes pelo seu interesse em contribuir! Este projeto é construído pela comunidade, e toda ajuda é bem-vinda.
+
+Para garantir que o processo seja simples e eficiente para todos, por favor, siga este guia.
+
+### 🚀 Configurando o Ambiente (Obrigatório)
+
+Para garantir que seu código seja compatível e que tudo funcione, é *essencial* configurar seu ambiente local corretamente *antes* de começar a codificar.
+
+Este projeto utiliza *Django* e requer um *ambiente virtual*.
+
+---
+
+#### 1. Preparação (Git)
+
+Primeiro, prepare o repositório em sua máquina.
+
+1.  **Fork:** Faça um "fork" deste repositório (VR0414/projeto-Only-Football-Fans) para sua própria conta no GitHub.
+
+2.  **Clone:** Clone o seu fork (substitua SEU-USUARIO):
+    ```bash
+    git clone https://github.com/SEU-USUARIO/projeto-Only-Football-Fans.git
+    cd projeto-Only-Football-Fans
+    ```
+
+3.  **Crie uma Branch:** Nunca trabalhe diretamente na branch main ou master. Crie uma nova branch descritiva para sua mudança:
+    ```bash
+    git checkout -b minha-nova-funcionalidade
+    ```
+    (Ex: `git checkout -b fix/bug-login` ou `git checkout -b feature/pagina-estatisticas`)
+
+---
+
+#### 2. Configuração do Projeto (Django)
+
+Agora, vamos instalar e rodar o projeto.
+
+1.  **Crie o Ambiente Virtual (venv):**
+    Dentro da pasta do projeto, crie um ambiente virtual.
+
+    ```bash
+    # No macOS/Linux
+    python3 -m venv venv
+
+    # No Windows
+    python -m venv venv
+    ```
+
+2.  **Ative o Ambiente Virtual:**
+    Você *precisa* ativar o ambiente antes de instalar qualquer coisa.
+
+    ```bash
+    # No macOS/Linux
+    source venv/bin/activate
+
+    # No Windows (PowerShell/CMD)
+    .\venv\Scripts\activate
+    ```
+    (Seu terminal deve agora mostrar `(venv)` no início da linha).
+
+3.  **Instale as Dependências:**
+    Com o ambiente virtual ativo, instale todos os pacotes necessários:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Configure o Banco de Dados e Rode o Servidor:**
+    (Adicione aqui quaisquer passos extras, como criar um .env, mas o básico é):
+    ```bash
+    # Aplica as migrações do banco de dados
+    python manage.py migrate
+
+    # Inicia o servidor de desenvolvimento
+    python manage.py runserver
+    ```
+
+5.  **Verifique:**
+    Acesse http://127.0.0.1:8000 no seu navegador. Se o projeto carregar sem erros, você está pronto para contribuir!
+
+---
+
+### 🧠 Padrões de Código
+
+Não temos um Código de Conduta formal ou um guia de estilo (style guide) rígido. Pedimos apenas uma coisa:
+
+**Mantenha a lógica do código.**
+
+Antes de enviar, pergunte-se:
+* Meu código segue os padrões já usados no restante do projeto?
+* Minha lógica está clara e legível?
+* Estou reutilizando funções ou classes que já existem, em vez de reescrever?
+
+Se você seguir a estrutura e a lógica existentes, sua contribuição será facilmente integrada.
+
+### 📥 Enviando sua Contribuição
+
+Depois que seu ambiente estiver configurado e suas alterações estiverem prontas:
+
+1.  **Faça o Commit:** Adicione e faça o commit das suas mudanças com uma mensagem clara.
+    ```bash
+    git add .
+    git commit -m "Feat: Adiciona funcionalidade X"
+    ```
+
+2.  **Envie para seu Fork:**
+    Envie a sua branch para o seu repositório (fork) no GitHub.
+    ```bash
+    git push origin minha-nova-funcionalidade
+    ```
+
+3.  **Abra um Pull Request (PR):**
+    * Vá até a página do seu fork no GitHub.
+    * Clique no botão "Compare & pull request".
+    * Verifique se a base é a branch main (ou master) do repositório VR0414/projeto-Only-Football-Fans e o head é a sua branch.
+    * Na descrição, explique *o que* você fez e *por que*. Se sua alteração corrige uma "Issue" aberta, mencione o número dela (ex: Resolve #42).
+
+**Obrigado por ajudar a construir o Only-Football-Fans!**
+
+---
+
 ## 📦 Entregáveis  
 <details>
   <summary>- ⚽️✅ Semana 1 </summary>
@@ -113,16 +234,15 @@ _Um app que eterniza momentos que o futebol entrega e o tempo não devolve._
   
 </details>
 <details>
-  <summary>- ⚽️⏳ Semana 4 </summary>
+  <summary>- ⚽️✅ Semana 4 </summary>
 
   BackLog Jira Atualizado
-  [Print do BackLog Jira da Semana 4](pendente)
+  [Print do BackLog Jira da Semana 4](images/backlog4.png)
   
-  Quadro Jira
-  [Quadro jira da Semana 4](Pendente)
+  Quadro Jira
+  [Quadro jira da Semana 4](images/quadrojira4.png)  
 
-  Issue/ Bug Tracker 
-  
+  Issue/ Bug Tracker
   [Open](Pendente)
   
   [Closed](Pendente)
