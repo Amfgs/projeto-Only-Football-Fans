@@ -253,7 +253,7 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
 
   [Screencast do CI/CD](https://youtu.be/LvGSSg8vy8s?si=9LDbbrBAAshH6EtW)
 
-  [Screencast do Deployment das Novas Histórias](https://youtu.be/T2jH4GIssS8)
+  [Screencast do Deployment das Novas Histórias](https://youtu.be/qfiVMhcYYMQ)
   
   [Print da Sessão de Programação em Dupla](images/duplas.png)
 
