@@ -243,9 +243,9 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
   [Quadro jira da Semana 4](images/quadrojira4.png)  
 
   Issue/ Bug Tracker
-  [Open](Pendente)
+  [Open](images/bugtracker3_open.png)
   
-  [Closed](Pendente)
+  [Closed](images/bugtracker3_closed.png)
 
   Screencast dos Testes
   Em andamento
