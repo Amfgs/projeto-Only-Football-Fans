@@ -82,7 +82,7 @@ Este projeto utiliza *Django* e requer um *ambiente virtual*.
 
 Primeiro, prepare o repositório em sua máquina.
 
-1.  **Fork:** Faça um "fork" deste repositório (VR0414/projeto-Only-Football-Fans) para sua própria conta no GitHub.
+1.  **Fork:** Faça um "fork" deste repositório (raulmaiab/projeto-Only-Football-Fans) para sua própria conta no GitHub.
 
 2.  **Clone:** Clone o seu fork (substitua SEU-USUARIO):
     ```bash
