@@ -187,6 +187,7 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
 
 ## 📦 Entregáveis  
 <details>
+  
   <summary>- ⚽️✅ Entrega 1 </summary>
   
   [Screencast Figma](https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4)
@@ -198,17 +199,17 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
   [Quadro Jira](images/quadrojira1.png)
 
 </details>
-
 <details>
+  
   <summary>- ⚽️✅ Entrega 2 </summary>
 
   [Sessão de Programação em Dupla](images/programacao_dupla.png)
   
   [Print do BackLog Jira da Semana 2](images/backlog2.png) 
   
-  [Link do primeiro Deploy] (https://only-football-fans.azurewebsites.net/login/)
+  [Link do primeiro Deploy](https://only-football-fans.azurewebsites.net/login/)
   
-  [Screencast do Deploy] (https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4)
+  [Screencast do Deploy](https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4)
    
   [Issue/Bug Tracker](images/bug_tracker1.png)
   
@@ -216,6 +217,7 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
 
 </details>
 <details>
+
   <summary>- ⚽️✅ Entrega 3 </summary>
   
   [BackLog Jira da Entrega 3](images/backlog3.png)
@@ -226,16 +228,17 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
   
   [Issue/ Bug Tracker - Closed](images/bug_tracker2_closed.png)
 
-  [Screencast dos Testes] (https://youtu.be/c-wovCPDYfY?si=dTk3_qhHd_bDsY7F)
+  [Screencast dos Testes](https://youtu.be/c-wovCPDYfY?si=dTk3_qhHd_bDsY7F)
 
-  [Screencast do CI/CD] (https://youtu.be/XMa_inb8q7g?si=d223A3XJ7rpS5TtO)
+  [Screencast do CI/CD](https://youtu.be/XMa_inb8q7g?si=d223A3XJ7rpS5TtO)
 
-  [Screencast do Deploy] (https://youtu.be/3ujceBWA1Cs?si=PcHjT4azrKEH4oLb)
+  [Screencast do Deploy](https://youtu.be/3ujceBWA1Cs?si=PcHjT4azrKEH4oLb)
 
   [Sessão de Programação em Dupla](images/programacao_dupla2.png)
   
 </details>
 <details>
+
   <summary>- ⚽️✅ Entrega 4 </summary>
 
   [Print do BackLog Jira da Entrega 4](images/backlog4.png)
