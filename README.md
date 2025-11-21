@@ -247,11 +247,11 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
   
   [Closed](images/bugtracker3_closed.png)
 
-  [Screencast dos Testes]()
+  [Screencast dos Testes](https://youtu.be/OZvVUhpt0sE)
 
   [Screencast do CI/CD](https://youtu.be/LvGSSg8vy8s?si=9LDbbrBAAshH6EtW)
 
-  Screencast do Deployment das Novas Histórias()
+  [Screencast do Deployment das Novas Histórias](https://youtu.be/T2jH4GIssS8)
   
 
   Programação em Dupla / Relato 3
