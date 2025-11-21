@@ -247,16 +247,15 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
   
   [Closed](images/bugtracker3_closed.png)
 
-  Screencast dos Testes
-  Em andamento
+  [Screencast dos Testes]()
 
-  Screencast do CI/CD
-  Em andamento
+  [Screencast do CI/CD](https://youtu.be/LvGSSg8vy8s?si=9LDbbrBAAshH6EtW)
 
-  Screencast do Deployment das Novas Histórias
-  Em andamento
+  Screencast do Deployment das Novas Histórias()
+  
 
   Programação em Dupla / Relato 3
-  [Print da Sessão de Programação em Dupla](Pendente)
+  [Print da Sessão de Programação em Dupla](images/duplas.png)
+  [Print da Sessão de Programação em Trio](images/trio.png)
   
 </details>
