@@ -187,7 +187,7 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
 
 ## 📦 Entregáveis  
 <details>
-  <summary>- ⚽️✅ Semana 1 </summary>
+  <summary>- ⚽️✅ Entrega 1 </summary>
   
   [Screencast Figma](https://youtu.be/sAhcepC54wo?si=GCJNAyZaQ7O_8hI4)
   
@@ -196,10 +196,11 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
   [BackLog Jira](images/backlog1.png)
   
   [Quadro Jira](images/quadrojira1.png)
+
 </details>
 
 <details>
-  <summary>- ⚽️✅ Semana 2 </summary>
+  <summary>- ⚽️✅ Entrega 2 </summary>
 
   [Sessão de Programação em Dupla](images/programacao_dupla.png)
   
@@ -211,14 +212,15 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
    
   [Issue/Bug Tracker](images/bug_tracker1.png)
   
-  [Quadro Jira](images/quadrojira2.png)
+  [Quadro Jira Entrega 2](images/quadrojira2.png)
+
 </details>
 <details>
-  <summary>- ⚽️✅ Semana 3 </summary>
+  <summary>- ⚽️✅ Entrega 3 </summary>
   
-  [BackLog Jira da Semana 3](images/backlog3.png)
+  [BackLog Jira da Entrega 3](images/backlog3.png)
   
-  [Quadro jira da Semana 3](images/quadrojira3.png)
+  [Quadro Jira da Entrega 3](images/quadrojira3.png)
   
   [Issue/ BugTracker - Open](images/bug_tracker2_open.png)
   
@@ -234,18 +236,15 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
   
 </details>
 <details>
-  <summary>- ⚽️✅ Semana 4 </summary>
+  <summary>- ⚽️✅ Entrega 4 </summary>
 
-  BackLog Jira Atualizado
-  [Print do BackLog Jira da Semana 4](images/backlog4.png)
+  [Print do BackLog Jira da Entrega 4](images/backlog4.png)
   
-  Quadro Jira
-  [Quadro jira da Semana 4](images/quadrojira4.png)  
+  [Quadro Jira da Entrega 4](images/quadrojira4.png)  
 
-  Issue/ Bug Tracker
-  [Open](images/bugtracker3_open.png)
+  [Issue/ Bug Tracker - Open](images/bugtracker3_open.png)
   
-  [Closed](images/bugtracker3_closed.png)
+  [Issue/ Bug Tracker - Closed](images/bugtracker3_closed.png)
 
   [Screencast dos Testes](https://youtu.be/OZvVUhpt0sE)
 
@@ -253,9 +252,8 @@ Depois que seu ambiente estiver configurado e suas alterações estiverem pronta
 
   [Screencast do Deployment das Novas Histórias](https://youtu.be/T2jH4GIssS8)
   
-
-  Programação em Dupla / Relato 3
   [Print da Sessão de Programação em Dupla](images/duplas.png)
+
   [Print da Sessão de Programação em Trio](images/trio.png)
   
 </details>
